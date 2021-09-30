@@ -29,24 +29,50 @@ namespace Client
             string[] blockNames = {"Cobble", "Sand", "Bedrock"};
             int x = 10;
             int y = x;
-            Map map = new Map(x, y);
+           // Map map = new Map(x, y);
             Random rnd = new Random();
             Block[,] blocks = new Block[x,y];
             abstractFactory = AbstractFactory.CreateBlockFactory("Block");
-            string[,] mapNames = new string[x, y];
+         //   string[,] mapNames = new string[x, y];
             for(int i = 0; i < x; i++)
             {
                 for(int j = 0; j <y; j++)
                 {
                     int r = rnd.Next(3);
                     blocks[i, j] = abstractFactory.GetBlock(blockTypes[r], blockNames[r]);
-                    listBox1.Items.Add(blocks[i, j].name);
+                    Effect.Effect effect = assignEffect();
+                    if(effect != null)
+                    {
+                        listBox1.Items.Add(blocks[i, j].name + "  -  " + effect.EffectType);
+                    } else
+                    {
+                        listBox1.Items.Add(blocks[i, j].name);
+                    }
                 }
                 listBox1.Items.Add('\n');
             }
+        }
 
-            
-            
+        private Effect.Effect assignEffect()
+        {
+            Random rnd = new Random();
+            int rndNumber = rnd.Next(1, 10);
+            Effect.EffectFactory factory = null; 
+            switch (rndNumber)
+            {
+                case 1:
+                    factory = new Effect.JumpFactory(50);
+                    break;
+                case 2:
+                    factory = new Effect.BlindFactory(5);
+                    break;
+                default:
+                    return null;
+            }
+
+            Effect.Effect effect = factory.GetEffect();
+
+            return effect;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -104,6 +130,11 @@ namespace Client
         }
 
         private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
