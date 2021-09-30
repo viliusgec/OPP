@@ -9,21 +9,13 @@ namespace Client
 {
     public partial class Form1 : Form
     {
-        HubConnection connection;
-        Player player;
-        Player enemy;
+        private HubConnection connection;
         public Form1()
         {
             InitializeComponent();
-            connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:44361/chathub")
-                .Build();
 
-            connection.Closed += async (error) =>
-            {
-                await Task.Delay(new Random().Next(0, 5) * 1000);
-                await connection.StartAsync();
-            };
+            SingletonConnection temp_connection = SingletonConnection.GetInstance();
+            connection = temp_connection.GetConnection();
 
             this.KeyPreview = true;
             this.KeyDown += sendBoxCoordinates;
@@ -31,7 +23,7 @@ namespace Client
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+
         }
 
         //connection button
@@ -83,6 +75,11 @@ namespace Client
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
         {
 
         }

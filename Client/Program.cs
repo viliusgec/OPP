@@ -16,10 +16,6 @@ namespace Client
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-/*            HubConnection connection;
-            connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:53353/ChatHub")
-                .Build();*/
         }
     }
 }
