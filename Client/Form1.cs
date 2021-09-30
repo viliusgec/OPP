@@ -13,12 +13,40 @@ namespace Client
         public Form1()
         {
             InitializeComponent();
+            createMap();
 
             SingletonConnection temp_connection = SingletonConnection.GetInstance();
             connection = temp_connection.GetConnection();
 
             this.KeyPreview = true;
             this.KeyDown += sendBoxCoordinates;
+            
+        }
+        private void createMap()
+        {
+            AbstractFactory abstractFactory = null;
+            string[] blockTypes = { "Static", "Falling", "Unbreakable" };
+            string[] blockNames = {"Cobble", "Sand", "Bedrock"};
+            int x = 10;
+            int y = x;
+            Map map = new Map(x, y);
+            Random rnd = new Random();
+            Block[,] blocks = new Block[x,y];
+            abstractFactory = AbstractFactory.CreateBlockFactory("Block");
+            string[,] mapNames = new string[x, y];
+            for(int i = 0; i < x; i++)
+            {
+                for(int j = 0; j <y; j++)
+                {
+                    int r = rnd.Next(3);
+                    blocks[i, j] = abstractFactory.GetBlock(blockTypes[r], blockNames[r]);
+                    listBox1.Items.Add(blocks[i, j].name);
+                }
+                listBox1.Items.Add('\n');
+            }
+
+            
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -50,10 +78,6 @@ namespace Client
             }
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void sendBoxCoordinates(object sender, KeyEventArgs e)
         {
