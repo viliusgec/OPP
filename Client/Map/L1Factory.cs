@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    class BlockFactory : AbstractFactory
+    class L1Factory : AbstractFactory
     {
         public override Block GetBlock(string BlockType, string BlockName)
         {

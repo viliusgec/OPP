@@ -12,11 +12,20 @@ namespace Client
 
         public static AbstractFactory CreateBlockFactory(string FactoryType)
         {
-            if (FactoryType.Equals("Block"))
+            if (FactoryType.Equals("L1"))
             {
-                return new BlockFactory();
+                return new L1Factory();
             }
-            return null;
+            else if (FactoryType.Equals("L2"))
+            {
+                return new L2Factory();
+            }
+            else if (FactoryType.Equals("L3"))
+            {
+                return new L3Factory();
+            }
+            else
+                return null;
         }
     }
 }

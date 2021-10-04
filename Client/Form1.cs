@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.AspNetCore.SignalR.Client;
+using Client.Map;
 
 namespace Client
 {
@@ -24,22 +25,22 @@ namespace Client
         }
         private void createMap()
         {
-            AbstractFactory abstractFactory = null;
+            AbstractFactory factory = null;
             string[] blockTypes = { "Static", "Falling", "Unbreakable" };
             string[] blockNames = {"Cobble", "Sand", "Bedrock"};
             int x = 10;
             int y = x;
-           // Map map = new Map(x, y);
+            MapBase map = new MapBase(x, y);
             Random rnd = new Random();
             Block[,] blocks = new Block[x,y];
-            abstractFactory = AbstractFactory.CreateBlockFactory("Block");
+            factory = map.GetL1Factory();
          //   string[,] mapNames = new string[x, y];
             for(int i = 0; i < x; i++)
             {
                 for(int j = 0; j <y; j++)
                 {
                     int r = rnd.Next(3);
-                    blocks[i, j] = abstractFactory.GetBlock(blockTypes[r], blockNames[r]);
+                    blocks[i, j] = factory.GetBlock(blockTypes[r], blockNames[r]);
                     Effect.Effect effect = assignEffect();
                     if(effect != null)
                     {
