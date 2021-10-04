@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Client.Map
 {
-    class L1StaticBlock
+    class L1StaticBlock : StaticBlock
     {
+        public L1StaticBlock(string name) : base(name)
+        {
+
+        }
     }
 }

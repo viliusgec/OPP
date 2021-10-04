@@ -34,7 +34,8 @@ namespace Client
             Random rnd = new Random();
             Block[,] blocks = new Block[x,y];
             factory = map.GetL1Factory();
-         //   string[,] mapNames = new string[x, y];
+            //   string[,] mapNames = new string[x, y];
+            /*
             for(int i = 0; i < x; i++)
             {
                 for(int j = 0; j <y; j++)
@@ -52,6 +53,7 @@ namespace Client
                 }
                 listBox1.Items.Add('\n');
             }
+            */
         }
 
         private Effect.Effect assignEffect()

@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Maps
+namespace Client.Map
 {
-    class L3UnbreakableBlock
+    class L3UnbreakableBlock : UnbreakableBlock
     {
+        public L3UnbreakableBlock(string name) : base(name)
+        {
+
+        }
     }
 }

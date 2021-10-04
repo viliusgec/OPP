@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Maps
+namespace Client.Map
 {
-    class L2FallingBlock
+    class L2FallingBlock : FallingBlock
     {
+        public L2FallingBlock(string name) : base(name)
+        {
+
+        }
     }
 }

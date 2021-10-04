@@ -1,29 +1,25 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client
+namespace Client.Map
 {
     class L1Factory : AbstractFactory
     {
-        public override Block GetBlock(string BlockType, string BlockName)
+        public override Block GetStatic(string name)
         {
-            if (BlockType.Equals("Static"))
-            {
-                return new StaticBlock(BlockName);
-            }
-            else if (BlockType.Equals("Falling"))
-            {
-                return new FallingBlock(BlockName);
-            }
-            else if (BlockType.Equals("Unbreakable"))
-            {
-                return new UnbreakableBlock(BlockName);
-            }
-            else
-                return null;
+            return new L1StaticBlock(name);
+        }
+        public override Block GetFalling(string name)
+        {
+            return new L1FallingBlock(name);
+        }
+        public override Block GetUnbreakable(string name)
+        {
+            return new L1UnbreakableBlock(name);
         }
     }
 }

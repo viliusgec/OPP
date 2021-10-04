@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client
+namespace Client.Map
 {
     abstract class AbstractFactory
     {
-        public abstract Block GetBlock(string BlockType, string BlockName);
+        public abstract Block GetStatic(string name);
+        public abstract Block GetFalling(string name);
+        public abstract Block GetUnbreakable(string name);
 
+        /*
         public static AbstractFactory CreateBlockFactory(string FactoryType)
         {
             if (FactoryType.Equals("L1"))
@@ -27,5 +30,6 @@ namespace Client
             else
                 return null;
         }
+        */
     }
 }
