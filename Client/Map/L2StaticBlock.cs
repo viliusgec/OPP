@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Map
 {
+    [Serializable]
     class L2StaticBlock : StaticBlock
     {
         public L2StaticBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)

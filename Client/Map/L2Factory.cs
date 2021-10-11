@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Map
 {
+    [Serializable]
     class L2Factory : AbstractFactory
     {
         public override Block GetStatic()
