@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Client.Map
 {
+    [Serializable]
     class UnbreakableBlock : Block
     {
-        public UnbreakableBlock(string name) : base(name)
+        public UnbreakableBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
+        {
+
+        }
+        public override void CreateBlock()
         {
 
         }

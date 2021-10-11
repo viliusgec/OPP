@@ -6,19 +6,29 @@ using System.Threading.Tasks;
 
 namespace Client.Map
 {
+    [Serializable]
     class L3Factory : AbstractFactory
     {
-        public override Block GetStatic(string name)
+        public override Block GetStatic()
         {
-            return new L3StaticBlock(name);
+            string name = "";
+            string image = "";
+            Effect.Effect effect = null;
+            return new L3StaticBlock(name, image, effect);
         }
-        public override Block GetFalling(string name)
+        public override Block GetFalling()
         {
-            return new L3FallingBlock(name);
+            string name = "";
+            string image = "";
+            Effect.Effect effect = null;
+            return new L3FallingBlock(name, image, effect);
         }
-        public override Block GetUnbreakable(string name)
+        public override Block GetUnbreakable()
         {
-            return new L3UnbreakableBlock(name);
+            string name = "";
+            string image = "";
+            Effect.Effect effect = null;
+            return new L3UnbreakableBlock(name, image, effect);
         }
     }
 }

@@ -10,52 +10,20 @@ namespace Client
 {
     public partial class Form1 : Form
     {
+        Form gameForm;
         private HubConnection connection;
         public Form1()
         {
             InitializeComponent();
-            createMap();
 
             SingletonConnection temp_connection = SingletonConnection.GetInstance();
             connection = temp_connection.GetConnection();
-
+            gameForm = new GameForm();
             this.KeyPreview = true;
             this.KeyDown += sendBoxCoordinates;
             
         }
-        private void createMap()
-        {
-            AbstractFactory factory = null;
-            string[] blockTypes = { "Static", "Falling", "Unbreakable" };
-            string[] blockNames = {"Cobble", "Sand", "Bedrock"};
-            int x = 10;
-            int y = x;
-            MapBase map = new MapBase(x, y);
-            Random rnd = new Random();
-            Block[,] blocks = new Block[x,y];
-            factory = map.GetL1Factory();
-            //   string[,] mapNames = new string[x, y];
-            /*
-            for(int i = 0; i < x; i++)
-            {
-                for(int j = 0; j <y; j++)
-                {
-                    int r = rnd.Next(3);
-                    blocks[i, j] = factory.GetBlock(blockTypes[r], blockNames[r]);
-                    Effect.Effect effect = assignEffect();
-                    if(effect != null)
-                    {
-                        listBox1.Items.Add(blocks[i, j].name + "  -  " + effect.EffectType);
-                    } else
-                    {
-                        listBox1.Items.Add(blocks[i, j].name);
-                    }
-                }
-                listBox1.Items.Add('\n');
-            }
-            */
-        }
-
+        
         private Effect.Effect assignEffect()
         {
             Random rnd = new Random();
@@ -94,12 +62,16 @@ namespace Client
             connection.On<string, string>("ReceiveCoordinates", (x, y) =>
             {
                 pictureBox2.Location = new Point(int.Parse(x), int.Parse(y));
+                
             });
 
             try
             {
                 await connection.StartAsync();
                 textBox1.Text = "Connection started";
+                this.Hide();
+                gameForm.ShowDialog();
+                this.Show();
             }
             catch (Exception ex)
             {

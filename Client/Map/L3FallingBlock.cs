@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Client.Map
 {
+    [Serializable]
     class L3FallingBlock : FallingBlock
     {
-        public L3FallingBlock(string name) : base(name)
+        public L3FallingBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
         {
 
         }

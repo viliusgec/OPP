@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Client.Map
 {
+    [Serializable]
     class L2UnbreakableBlock : UnbreakableBlock
     {
-        public L2UnbreakableBlock(string name) : base(name)
+        public L2UnbreakableBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
         {
 
         }
