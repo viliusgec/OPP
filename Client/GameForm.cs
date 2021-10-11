@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Text.Json;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Client
 {
@@ -36,7 +37,7 @@ namespace Client
             });
             connection.On<string>("ReceiveMap", (jsonString) =>
             {
-                map = JsonSerializer.Deserialize<Map.MapBase>(jsonString);
+                map = JsonConvert.DeserializeObject<Map.MapBase>(jsonString);
                 AddPictureBoxes();
                 CreateMap();
                 button1.Hide();
@@ -85,7 +86,9 @@ namespace Client
         }
         private async Task sendMap(object sender)
         {
-            string jsonString = JsonSerializer.Serialize(map);
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            //string jsonString = JsonSerializer.Serialize(map, options);
+            string jsonString = JsonConvert.SerializeObject(map);
             await connection.InvokeAsync("SendMap", jsonString);
 
         }

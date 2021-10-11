@@ -71,6 +71,7 @@ namespace Client
                 textBox1.Text = "Connection started";
                 this.Hide();
                 gameForm.ShowDialog();
+                this.Show();
             }
             catch (Exception ex)
             {
