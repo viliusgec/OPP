@@ -9,7 +9,11 @@ namespace Client.Map
     class FallingBlock : Block
     {
 
-        public FallingBlock(string name) : base(name)
+        public FallingBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
+        {
+
+        }
+        public override void CreateBlock()
         {
 
         }

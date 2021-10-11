@@ -8,7 +8,7 @@ namespace Client.Map
 {
     class L2StaticBlock : StaticBlock
     {
-        public L2StaticBlock(string name) : base(name)
+        public L2StaticBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
         {
 
         }

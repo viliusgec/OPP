@@ -8,7 +8,7 @@ namespace Client.Map
 {
     class L3StaticBlock : StaticBlock
     {
-        public L3StaticBlock(string name) : base(name)
+        public L3StaticBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
         {
 
         }

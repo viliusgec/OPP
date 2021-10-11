@@ -8,7 +8,7 @@ namespace Client.Map
 {
     class L1UnbreakableBlock : UnbreakableBlock
     {
-        public L1UnbreakableBlock(string name) : base(name)
+        public L1UnbreakableBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
         {
 
         }

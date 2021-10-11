@@ -8,9 +8,13 @@ namespace Client.Map
 {
     class StaticBlock : Block
     {
-        public StaticBlock(string _name) : base(_name)
+        public StaticBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
         {
-            
+
+        }
+        public override void CreateBlock()
+        {
+
         }
     }
 }

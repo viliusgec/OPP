@@ -8,10 +8,30 @@ namespace Client.Map
 {
     abstract class Block
     {
-        public string name { get; set; }
-        public Block(string _name)
+        private string name { get; set; }
+        private string image;
+        private Effect.Effect effect;
+        public Block(string _name, string _image, Effect.Effect _effect)
         {
             name = _name;
+            image = _image;
+            effect = _effect;
         }
+
+        public string GetImage()
+        {
+            return image;
+        }
+
+        public string GetName()
+        {
+            return name;
+        }
+        public Effect.Effect GetEffect()
+        {
+            return effect;
+        }
+
+        public abstract void CreateBlock();
     }
 }
