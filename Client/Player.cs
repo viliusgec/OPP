@@ -10,6 +10,7 @@ namespace Client
 {
     class Player
     {
+        private Decorator.IPickaxe pickaxe { get; set; }
         public void Move(object sender, KeyEventArgs e, PictureBox pictureBox1)
         {
             int x = pictureBox1.Location.X;
@@ -26,6 +27,18 @@ namespace Client
         public void MoveWithCoordinates(int x, int y, PictureBox pictureBox)
         {
             pictureBox.Location = new Point(x, y);
+        }
+
+        public Decorator.IPickaxe GetPickaxe()
+        {
+            return pickaxe;
+        }
+
+        public void setPickaxe(string entered)
+        {
+            //Gal cia butu geriau grazint ne stringa o image, kuri reiketu renderint?
+            //Sita dalyka reikes idet ant tada kai rinksis mapa ir gales dar pickaxe pasirinkt tada
+            this.pickaxe = Decorator.PickaxeDecorator.GetPickaxe(entered);
         }
     }
 }
