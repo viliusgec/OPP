@@ -17,5 +17,9 @@ namespace Client.Map
         {
 
         }
+        public override StaticBlock Clone()
+        {
+            return (StaticBlock)this.MemberwiseClone();
+        }
     }
 }

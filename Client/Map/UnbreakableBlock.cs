@@ -17,5 +17,9 @@ namespace Client.Map
         {
 
         }
+        public override UnbreakableBlock Clone()
+        {
+            return (UnbreakableBlock)this.MemberwiseClone();
+        }
     }
 }

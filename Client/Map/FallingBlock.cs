@@ -18,5 +18,10 @@ namespace Client.Map
         {
 
         }
+
+        public override FallingBlock Clone()
+        {
+            return (FallingBlock)this.MemberwiseClone();
+        }
     }
 }

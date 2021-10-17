@@ -10,7 +10,7 @@ namespace Client.Map
     [System.Xml.Serialization.XmlInclude(typeof(L1Factory))]
     [System.Xml.Serialization.XmlInclude(typeof(L2Factory))]
     [System.Xml.Serialization.XmlInclude(typeof(L3Factory))]
-    abstract class Block
+    abstract class Block : ICloneable
     {
         private string name { get; set; }
         private string image;
@@ -63,5 +63,7 @@ namespace Client.Map
         }
 
         public abstract void CreateBlock();
+
+        public abstract object Clone();
     }
 }
