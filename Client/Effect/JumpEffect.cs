@@ -6,26 +6,20 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    class JumpEffect : Effect
+    class JumpEffect : IEffect
     {
-        private readonly string _effectType;
-        private int _effectDuration;
-        
-        public JumpEffect(int effectDuration)
+        private string _effectType;
+        public string EffectType  // read-write instance property
         {
-            _effectType = "Jump";
-            _effectDuration = effectDuration;
+            get => _effectType;
+            set => _effectType = "jump";
         }
 
-        public override string EffectType
+        private int _duration;
+        public int Duration  // read-only instance property
         {
-            get { return _effectType; }
-        }
-
-        public override int EffectDuration
-        {
-            get { return _effectDuration; }
-            set { _effectDuration = value; }
+            get => _duration;
+            set => _duration = value;
         }
     }
 }

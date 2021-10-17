@@ -6,8 +6,22 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    abstract class EffectFactory
+    public static class EffectFactory
     {
-        public abstract Effect GetEffect();
+        public static IEffect Create(int effectType)
+        {
+            switch (effectType)
+            {
+                case 1:
+                    return new JumpEffect();
+                case 2:
+                    return new BlindEffect();
+                case 3:
+                    return new SpeedEffect();
+                default:
+                    return null; // basically no effect
+
+            }
+        }
     }
 }

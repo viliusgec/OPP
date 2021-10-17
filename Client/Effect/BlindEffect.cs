@@ -6,26 +6,20 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    class BlindEffect : Effect
+    class BlindEffect : IEffect
     {
-        private readonly string _effectType;
-        private int _effectDuration;
-
-        public BlindEffect(int effectDuration)
+        private string _effectType;
+        public string EffectType  // read-write instance property
         {
-            _effectType = "Blind";
-            _effectDuration = effectDuration;
+            get => _effectType;
+            set => _effectType = "blind";
         }
 
-        public override string EffectType
+        private int _duration;
+        public int Duration  // read-only instance property
         {
-            get { return _effectType; }
-        }
-
-        public override int EffectDuration
-        {
-            get { return _effectDuration; }
-            set { _effectDuration = value; }
+            get => _duration;
+            set => _duration = value;
         }
     }
 }
