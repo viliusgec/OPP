@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    abstract class Effect
+    class SpeedEffect
     {
-        public abstract string EffectType { get; }
-        public abstract int EffectDuration { get; set; }
     }
 }
