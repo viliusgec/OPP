@@ -106,11 +106,7 @@ namespace Client
             }
 
             temp = strategy.Behave(x);
-
-/*            if (e.KeyCode == Keys.D) x += 10;
-            else if (e.KeyCode == Keys.A) x -= 10;
-            else if (e.KeyCode == Keys.W) y -= 10;
-            else if (e.KeyCode == Keys.S) y += 10;*/
+            // TODO: jump ir mine
             pictureBox1.Location = new Point(temp, y);
             _ = SendGetCoordinatesAsync(temp, y);
         }

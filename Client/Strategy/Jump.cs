@@ -8,6 +8,7 @@ namespace Client.Strategy
 {
     internal class Jump : Algorithm
     {
+        // not working for now
         public int x;
         public Jump(int x)
         {

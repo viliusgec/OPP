@@ -8,6 +8,7 @@ namespace Client.Strategy
 {
     class Mine : Algorithm
     {
+        // not working for now
         public int x;
         public Mine(int x)
         {
