@@ -11,8 +11,7 @@ namespace Client.Effect
         private string _effectType;
         public string EffectType  // read-write instance property
         {
-            get => _effectType;
-            set => _effectType = "blind";
+            get => "Blind";
         }
 
         private int _duration;

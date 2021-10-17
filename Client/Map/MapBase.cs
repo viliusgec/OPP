@@ -22,7 +22,6 @@ namespace Client.Map
             x = mapX;
             y = mapY;
             blocks = new Block[mapX,mapY];
-            
         }
 
         public void setBlocks(Block[,] newBlocks)
@@ -63,20 +62,9 @@ namespace Client.Map
             {
                 for (int j = 0; j < y; j++)
                 {
-                    Effect.Effect effect;
+                    Effect.IEffect effect = Effect.EffectFactory.Create(blockEffectTypes[i, j]);
                     Map.Block block;
-                    switch (blockEffectTypes[i, j])
-                    {
-                        case "Jump":
-                            effect = new Effect.JumpEffect(3);
-                            break;
-                        case "Blind":
-                            effect = new Effect.BlindEffect(3);
-                            break;
-                        default:
-                            effect = null;
-                            break;
-                    }
+                  
                     switch (blockTypes[i, j])
                     {
                         case "static":

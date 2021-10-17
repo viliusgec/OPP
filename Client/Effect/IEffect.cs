@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    interface IEffect
+    public interface IEffect
     {
-        public string EffectType { get; set; }
+        public string EffectType { get; }
         public int Duration { get; set; }
     }
 }

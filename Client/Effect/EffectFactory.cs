@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    public static class EffectFactory
+    public class EffectFactory
     {
-        public static IEffect Create(int effectType)
+        public static IEffect Create(string effectType)
         {
             switch (effectType)
             {
-                case 1:
+                case "Jump":
                     return new JumpEffect();
-                case 2:
+                case "Blind":
                     return new BlindEffect();
-                case 3:
+                case "Speed":
                     return new SpeedEffect();
                 default:
                     return null; // basically no effect
