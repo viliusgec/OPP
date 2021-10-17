@@ -125,10 +125,16 @@ namespace Client.Map
                     else if(a >=50 && a < 80)
                     {
                         blocks[i, j] = factory.GetFalling();
+                        // Sitoj vietoj galima paclonint ta bloka tsg, kad parodyt veikima
+                        // ir idet i random koordinates kazkokias ar kazka
+                        // blocks[i,j].Clone
                     }
                     else
                     {
                         blocks[i, j] = factory.GetUnbreakable();
+                        // Sitoj vietoj galima paclonint ta bloka tsg, kad parodyt veikima
+                        // ir idet i random koordinates kazkokias ar kazka
+                        // blocks[i,j].Clone
                     }
                 }
             }
