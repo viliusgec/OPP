@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.AspNetCore.SignalR.Client;
 using Client.Map;
+using Client.Strategy;
 
 namespace Client
 {
     public partial class Form1 : Form
     {
         Form gameForm;
+        Algorithm strategy;
         private HubConnection connection;
         public Form1()
         {
@@ -18,32 +20,11 @@ namespace Client
 
             SingletonConnection temp_connection = SingletonConnection.GetInstance();
             connection = temp_connection.GetConnection();
+
             gameForm = new GameForm();
             this.KeyPreview = true;
             this.KeyDown += sendBoxCoordinates;
             
-        }
-        
-        private Effect.Effect assignEffect()
-        {
-            Random rnd = new Random();
-            int rndNumber = rnd.Next(1, 10);
-            Effect.EffectFactory factory = null; 
-            switch (rndNumber)
-            {
-                case 1:
-                    factory = new Effect.JumpFactory(50);
-                    break;
-                case 2:
-                    factory = new Effect.BlindFactory(5);
-                    break;
-                default:
-                    return null;
-            }
-
-            Effect.Effect effect = factory.GetEffect();
-
-            return effect;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -84,13 +65,29 @@ namespace Client
         {
             int x = pictureBox1.Location.X;
             int y = pictureBox1.Location.Y;
+            int temp = 0;
+            //Cia Erikai pasiziurek, nes meta errora man
+            strategy = new MoveLeft(x);
+            switch(e.KeyCode)
+            {
+                case Keys.A:
+                    strategy = new MoveLeft(x);
+                    break;
+                case Keys.D:
+                    strategy = new MoveRight(x);
+                    break;
+                case Keys.W:
+                    strategy = new Jump(y);
+                    break;
+                case Keys.LShiftKey:
+                    strategy = new Mine(x);
+                    break;
+            }
 
-            if (e.KeyCode == Keys.D) x += 10;
-            else if (e.KeyCode == Keys.A) x -= 10;
-            else if (e.KeyCode == Keys.W) y -= 10;
-            else if (e.KeyCode == Keys.S) y += 10;
-            pictureBox1.Location = new Point(x, y);
-            _ = SendGetCoordinatesAsync(x, y);
+            temp = strategy.Behave(x);
+            // TODO: jump ir mine
+            pictureBox1.Location = new Point(temp, y);
+            _ = SendGetCoordinatesAsync(temp, y);
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)

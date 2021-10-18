@@ -13,21 +13,21 @@ namespace Client.Map
         {
             string name = "";
             string image = "";
-            Effect.Effect effect = null;
+            Effect.IEffect effect = null;
             return new L2StaticBlock(name,image,effect);
         }
         public override Block GetFalling()
         {
             string name = "";
             string image = "";
-            Effect.Effect effect = null;
+            Effect.IEffect effect = null;
             return new L2FallingBlock(name, image, effect);
         }
         public override Block GetUnbreakable()
         {
             string name = "";
             string image = "";
-            Effect.Effect effect = null;
+            Effect.IEffect effect = null;
             return new L2UnbreakableBlock(name, image, effect);
         }
     }

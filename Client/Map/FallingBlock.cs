@@ -10,13 +10,18 @@ namespace Client.Map
     class FallingBlock : Block
     {
 
-        public FallingBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
+        public FallingBlock(string name, string image, Effect.IEffect effect) : base(name, image, effect)
         {
 
         }
         public override void CreateBlock()
         {
 
+        }
+
+        public override FallingBlock Clone()
+        {
+            return (FallingBlock)this.MemberwiseClone();
         }
     }
 }

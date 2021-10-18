@@ -10,13 +10,13 @@ namespace Client.Map
     [System.Xml.Serialization.XmlInclude(typeof(L1Factory))]
     [System.Xml.Serialization.XmlInclude(typeof(L2Factory))]
     [System.Xml.Serialization.XmlInclude(typeof(L3Factory))]
-    abstract class Block
+    abstract class Block : ICloneable
     {
         private string name { get; set; }
         private string image;
         private string blockType;
-        private Effect.Effect effect;
-        public Block(string _name, string _image, Effect.Effect _effect)
+        private Effect.IEffect effect;
+        public Block(string _name, string _image, Effect.IEffect _effect)
         {
             name = _name;
             image = _image;
@@ -32,7 +32,7 @@ namespace Client.Map
         {
             return name;
         }
-        public Effect.Effect GetEffect()
+        public Effect.IEffect GetEffect()
         {
             return effect;
         }
@@ -52,7 +52,7 @@ namespace Client.Map
             this.name = n;
         }
 
-        public void SetEffect(Effect.Effect ef)
+        public void SetEffect(Effect.IEffect ef)
         {
             this.effect = ef;
         }
@@ -63,5 +63,7 @@ namespace Client.Map
         }
 
         public abstract void CreateBlock();
+
+        public abstract object Clone();
     }
 }

@@ -9,13 +9,17 @@ namespace Client.Map
     [Serializable]
     class StaticBlock : Block
     {
-        public StaticBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
+        public StaticBlock(string name, string image, Effect.IEffect effect) : base(name, image, effect)
         {
 
         }
         public override void CreateBlock()
         {
 
+        }
+        public override StaticBlock Clone()
+        {
+            return (StaticBlock)this.MemberwiseClone();
         }
     }
 }

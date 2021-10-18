@@ -9,13 +9,17 @@ namespace Client.Map
     [Serializable]
     class UnbreakableBlock : Block
     {
-        public UnbreakableBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
+        public UnbreakableBlock(string name, string image, Effect.IEffect effect) : base(name, image, effect)
         {
 
         }
         public override void CreateBlock()
         {
 
+        }
+        public override UnbreakableBlock Clone()
+        {
+            return (UnbreakableBlock)this.MemberwiseClone();
         }
     }
 }
