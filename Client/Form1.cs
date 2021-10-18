@@ -26,28 +26,6 @@ namespace Client
             this.KeyDown += sendBoxCoordinates;
             
         }
-        
-        private Effect.Effect assignEffect()
-        {
-            Random rnd = new Random();
-            int rndNumber = rnd.Next(1, 10);
-            Effect.EffectFactory factory = null; 
-            switch (rndNumber)
-            {
-                case 1:
-                    factory = new Effect.JumpFactory(50);
-                    break;
-                case 2:
-                    factory = new Effect.BlindFactory(5);
-                    break;
-                default:
-                    return null;
-            }
-
-            Effect.Effect effect = factory.GetEffect();
-
-            return effect;
-        }
 
         private void Form1_Load(object sender, EventArgs e)
         {

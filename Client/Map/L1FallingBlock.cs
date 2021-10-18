@@ -10,7 +10,7 @@ namespace Client.Map
     class L1FallingBlock : FallingBlock
     {
 
-        public L1FallingBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
+        public L1FallingBlock(string name, string image, Effect.IEffect effect) : base(name, image, effect)
         {
 
         }

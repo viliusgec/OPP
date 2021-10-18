@@ -9,7 +9,7 @@ namespace Client.Map
     [Serializable]
     class L1StaticBlock : StaticBlock
     {
-        public L1StaticBlock(string name, string image, Effect.Effect effect) : base(name, image, effect)
+        public L1StaticBlock(string name, string image, Effect.IEffect effect) : base(name, image, effect)
         {
 
         }

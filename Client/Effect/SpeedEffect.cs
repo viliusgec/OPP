@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    class JumpEffect : IEffect
+    class SpeedEffect : IEffect
     {
         private string _effectType;
         public string EffectType  // read-write instance property
         {
-            get => "Jump";
+            get => "Speed";
         }
 
         private int _duration;
