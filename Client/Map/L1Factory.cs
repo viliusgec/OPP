@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Client.Map
 {
     [Serializable]
-    class L1Factory : AbstractFactory
+    public class L1Factory : AbstractFactory
     {
         Effect.IEffect effect;
         public override Block GetStatic()

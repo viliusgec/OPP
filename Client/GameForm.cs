@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Text.Json;
-using System.IO;
 using Newtonsoft.Json;
-using System.Xml.Serialization;
+using Client.Observer;
 
 namespace Client
 {
@@ -27,6 +21,7 @@ namespace Client
         private HubConnection connection;
         private Map.MapBase map;
         PictureBox[,] boxes;
+        ServerObserver ServerObserver = new ServerObserver();
         public GameForm()
         {
             InitializeComponent();
@@ -35,31 +30,15 @@ namespace Client
             
             this.KeyPreview = true;
             this.KeyDown += sendBoxCoordinates;
-            
-            connection.On<string, string>("ReceiveCoordinates", (x, y) =>
-            {
-                pictureBox2.Location = new Point(int.Parse(x), int.Parse(y));
 
-            });
-            connection.On<string>("ReceiveMap", (jsonString) =>
-            {
-                map = JsonConvert.DeserializeObject<Map.MapBase>(jsonString);
-                map.DeserializeBlocks();
-                if (!boxesAdded)
-                {
-                    AddPictureBoxes();
-                    boxesAdded = true;
-                }
-                CreateMap();
-                button1.Hide();
-            });
+            ServerObserver.ReceiveCoordinates(pictureBox2);
+            ServerObserver.ReceiveMap(map, pictureBox1, pictureBox2, button1, imageList1, Controls, Size);
         }
-
 
         private void AddPictureBoxes()
         {
             boxes = new PictureBox[mapx, mapy];
-            var formSize = this.Size;
+            var formSize = Size;
             int width = formSize.Width;
             int height = formSize.Height;
             int startX = width / 5;
@@ -80,19 +59,17 @@ namespace Client
                     boxes[i, j] = new PictureBox();
                     boxes[i, j].Size  = new Size(boxWidth, boxHeight);
                     boxes[i, j].Location = new Point(startX + boxWidth * (i),startY + boxHeight * (j));
-                    this.Controls.Add(boxes[i, j]);
+                    Controls.Add(boxes[i, j]);
                 }
             }
             
         }
 
-
-
         private void CreateMap()
         {
             Map.Block[,] blocks = map.getBlocks();
             var l = blocks.Length;
-            this.imageList1.ImageSize = new Size(40, 40);
+            imageList1.ImageSize = new Size(40, 40);
             for (int i = 0; i < mapx; i++)
             {
                 for(int j = 0; j < mapy; j++)
@@ -102,8 +79,7 @@ namespace Client
                     boxes[i, j].Image = temp;
                     imageList1.Images.Add(temp);
                 }
-            }
-            
+            } 
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -117,8 +93,8 @@ namespace Client
             map.SerializeBlocks();
             string jsonString = JsonConvert.SerializeObject(map);
             await connection.InvokeAsync("SendMap", jsonString);
-
         }
+
         private void sendBoxCoordinates(object sender, KeyEventArgs e)
         {
             int x = pictureBox1.Location.X;

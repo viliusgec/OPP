@@ -35,11 +35,6 @@ namespace Client
         //connection button
         private async void button1_Click(object sender, EventArgs e)
         {
-            connection.On<string, string>("ReceiveMessage", (s1, s2) =>
-            {
-                textBox1.AppendText(s2);
-            });
-
             connection.On<string, string>("ReceiveCoordinates", (x, y) =>
             {
                 pictureBox2.Location = new Point(int.Parse(x), int.Parse(y));
