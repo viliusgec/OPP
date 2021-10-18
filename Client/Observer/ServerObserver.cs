@@ -90,18 +90,5 @@ namespace Client.Observer
                 }
             }
         }
-        /*   
-                  connection.On<string>("ReceiveMap", (jsonString) =>
-                  {
-                      map = JsonConvert.DeserializeObject<Map.MapBase>(jsonString);
-                      map.DeserializeBlocks();
-                      if (!boxesAdded)
-                      {
-                          AddPictureBoxes();
-          boxesAdded = true;
-                      }
-      CreateMap();
-      button1.Hide();
-                  });*/
     }
 }
