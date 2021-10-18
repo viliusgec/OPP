@@ -83,18 +83,7 @@ namespace Client
                     this.Controls.Add(boxes[i, j]);
                 }
             }
-            /*
-            boxes = new PictureBox[mapx, mapy];
-            boxes[0, 0] = pictureBox3;
-            boxes[0, 1] = pictureBox4;
-            boxes[0, 2] = pictureBox5;
-            boxes[1, 0] = pictureBox6;
-            boxes[1, 1] = pictureBox7;
-            boxes[1, 2] = pictureBox8;
-            boxes[2, 0] = pictureBox9;
-            boxes[2, 1] = pictureBox10;
-            boxes[2, 2] = pictureBox11;
-            */
+            
         }
 
 
