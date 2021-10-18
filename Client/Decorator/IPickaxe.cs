@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Decorator
 {
-    interface IPickaxe
+    public interface IPickaxe
     {
         public string Image { get; }
     }

@@ -13,13 +13,13 @@ namespace Client.Decorator
             switch(pickaxe)
             {
                 case "Red":
-                    return RedPickaxe;
+                    return new RedPickaxe();
                 case "Blue":
-                    return BluePickaxe();
+                    return new BluePickaxe();
                 case "Black":
-                    return BlackPickaxe();
+                    return new BlackPickaxe();
                 default:
-                    return DefaultPickaxe();
+                    return new DefaultPickaxe();
             }
         }
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Client.Decorator
 {
-    interface BluePickaxe : IPickaxe
+    class BluePickaxe : IPickaxe
     {
         public string Image
         {
