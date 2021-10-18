@@ -17,8 +17,13 @@ namespace Client
 {
     public partial class GameForm : Form
     {
-        int mapx = 3;
-        int mapy = 3;
+        public static int boxWidth;
+        public static int boxHeight;
+        int width;
+        int height;
+        bool boxesAdded = false;
+        int mapx = 10;
+        int mapy = 10;
         private HubConnection connection;
         private Map.MapBase map;
         PictureBox[,] boxes;
@@ -40,7 +45,11 @@ namespace Client
             {
                 map = JsonConvert.DeserializeObject<Map.MapBase>(jsonString);
                 map.DeserializeBlocks();
-                AddPictureBoxes();
+                if (!boxesAdded)
+                {
+                    AddPictureBoxes();
+                    boxesAdded = true;
+                }
                 CreateMap();
                 button1.Hide();
             });
@@ -50,18 +59,34 @@ namespace Client
         private void AddPictureBoxes()
         {
             boxes = new PictureBox[mapx, mapy];
-            boxes[0, 0] = pictureBox3;
-            boxes[0, 1] = pictureBox4;
-            boxes[0, 2] = pictureBox5;
-            boxes[1, 0] = pictureBox6;
-            boxes[1, 1] = pictureBox7;
-            boxes[1, 2] = pictureBox8;
-            boxes[2, 0] = pictureBox9;
-            boxes[2, 1] = pictureBox10;
-            boxes[2, 2] = pictureBox11;
+            var formSize = this.Size;
+            int width = formSize.Width;
+            int height = formSize.Height;
+            int startX = width / 5;
+            int startY = height / 7;
+            int endX = width / 5 * 4;
+            int endY = height / 7 * 6;
+            boxWidth = (endX - startX) / mapx;
+            boxHeight = boxWidth;
+            pictureBox1.Width = boxWidth;
+            pictureBox1.Size = new Size(boxWidth, boxHeight);
+            pictureBox2.Size = new Size(boxWidth, boxHeight);
+            pictureBox1.Location = new Point(startX + ((mapx / 2 - 1) * boxWidth), startY - boxHeight);
+            pictureBox2.Location = new Point(startX + (mapx / 2 * boxWidth), startY - boxHeight);
+            for (int i = 0; i < mapx; i++)
+            {
+                for (int j = 0; j < mapy; j++)
+                {
+                    boxes[i, j] = new PictureBox();
+                    boxes[i, j].Size  = new Size(boxWidth, boxHeight);
+                    boxes[i, j].Location = new Point(startX + boxWidth * (i),startY + boxHeight * (j));
+                    this.Controls.Add(boxes[i, j]);
+                }
+            }
+            
         }
 
-        
+
 
         private void CreateMap()
         {
@@ -118,9 +143,14 @@ namespace Client
             map = new Map.MapBase(mapx, mapy);
             map.setFactory(1);
             map.CreateMap();
-            AddPictureBoxes();
+            if (!boxesAdded)
+            {
+                AddPictureBoxes();
+                boxesAdded = true;
+            }
+                
             CreateMap();
-            _ = sendMap(sender);
+            //_ = sendMap(sender);
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)

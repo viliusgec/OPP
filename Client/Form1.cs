@@ -65,8 +65,9 @@ namespace Client
         {
             int x = pictureBox1.Location.X;
             int y = pictureBox1.Location.Y;
-            int temp;
-
+            int temp = 0;
+            //Cia Erikai pasiziurek, nes meta errora man
+            strategy = new MoveLeft(x);
             switch(e.KeyCode)
             {
                 case Keys.A:
