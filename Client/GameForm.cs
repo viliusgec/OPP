@@ -44,7 +44,6 @@ namespace Client
                 CreateMap();
                 button1.Hide();
             });
-
         }
 
 
@@ -122,6 +121,11 @@ namespace Client
             AddPictureBoxes();
             CreateMap();
             _ = sendMap(sender);
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
