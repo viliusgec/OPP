@@ -10,13 +10,19 @@ namespace Client.Strategy
     {
         // not working for now
         public int x;
-        public Jump(int x)
+        public int y;
+        public Jump(int x, int y)
         {
             this.x = x;
+            this.y = y;
         }
-        public int Behave(int x)
+        public int[] Behave(int x, int y)
         {
-            return 0;
+            int[] coords = { x, y };
+            coords[0] = x;
+           // if (y > 42)
+                coords[1] = y - 42;
+            return coords;
         }
     }
 }
