@@ -8,6 +8,6 @@ namespace Client.Strategy
 {
     internal interface Algorithm
     {
-        int Behave(int x);
+        int[] Behave(int x, int y);
     }
 }

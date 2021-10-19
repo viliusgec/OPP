@@ -1,4 +1,3 @@
-﻿//using Microsoft.AspNet.SignalR.Client;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
