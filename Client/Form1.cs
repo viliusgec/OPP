@@ -13,6 +13,7 @@ namespace Client
     {
         Form gameForm;
         Algorithm strategy;
+       // Player player;
         private HubConnection connection;
         public Form1()
         {
@@ -20,7 +21,20 @@ namespace Client
 
             SingletonConnection temp_connection = SingletonConnection.GetInstance();
             connection = temp_connection.GetConnection();
+            listBox2.Items.Add("Default pickaxe");
+            listBox2.Items.Add("Red pickaxe");
+            listBox2.Items.Add("Black pickaxe");
+            listBox2.Items.Add("Blue pickaxe");
+            listBox2.SelectedIndex = 0;
 
+          //  pictureBox2.Image = Player.g
+            //padaryt, kad duotu normal pickaxa
+           // pictureBox2.Image = Player Client.Pl.GetPickaxe() Client.Properties.Resources.pickaxe_black1;
+          // pictureBox2.Refresh();
+           
+            pictureBox2.Visible = true;
+        
+       
             gameForm = new GameForm();
             this.KeyPreview = true;
             this.KeyDown += sendBoxCoordinates;
@@ -43,7 +57,6 @@ namespace Client
             connection.On<string, string>("ReceiveCoordinates", (x, y) =>
             {
                 pictureBox2.Location = new Point(int.Parse(x), int.Parse(y));
-                
             });
 
             try

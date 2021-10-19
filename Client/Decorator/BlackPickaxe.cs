@@ -13,7 +13,7 @@ namespace Client.Decorator
         public string Image
         {
             //string currentDir = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-            get => Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\Resources\pickaxe-black.png";
+            get => Client.Properties.Resources.pickaxe_black1.ToString();
         }
     }
 }

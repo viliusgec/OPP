@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Client
 {
-    class Player
+    public class Player
     {
         private Decorator.IPickaxe pickaxe { get; set; }
         public void Move(object sender, KeyEventArgs e, PictureBox pictureBox1)
@@ -34,7 +34,7 @@ namespace Client
             return pickaxe;
         }
 
-        public void setPickaxe(string entered)
+        public void SetPickaxe(string entered)
         {
             //Gal cia butu geriau grazint ne stringa o image, kuri reiketu renderint?
             //Sita dalyka reikes idet ant tada kai rinksis mapa ir gales dar pickaxe pasirinkt tada
