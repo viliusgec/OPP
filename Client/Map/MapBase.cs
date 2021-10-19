@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Client.Map
 {
     [Serializable]
-    class MapBase
+    public class MapBase
     {
         private AbstractFactory factory { get; set; }
         private Block[,] blocks { get; set; }
