@@ -15,6 +15,8 @@ namespace Client
 {
     public partial class GameForm : Form
     {
+        Algorithm strategy;
+
         public int boxWidth;
         public int boxHeight;
         bool boxesAdded = false;
