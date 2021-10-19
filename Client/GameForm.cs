@@ -12,11 +12,15 @@ using System.Text.Json;
 using System.IO;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using Client.Strategy;
+using System.Threading;
 
 namespace Client
 {
     public partial class GameForm : Form
     {
+        Algorithm strategy;
+
         public static int boxWidth;
         public static int boxHeight;
         int width;
@@ -83,10 +87,7 @@ namespace Client
                     this.Controls.Add(boxes[i, j]);
                 }
             }
-            
         }
-
-
 
         private void CreateMap()
         {
@@ -103,7 +104,6 @@ namespace Client
                     imageList1.Images.Add(temp);
                 }
             }
-            
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -123,13 +123,41 @@ namespace Client
         {
             int x = pictureBox1.Location.X;
             int y = pictureBox1.Location.Y;
+            int[] temp;
 
-            if (e.KeyCode == Keys.D) x += 10;
-            else if (e.KeyCode == Keys.A) x -= 10;
-            else if (e.KeyCode == Keys.W) y -= 10;
-            else if (e.KeyCode == Keys.S) y += 10;
-            pictureBox1.Location = new Point(x, y);
-            _ = SendGetCoordinatesAsync(x, y);
+            switch (e.KeyCode)
+            {
+                case Keys.A:
+                    strategy = new MoveLeft(x, y);
+                    break;
+                case Keys.D:
+                    strategy = new MoveRight(x, y);
+                    break;
+                //case Keys.Space:
+                case Keys.W:
+                    strategy = new Jump(x, y);
+                    break;
+                case Keys.LShiftKey:
+                    strategy = new Mine(x, y);
+                    break;
+                default:
+                    strategy = new MoveLeft(x, y);
+                    break;
+            }
+
+            temp = strategy.Behave(x, y);
+            // TODO: mine
+            pictureBox1.Location = new Point(temp[0], temp[1]);
+            _ = SendGetCoordinatesAsync(temp[0], temp[1]);
+
+            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space)
+                JumpController(temp);
+        }
+
+        private void JumpController(int[] coords)
+        {
+            Thread.Sleep(100);
+            pictureBox1.Location = new Point(coords[0], coords[1]+42);
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)
@@ -154,6 +182,16 @@ namespace Client
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
         {
 
         }

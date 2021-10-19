@@ -65,29 +65,30 @@ namespace Client
         {
             int x = pictureBox1.Location.X;
             int y = pictureBox1.Location.Y;
-            int temp = 0;
-            //Cia Erikai pasiziurek, nes meta errora man
-            strategy = new MoveLeft(x);
-            switch(e.KeyCode)
+            int[] temp;
+
+            strategy = new MoveLeft(x, y);
+            switch (e.KeyCode)
             {
                 case Keys.A:
-                    strategy = new MoveLeft(x);
+                    strategy = new MoveLeft(x, y);
                     break;
                 case Keys.D:
-                    strategy = new MoveRight(x);
+                    strategy = new MoveRight(x, y);
                     break;
+                case Keys.Space:
                 case Keys.W:
-                    strategy = new Jump(y);
+                    strategy = new Jump(x, y);
                     break;
                 case Keys.LShiftKey:
-                    strategy = new Mine(x);
+                    strategy = new Mine(x, y);
                     break;
             }
 
-            temp = strategy.Behave(x);
+            temp = strategy.Behave(x, y);
             // TODO: jump ir mine
-            pictureBox1.Location = new Point(temp, y);
-            _ = SendGetCoordinatesAsync(temp, y);
+            pictureBox1.Location = new Point(temp[0], temp[1]);
+            _ = SendGetCoordinatesAsync(temp[0], temp[1]);
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)

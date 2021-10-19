@@ -10,13 +10,16 @@ namespace Client.Strategy
     {
         // not working for now
         public int x;
-        public Mine(int x)
+        public int y;
+        public Mine(int x, int y)
         {
             this.x = x;
+            this.y = y;
         }
-        public int Behave(int x)
+        public int[] Behave(int x, int y)
         {
-            return 0;
+            int[] coords = { x, y };
+            return coords;
         }
     }
 }
