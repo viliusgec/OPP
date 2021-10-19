@@ -26,13 +26,6 @@ namespace Client
             listBox2.Items.Add("Black pickaxe");
             listBox2.Items.Add("Blue pickaxe");
             listBox2.SelectedIndex = 0;
-
-          //  pictureBox2.Image = Player.g
-            //padaryt, kad duotu normal pickaxa
-           // pictureBox2.Image = Player Client.Pl.GetPickaxe() Client.Properties.Resources.pickaxe_black1;
-          // pictureBox2.Refresh();
-           
-            pictureBox2.Visible = true;
         
             gameForm = new GameForm();
             
