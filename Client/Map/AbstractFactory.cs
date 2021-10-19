@@ -10,7 +10,7 @@ namespace Client.Map
     [System.Xml.Serialization.XmlInclude(typeof(FallingBlock))]
     [System.Xml.Serialization.XmlInclude(typeof(StaticBlock))]
     [System.Xml.Serialization.XmlInclude(typeof(UnbreakableBlock))]
-    abstract class AbstractFactory
+    abstract public class AbstractFactory
     {
         public abstract Block GetStatic();
         public abstract Block GetFalling();
