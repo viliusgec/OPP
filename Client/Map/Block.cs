@@ -23,6 +23,11 @@ namespace Client.Map
             effect = _effect;
         }
 
+        public Block()
+        {
+
+        }
+
         public string GetImage()
         {
             return image;

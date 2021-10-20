@@ -13,5 +13,7 @@ namespace Client.Map
         {
 
         }
+
+        public L1UnbreakableBlock() { }
     }
 }

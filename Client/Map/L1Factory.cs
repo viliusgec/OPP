@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Client.Builder;
 
 namespace Client.Map
 {
@@ -19,9 +20,10 @@ namespace Client.Map
             string name = "Dirt";
             string image = currentDir + @"\Resources\dirt.png";
             Effect.IEffect effect = GetEffect();
-            var block = new L1StaticBlock(name, image, effect);
-            block.SetBlockType("static");
-            return block;
+            var block = new L1StaticBlock();
+            BlockBuilder builder = new StaticBuilder();
+            
+            return builder.startBuild(block).addName(name).addImage(image).addBlockType("static").addEffect(effect).getBuildable();
         }
         public override Block GetFalling()
         {
@@ -30,9 +32,10 @@ namespace Client.Map
             string name = "Sand";
             string image = currentDir + @"\Resources\sand.png";
             Effect.IEffect effect = GetEffect();
-            var block = new L1FallingBlock(name, image, effect);
-            block.SetBlockType("falling");
-            return block;
+            var block = new L1StaticBlock();
+            BlockBuilder builder = new StaticBuilder();
+
+            return builder.startBuild(block).addName(name).addImage(image).addBlockType("falling").addEffect(effect).getBuildable();
         }
         public override Block GetUnbreakable()
         {
@@ -41,9 +44,10 @@ namespace Client.Map
             string name = "Rock";
             string image = currentDir + @"\Resources\rock.png";
             Effect.IEffect effect = GetEffect();
-            var block = new L1UnbreakableBlock(name, image, effect);
-            block.SetBlockType("unbreakable");
-            return block;
+            var block = new L1StaticBlock();
+            BlockBuilder builder = new StaticBuilder();
+
+            return builder.startBuild(block).addName(name).addImage(image).addBlockType("unbreakable").addEffect(effect).getBuildable();
         }
 
         public Effect.IEffect GetEffect()

@@ -14,5 +14,10 @@ namespace Client.Map
         {
 
         }
+
+        public L1FallingBlock()
+        {
+
+        }
     }
 }
