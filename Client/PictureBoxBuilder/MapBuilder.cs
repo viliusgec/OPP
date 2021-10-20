@@ -17,6 +17,37 @@ namespace Client.PictureBoxBuilder
 
         }
 
+        public PictureBox GetPictureBox(Point loc)
+        {
+            for (int i = 0; i < mapx; i++)
+            {
+                for (int j = 0; j < mapy; j++)
+                {
+                    if(boxes[i,j].Location == loc)
+                    {
+                        return boxes[i, j];
+                    }
+                }
+            }
+            return null;
+        }
+
+        public Map.Block GetBlock(Point loc, Map.MapBase map)
+        {
+            for (int i = 0; i < mapx; i++)
+            {
+                for (int j = 0; j < mapy; j++)
+                {
+                    if (boxes[i, j].Location == loc)
+                    {
+                        return map.getBlocks()[i, j];
+                    }
+                }
+            }
+            return null;
+            return null;
+        }
+
         public void AddPictureBoxes(PictureBox pictureBox1, PictureBox pictureBox2, Control.ControlCollection controls, Size size)
         {
             boxes = new PictureBox[mapx, mapy];
