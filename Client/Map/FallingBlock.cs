@@ -14,6 +14,8 @@ namespace Client.Map
         {
 
         }
+        
+        public FallingBlock() { }
         public override void CreateBlock()
         {
 

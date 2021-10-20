@@ -13,6 +13,7 @@ namespace Client.Map
         {
 
         }
+        public StaticBlock() { }
         public override void CreateBlock()
         {
 

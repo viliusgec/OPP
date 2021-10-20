@@ -63,8 +63,13 @@ namespace Client
                 case Keys.W:
                     strategy = new Jump(x, y);
                     break;
-                case Keys.LShiftKey:
+                case Keys.ShiftKey:
                     strategy = new Mine(x, y);
+                    // Gali pagriebt picturer boxà pagal locationà, pasiþiûrët ar geras,
+                    // o po to pasiimt blockà jei reikia
+                    var loc = new Point(x, y + pictureBox1.Height);
+                    var box = MapBuilder.GetPictureBox(loc);
+                    var block = MapBuilder.GetBlock(loc, map);
                     break;
                 default:
                     strategy = new MoveLeft(x, y);

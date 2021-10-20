@@ -13,6 +13,7 @@ namespace Client.Map
         {
 
         }
+        public UnbreakableBlock() { }
         public override void CreateBlock()
         {
 
