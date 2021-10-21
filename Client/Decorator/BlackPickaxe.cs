@@ -1,5 +1,6 @@
 ﻿using Client.Decorator;
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Client.Decorator
 {
     class BlackPickaxe : IPickaxe
     {
-        public string Image
+        public Image Image
         {
             //string currentDir = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-            get => Client.Properties.Resources.pickaxe_black1.ToString();
+            get => Client.Properties.Resources.pickaxe_black1;
         }
     }
 }

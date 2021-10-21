@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace Client
 {
     public class Player
-    {
+    {   
         private Decorator.IPickaxe pickaxe { get; set; }
         public void Move(object sender, KeyEventArgs e, PictureBox pictureBox1)
         {

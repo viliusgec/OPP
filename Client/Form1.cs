@@ -12,7 +12,7 @@ namespace Client
     {
         Form gameForm;
         Algorithm strategy;
-       // Player player;
+        Player player;
         private HubConnection connection;
         public Form1()
         {
@@ -20,19 +20,23 @@ namespace Client
 
             SingletonConnection temp_connection = SingletonConnection.GetInstance();
             connection = temp_connection.GetConnection();
-            listBox2.Items.Add("Default pickaxe");
-            listBox2.Items.Add("Red pickaxe");
-            listBox2.Items.Add("Black pickaxe");
-            listBox2.Items.Add("Blue pickaxe");
-            listBox2.SelectedIndex = 0;
-        
+          
+         
             gameForm = new GameForm();
             
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            listBox2.Items.Add("Default pickaxe");
+            listBox2.Items.Add("Red pickaxe");
+            listBox2.Items.Add("Black pickaxe");
+            listBox2.Items.Add("Blue pickaxe");
+            listBox2.SelectedIndex = 0;
 
+            player = new Player();
+            player.SetPickaxe("Blue");
+            pictureBox1.Image = player.GetPickaxe().Image;
         }
 
         //connection button
@@ -62,9 +66,16 @@ namespace Client
 
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void listBox2_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            player = new Player();
+            player.SetPickaxe("Red");
+            pictureBox1.Image = player.GetPickaxe().Image;
         }
     }
 }

@@ -61,6 +61,7 @@ namespace Client
             this.pictureBox1.Size = new System.Drawing.Size(96, 104);
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // listBox2
             // 
@@ -70,6 +71,7 @@ namespace Client
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(150, 104);
             this.listBox2.TabIndex = 8;
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged_1);
             // 
             // Form1
             // 
