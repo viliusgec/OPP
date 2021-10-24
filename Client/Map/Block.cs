@@ -69,6 +69,7 @@ namespace Client.Map
 
         public abstract void CreateBlock();
 
+        //Butu galima naudot jei efektas, kad grazintu bloka i vieta
         public abstract object Clone();
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -35,7 +36,7 @@ namespace Client
             listBox2.SelectedIndex = 0;
 
             player = new Player();
-            player.SetPickaxe("Blue");
+            player.SetPickaxe("Default");
             pictureBox1.Image = player.GetPickaxe().Image;
         }
 
@@ -46,7 +47,9 @@ namespace Client
             {
                 await connection.StartAsync();
                 textBox1.Text = "Connection started";
+                PlayerBoxClass.Image = pictureBox1.Image;
                 this.Hide();
+             //   gameForm.sen
                 gameForm.ShowDialog();
                 this.Show();
             }
@@ -74,8 +77,14 @@ namespace Client
         private void listBox2_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             player = new Player();
-            player.SetPickaxe("Red");
+         
+            player.SetPickaxe(listBox2.SelectedItem.ToString().Split(' ').First());
             pictureBox1.Image = player.GetPickaxe().Image;
         }
     }
+}
+
+public static class PlayerBoxClass 
+{  
+    public static Image Image { get; set; }
 }

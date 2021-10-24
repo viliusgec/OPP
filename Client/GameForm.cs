@@ -42,7 +42,7 @@ namespace Client
 
         private void GameForm_Load(object sender, EventArgs e)
         {
-
+            pictureBox1.Image = PlayerBoxClass.Image;
         }
 
         private void SendBoxCoordinates(object sender, KeyEventArgs e)

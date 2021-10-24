@@ -45,7 +45,6 @@ namespace Client.PictureBoxBuilder
                 }
             }
             return null;
-            return null;
         }
 
         public void AddPictureBoxes(PictureBox pictureBox1, PictureBox pictureBox2, Control.ControlCollection controls, Size size)
@@ -61,6 +60,8 @@ namespace Client.PictureBoxBuilder
             boxWidth = (endX - startX) / mapx;
             boxHeight = boxWidth;
             pictureBox1.Width = boxWidth;
+            //getPickaxesResized
+    
             pictureBox1.Size = new Size(boxWidth, boxHeight);
             pictureBox2.Size = new Size(boxWidth, boxHeight);
             pictureBox1.Location = new Point(startX + ((mapx / 2 - 1) * boxWidth), startY - boxHeight);
