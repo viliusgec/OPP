@@ -15,20 +15,16 @@ namespace Client
 {
     public partial class GameForm : Form
     {
-        Algorithm strategy;
-
-        bool boxesAdded = false;
-        readonly int mapx = 10;
-        readonly int mapy = 10;
         private readonly HubConnection connection;
-        private Map.MapBase map;
         ServerObserver ServerObserver = new();
         MapBuilder MapBuilder = new();
+        Algorithm strategy;
+        private Map.MapBase map;
 
         public GameForm()
         {
             InitializeComponent();
-            label1.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q E - Jump up left, up right\n SHIFT - dig down\n J - dig left\n K - dig right";
+            label1.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q - Jump up left \n E - jump up right\n SHIFT - dig down\n J - dig left\n K - dig right";
             connection = SingletonConnection.GetInstance().GetConnection();
             
             KeyPreview = true;
@@ -49,8 +45,6 @@ namespace Client
          */
         private bool check_if_block_exists(int side, int x, int y)
         {
-            // Gali pagriebt picturer boxà pagal locationà, pasiþiûrët ar geras,
-            // o po to pasiimt blockà jei reikia
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
 
@@ -210,22 +204,18 @@ namespace Client
             pictureBox1.Location = new Point(temp[0], temp[1]);
             _ = SendGetCoordinatesAsync(temp[0], temp[1]);
 
-            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space)
-            {
-                Thread.Sleep(100);
-            }
+            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space || e.KeyCode == Keys.Q || e.KeyCode == Keys.E)
+                Thread.Sleep(25);
 
             while (check_if_block_exists(6, temp[0], temp[1]) == false)
             {
                 pictureBox1.Location = new Point(temp[0], temp[1] + pictureBox1.Height);
                 _ = SendGetCoordinatesAsync(temp[0], temp[1]);
                 temp[1] += pictureBox1.Height;
-                Thread.Sleep(50);
+                Thread.Sleep(25);
                 if (temp[1] > (pictureBox1.Height)*15)
                         break;
             }
-
-            Console.WriteLine("aa");
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)
@@ -236,6 +226,10 @@ namespace Client
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            bool boxesAdded = false;
+            int mapx = 10;
+            int mapy = 10;
+
             map = new Map.MapBase(mapx, mapy);
             map.setFactory(1);
             map.CreateMap();
