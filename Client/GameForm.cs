@@ -28,7 +28,7 @@ namespace Client
         public GameForm()
         {
             InitializeComponent();
-
+            label1.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q E - Jump up left, up right\n SHIFT - dig down\n J - dig left\n K - dig right";
             connection = SingletonConnection.GetInstance().GetConnection();
             
             KeyPreview = true;
@@ -44,7 +44,8 @@ namespace Client
         }
 
         /**
-         * side meanings: 0 - down, 1 - up, 2 - left, 3 - right, 4 - up left, 5 - up right, 6 - just to check if block exists, no action taken;
+         * side meanings: 0 - down, 1 - up, 2 - left, 3 - right, 4 - up left, 5 - up right,
+         * 6 - just to check if block exists, no action taken, 7 - Mine Left, 8 - Mine Right
          */
         private bool check_if_block_exists(int side, int x, int y)
         {
@@ -68,8 +69,13 @@ namespace Client
                     }
                     return false;
                 case 1:
-
-                    break;
+                    loc = new Point(x, y - pictureBox1.Height);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return true;
+                    if (box.Enabled)
+                        return false;
+                    return true;
                 case 2:
                     loc = new Point(x - pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
@@ -86,7 +92,6 @@ namespace Client
                     if (box.Enabled)
                         return false;
                     return true;
-                    break;
                 case 4:
                     loc = new Point(x - pictureBox1.Width, y - pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
@@ -95,7 +100,6 @@ namespace Client
                     if (box.Enabled)
                         return false;
                     return true;
-                    break;
                 case 5:
                     loc = new Point(x + pictureBox1.Width, y - pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
@@ -104,7 +108,6 @@ namespace Client
                     if (box.Enabled)
                         return false;
                     return true;
-                    break;
                 case 6:
                     loc = new Point(x, y + pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
@@ -140,7 +143,6 @@ namespace Client
                 default:
                     return false;
             }
-            return true;
         }
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
         {
@@ -176,7 +178,10 @@ namespace Client
                     break;
                 case (Keys.Space):
                 case (Keys.W):
-                    strategy = new Jump(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(1, x, y))
+                        strategy = new Jump(x, y, pictureBox1.Height, pictureBox1.Width);
+                    else
+                        return;
                     break;
                 case (Keys.ShiftKey):
                     if (check_if_block_exists(0, x, y))
@@ -257,6 +262,11 @@ namespace Client
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
