@@ -17,8 +17,6 @@ namespace Client
     {
         Algorithm strategy;
 
-        public int boxWidth;
-        public int boxHeight;
         bool boxesAdded = false;
         readonly int mapx = 10;
         readonly int mapy = 10;
@@ -45,50 +43,184 @@ namespace Client
 
         }
 
+        /**
+         * side meanings: 0 - down, 1 - up, 2 - left, 3 - right, 4 - up left, 5 - up right, 6 - just to check if block exists, no action taken;
+         */
+        private bool check_if_block_exists(int side, int x, int y)
+        {
+            // Gali pagriebt picturer boxà pagal locationà, pasiþiûrët ar geras,
+            // o po to pasiimt blockà jei reikia
+            var loc = new Point(x, y);
+            var box = MapBuilder.GetPictureBox(loc);
+
+            switch (side) 
+            {
+                case 0:
+                    loc = new Point(x, y + pictureBox1.Height);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return false;
+                    if (box.Enabled)
+                    {
+                        box.Hide();
+                        box.Enabled = false;
+                        return true;
+                    }
+                    return false;
+                case 1:
+
+                    break;
+                case 2:
+                    loc = new Point(x - pictureBox1.Width, y);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return true;
+                    if (box.Enabled)
+                        return false;
+                    return true;
+                case 3:
+                    loc = new Point(x + pictureBox1.Width, y);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return true;
+                    if (box.Enabled)
+                        return false;
+                    return true;
+                    break;
+                case 4:
+                    loc = new Point(x - pictureBox1.Width, y - pictureBox1.Height);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return true;
+                    if (box.Enabled)
+                        return false;
+                    return true;
+                    break;
+                case 5:
+                    loc = new Point(x + pictureBox1.Width, y - pictureBox1.Height);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return true;
+                    if (box.Enabled)
+                        return false;
+                    return true;
+                    break;
+                case 6:
+                    loc = new Point(x, y + pictureBox1.Height);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return false;
+                    if (box.Enabled)
+                        return true;
+                    return false;
+                case 7:
+                    loc = new Point(x - pictureBox1.Width, y);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return false;
+                    if (box.Enabled)
+                    {
+                        box.Hide();
+                        box.Enabled = false;
+                        return true;
+                    }
+                    return false;
+                case 8:
+                    loc = new Point(x + pictureBox1.Width, y);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null)
+                        return false;
+                    if (box.Enabled)
+                    {
+                        box.Hide();
+                        box.Enabled = false;
+                        return true;
+                    }
+                    return false;
+                default:
+                    return false;
+            }
+            return true;
+        }
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
         {
             int x = pictureBox1.Location.X;
             int y = pictureBox1.Location.Y;
             int[] temp;
-
-            switch (e.KeyCode)
+            
+            switch(e.KeyCode)
             {
-                case Keys.A:
-                    strategy = new MoveLeft(x, y);
+                case (Keys.Q):
+                    if (check_if_block_exists(4, x, y))
+                        strategy = new MoveUpLeft(x, y, pictureBox1.Height, pictureBox1.Width);
+                    else
+                        return;
                     break;
-                case Keys.D:
-                    strategy = new MoveRight(x, y);
+                case (Keys.E):
+                    if (check_if_block_exists(5, x, y))
+                        strategy = new MoveUpRight(x, y, pictureBox1.Height, pictureBox1.Width);
+                    else
+                        return;
                     break;
-                //case Keys.Space:
-                case Keys.W:
-                    strategy = new Jump(x, y);
+                case (Keys.A):
+                    if (check_if_block_exists(2, x, y))
+                        strategy = new MoveLeft(x, y, pictureBox1.Height, pictureBox1.Width);
+                    else
+                        return;
                     break;
-                case Keys.ShiftKey:
-                    strategy = new Mine(x, y);
-                    // Gali pagriebt picturer boxà pagal locationà, pasiþiûrët ar geras,
-                    // o po to pasiimt blockà jei reikia
-                    var loc = new Point(x, y + pictureBox1.Height);
-                    var box = MapBuilder.GetPictureBox(loc);
-                    var block = MapBuilder.GetBlock(loc, map);
+                case (Keys.D):
+                    if (check_if_block_exists(3, x, y))
+                        strategy = new MoveRight(x, y, pictureBox1.Height, pictureBox1.Width);
+                    else
+                        return;
+                    break;
+                case (Keys.Space):
+                case (Keys.W):
+                    strategy = new Jump(x, y, pictureBox1.Height, pictureBox1.Width);
+                    break;
+                case (Keys.ShiftKey):
+                    if (check_if_block_exists(0, x, y))
+                        strategy = new Mine(x, y, pictureBox1.Height, pictureBox1.Width);
+                    else
+                        return;
+                    break;
+                case (Keys.J):
+                    if (check_if_block_exists(7, x, y))
+                        strategy = new MineLeft(x, y, pictureBox1.Height, pictureBox1.Width);
+                    else
+                        return;
+                    break;
+                case (Keys.K):
+                    if (check_if_block_exists(8, x, y))
+                        strategy = new MineRight(x, y, pictureBox1.Height, pictureBox1.Width);
+                    else
+                        return;
                     break;
                 default:
-                    strategy = new MoveLeft(x, y);
-                    break;
+                    return;
             }
 
-            temp = strategy.Behave(x, y);
-            // TODO: mine
+            temp = strategy.Behave(x, y, pictureBox1.Height, pictureBox1.Width);
+
             pictureBox1.Location = new Point(temp[0], temp[1]);
             _ = SendGetCoordinatesAsync(temp[0], temp[1]);
 
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space)
-                JumpController(temp);
-        }
+            {
+                Thread.Sleep(100);
+            }
 
-        private void JumpController(int[] coords)
-        {
-            Thread.Sleep(100);
-            pictureBox1.Location = new Point(coords[0], coords[1]+42);
+            while (check_if_block_exists(6, temp[0], temp[1]) == false)
+            {
+                pictureBox1.Location = new Point(temp[0], temp[1] + pictureBox1.Height);
+                _ = SendGetCoordinatesAsync(temp[0], temp[1]);
+                temp[1] += pictureBox1.Height;
+                Thread.Sleep(50);
+                if (temp[1] > (pictureBox1.Height)*15)
+                        break;
+            }
+
+            Console.WriteLine("aa");
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)
@@ -111,6 +243,7 @@ namespace Client
             MapBuilder.CreateMap(imageList1, map);
             _ = ServerObserver.SendMap(map);
             button1.Hide();
+            button1.Enabled = false;
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
