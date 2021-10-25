@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace Client.Strategy
 {
-    internal class Jump : Algorithm
+    class MoveUpRight : Algorithm
     {
-        // not working for now
         public int x;
         public int y;
         public int height;
         public int width;
-        public Jump(int x, int y, int height, int width)
+        public MoveUpRight(int x, int y, int height, int width)
         {
             this.x = x;
             this.y = y;
@@ -23,9 +22,9 @@ namespace Client.Strategy
         public int[] Behave(int x, int y, int height, int width)
         {
             int[] coords = { x, y };
-            coords[0] = x;
-           // if (y > 42)
-                coords[1] = y - width;
+
+            coords[0] = x + width;
+            coords[1] = y - height;
             return coords;
         }
     }

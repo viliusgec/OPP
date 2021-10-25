@@ -45,7 +45,6 @@ namespace Client.PictureBoxBuilder
                 }
             }
             return null;
-            return null;
         }
 
         public void AddPictureBoxes(PictureBox pictureBox1, PictureBox pictureBox2, Control.ControlCollection controls, Size size)
