@@ -31,7 +31,7 @@ namespace Client
             KeyDown += SendBoxCoordinates;
 
             ServerObserver.ReceiveCoordinates(pictureBox2);
-            ServerObserver.ReceiveMap(map, pictureBox1, pictureBox2, button1, imageList1, Controls, Size);
+            MapBuilder = ServerObserver.ReceiveMap(map, pictureBox1, pictureBox2, button1, imageList1, Controls, Size);
         }
 
         private void GameForm_Load(object sender, EventArgs e)
