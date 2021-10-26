@@ -24,8 +24,7 @@ namespace Client.Strategy
         {
             int[] coords = { x, y };
             coords[0] = x;
-           // if (y > 42)
-                coords[1] = y - width;
+            coords[1] = y - width;
             return coords;
         }
     }
