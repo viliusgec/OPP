@@ -16,11 +16,13 @@ namespace Client.Map
         private string image;
         private string blockType;
         private Effect.IEffect effect;
-        public Block(string _name, string _image, Effect.IEffect _effect)
+        private string health;
+        public Block(string _name, string _image, Effect.IEffect _effect, string _health)
         {
             name = _name;
             image = _image;
             effect = _effect;
+            health = _health;
         }
 
         public Block()
@@ -47,6 +49,11 @@ namespace Client.Map
             return blockType;
         }
 
+        public string GetHealth()
+        {
+            return health;
+        }
+
         public void SetImage(string image)
         {
             this.image = image;
@@ -65,6 +72,11 @@ namespace Client.Map
         public void SetBlockType(string type)
         {
             this.blockType = type;
+        }
+
+        public void SetHealth(string health)
+        {
+            this.health = health;
         }
 
         public abstract void CreateBlock();

@@ -20,6 +20,7 @@ namespace Client.Builder
         public abstract BlockBuilder addImage(string image);
         public abstract BlockBuilder addBlockType(string type);
         public abstract BlockBuilder addEffect(IEffect effect);
+        public abstract BlockBuilder addHealth(string health);
         public abstract Block getBuildable();
     }
 }
