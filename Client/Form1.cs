@@ -48,6 +48,8 @@ namespace Client
                 await connection.StartAsync();
                 textBox1.Text = "Connection started";
                 PlayerBoxClass.Image = pictureBox1.Image;
+
+                label1.Text = "Connection started";
                 this.Hide();
              //   gameForm.sen
                 gameForm.ShowDialog();
@@ -55,7 +57,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                textBox1.Text = ex.ToString();
+                label1.Text = "You can't connect second time.";//ex.ToString();
             }
         }
 
@@ -74,12 +76,19 @@ namespace Client
 
         }
 
+
         private void listBox2_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             player = new Player();
          
             player.SetPickaxe(listBox2.SelectedItem.ToString().Split(' ').First());
             pictureBox1.Image = player.GetPickaxe().Image;
+        }
+        
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+
         }
     }
 }
