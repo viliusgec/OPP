@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Client.Observer
 {
-    public class ServerObserver
+    public class ServerObserver : IServerObserver
     {
         private readonly HubConnection connection;
         readonly MapBuilder MapBuilder;
@@ -19,15 +19,15 @@ namespace Client.Observer
             MapBuilder = new MapBuilder();
         }
 
-        public void ReceiveCoordinates(PictureBox pictureBox)
+        public void ReceiveCoordinates(PictureBox enemy)
         {
             connection.On<string, string>("ReceiveCoordinates", (x, y) =>
             {
-                pictureBox.Location = new Point(int.Parse(x), int.Parse(y));
+                enemy.Location = new Point(int.Parse(x), int.Parse(y));
             });
         }
 
-        public void ReceiveMap(Map.MapBase map, PictureBox pictureBox1, PictureBox pictureBox2, Button button1, ImageList imageList1, Control.ControlCollection control, Size size)
+        public MapBuilder ReceiveMap(Map.MapBase map, PictureBox pictureBox1, PictureBox pictureBox2, Button button1, ImageList imageList1, Control.ControlCollection control, Size size)
         {
             connection.On<string>("ReceiveMap", (jsonString) =>
             {
@@ -41,6 +41,7 @@ namespace Client.Observer
                 MapBuilder.CreateMap(imageList1, map);
                 button1.Hide();
             });
+            return MapBuilder;
         }
 
         public async Task SendMap(Map.MapBase map)
