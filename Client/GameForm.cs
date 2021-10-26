@@ -184,6 +184,8 @@ namespace Client
                         return;
                     break;
                 case (Keys.J):
+                    //Cia padaryt, kad bloga pagal koordinates gauna ir jeigu health.
+                 //   MapBuilder.GetBlock
                     if (check_if_block_exists(7, x, y))
                         strategy = new MineLeft(x, y, pictureBox1.Height, pictureBox1.Width);
                     else
