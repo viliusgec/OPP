@@ -7,9 +7,9 @@ namespace Client.PictureBoxBuilder
     {
         public int boxWidth;
         public int boxHeight;
-        readonly int mapx = 10;
-        readonly int mapy = 10;
-        PictureBox[,] boxes;
+        readonly static int mapx = 10;
+        readonly static int mapy = 10;
+        static PictureBox[,] boxes;
         public bool boxesAdded = false;
 
         public MapBuilder()
@@ -17,7 +17,7 @@ namespace Client.PictureBoxBuilder
 
         }
 
-        public PictureBox GetPictureBox(Point loc)
+        public static PictureBox GetPictureBox(Point loc)
         {
             for (int i = 0; i < mapx; i++)
             {

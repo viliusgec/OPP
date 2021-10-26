@@ -34,14 +34,14 @@ namespace Client
             try
             {
                 await connection.StartAsync();
-                textBox1.Text = "Connection started";
+                label1.Text = "Connection started";
                 this.Hide();
                 gameForm.ShowDialog();
                 this.Show();
             }
             catch (Exception ex)
             {
-                textBox1.Text = ex.ToString();
+                label1.Text = "You can't connect second time.";//ex.ToString();
             }
         }
 
@@ -56,6 +56,11 @@ namespace Client
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
