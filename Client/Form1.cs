@@ -29,15 +29,6 @@ namespace Client
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            listBox2.Items.Add("Default pickaxe");
-            listBox2.Items.Add("Red pickaxe");
-            listBox2.Items.Add("Black pickaxe");
-            listBox2.Items.Add("Blue pickaxe");
-            listBox2.SelectedIndex = 0;
-
-            player = new Player();
-            player.SetPickaxe("Default");
-            pictureBox1.Image = player.GetPickaxe().Image;
         }
 
         //connection button
@@ -45,9 +36,7 @@ namespace Client
         {
             try
             {
-                await connection.StartAsync();
-                textBox1.Text = "Connection started";
-                PlayerBoxClass.Image = pictureBox1.Image;
+                await connection.StartAsync();           
 
                 label1.Text = "Connection started";
                 this.Hide();
@@ -79,10 +68,7 @@ namespace Client
 
         private void listBox2_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            player = new Player();
-         
-            player.SetPickaxe(listBox2.SelectedItem.ToString().Split(' ').First());
-            pictureBox1.Image = player.GetPickaxe().Image;
+        
         }
         
         private void label1_Click(object sender, EventArgs e)
@@ -91,9 +77,4 @@ namespace Client
 
         }
     }
-}
-
-public static class PlayerBoxClass 
-{  
-    public static Image Image { get; set; }
 }

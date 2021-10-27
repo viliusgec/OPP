@@ -32,7 +32,7 @@ namespace Client.PictureBoxBuilder
             return null;
         }
 
-        public Map.Block GetBlock(Point loc, Map.MapBase map)
+        public static Map.Block GetBlock(Point loc, Map.MapBase map)
         {
             for (int i = 0; i < mapx; i++)
             {
