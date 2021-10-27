@@ -32,7 +32,7 @@ namespace Client
             message.RecieveMessage();
             
 
-            KeyPreview = true;
+            KeyPreview = false;
             KeyDown += SendBoxCoordinates;
 
 
@@ -42,8 +42,20 @@ namespace Client
             {
                 map = ServerObserver.GetMap();
                 MapBuilder = ServerObserver.GetBuilder();
-            });
-            
+                button1.Hide();
+                button2.Hide();
+                button3.Hide();
+                textBox1.Hide();
+                textBox2.Hide();
+                label2.Hide();
+                button1.Enabled = false;
+                button2.Enabled = false;
+                button3.Enabled = false;
+                textBox1.Enabled = false;
+                textBox2.Enabled = false;
+                label2.Enabled = false;
+                KeyPreview = true;
+            });           
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -98,6 +110,7 @@ namespace Client
             textBox1.Enabled = false;
             textBox2.Enabled = false;
             label2.Enabled = false;
+            KeyPreview = true;
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
