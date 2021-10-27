@@ -72,18 +72,13 @@ namespace Client
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            bool boxesAdded = false;
             int mapx = 10;
             int mapy = 10;
 
             map = new Map.MapBase(mapx, mapy);
             map.setFactory(1);
             map.CreateMap();
-            if (!boxesAdded)
-            {
-                MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, Controls, Size);
-                boxesAdded = true;
-            }
+            MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, Controls, Size);
 
             MapBuilder.CreateMap(imageList1, map);
             _ = ServerObserver.SendMap(map);

@@ -35,11 +35,7 @@ namespace Client.Observer
                 map = JsonConvert.DeserializeObject<Map.MapBase>(jsonString);
                 map.DeserializeBlocks();
                 tempMap = map;
-                if (!MapBuilder.boxesAdded)
-                {
-                    MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, control, size);
-                    MapBuilder.boxesAdded = true;
-                }
+                MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, control, size);
                 MapBuilder.CreateMap(imageList1, map);
                 button1.Hide();
             });
