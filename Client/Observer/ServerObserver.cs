@@ -12,6 +12,7 @@ namespace Client.Observer
     {
         private readonly HubConnection connection;
         readonly MapBuilder MapBuilder;
+        private Map.MapBase tempMap;
 
         public ServerObserver()
         {
@@ -33,6 +34,7 @@ namespace Client.Observer
             {
                 map = JsonConvert.DeserializeObject<Map.MapBase>(jsonString);
                 map.DeserializeBlocks();
+                tempMap = map;
                 if (!MapBuilder.boxesAdded)
                 {
                     MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, control, size);
@@ -43,6 +45,9 @@ namespace Client.Observer
             });
             return MapBuilder;
         }
+
+        public Map.MapBase GetMap() { return tempMap; }
+        public MapBuilder GetBuilder() { return MapBuilder; }
 
         public async Task SendMap(Map.MapBase map)
         {

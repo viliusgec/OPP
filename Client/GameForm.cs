@@ -34,6 +34,12 @@ namespace Client
 
             ServerObserver.ReceiveCoordinates(pictureBox2);
             MapBuilder = ServerObserver.ReceiveMap(map, pictureBox1, pictureBox2, button1, imageList1, Controls, Size);
+            connection.On<string>("ReceiveMap", (jsonString) =>
+            {
+                map = ServerObserver.GetMap();
+                MapBuilder = ServerObserver.GetBuilder();
+            });
+            
         }
 
         private void GameForm_Load(object sender, EventArgs e)
