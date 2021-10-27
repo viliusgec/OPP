@@ -3,12 +3,10 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.AspNetCore.SignalR.Client;
-using System.Text.Json;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
 using Client.Strategy;
 using System.Threading;
 using Client.Observer;
+using Client.Command;
 using Client.PictureBoxBuilder;
 
 namespace Client
@@ -20,6 +18,7 @@ namespace Client
         MapBuilder MapBuilder = new();
         Movement movement;
         private Map.MapBase map;
+        Command.Message message;
 
         public GameForm()
         {
@@ -28,7 +27,12 @@ namespace Client
             connection = SingletonConnection.GetInstance().GetConnection();
             movement = new Movement(connection);
 
-            KeyPreview = true;
+            message = new Command.Message(textBox2);
+            message.ReceiveUndoMessage();
+            message.RecieveMessage();
+            
+
+            KeyPreview = false;
             KeyDown += SendBoxCoordinates;
 
             ServerObserver.ReceiveCoordinates(pictureBox2);
@@ -37,12 +41,25 @@ namespace Client
             {
                 map = ServerObserver.GetMap();
                 MapBuilder = ServerObserver.GetBuilder();
-            });
+                button1.Hide();
+                button2.Hide();
+                button3.Hide();
+                textBox1.Hide();
+                textBox2.Hide();
+                label2.Hide();
+                button1.Enabled = false;
+                button2.Enabled = false;
+                button3.Enabled = false;
+                textBox1.Enabled = false;
+                textBox2.Enabled = false;
+                label2.Enabled = false;
+                KeyPreview = true;
+            });           
+
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
             });
-
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -86,7 +103,18 @@ namespace Client
             MapBuilder.CreateMap(imageList1, map);
             _ = ServerObserver.SendMap(map);
             button1.Hide();
+            button2.Hide();
+            button3.Hide();
+            textBox1.Hide();
+            textBox2.Hide();
+            label2.Hide();
             button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            textBox1.Enabled = false;
+            textBox2.Enabled = false;
+            label2.Enabled = false;
+            KeyPreview = true;
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
@@ -107,6 +135,30 @@ namespace Client
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(textBox1.Text != string.Empty)
+            {
+                message.SendMessage(textBox1.Text);
+                textBox1.Text = "";
+            }
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            message.UndoMessage();
         }
     }
 }

@@ -50,6 +50,21 @@ namespace Client.Observer
             return MapBuilder;
         }
 
+        public void ReceiveMessage(TextBox textBox)
+        {
+            connection.On<string>("ReceiveMessage", (x) =>
+            {
+                textBox.AppendText("Enemy: " + x + "\r\n");
+            });
+        }
+
+        public void ReceiveUndoMessage(TextBox textBox)
+        {
+            connection.On<string>("ReceiveUndoMessage", (x) =>
+            {
+                textBox.Text = textBox.Text.Replace("Enemy: " + x + "\r\n", "");
+            });
+        }
         public Map.MapBase GetMap() { return tempMap; }
         public MapBuilder GetBuilder() { return MapBuilder; }
 
@@ -60,5 +75,14 @@ namespace Client.Observer
             await connection.InvokeAsync("SendMap", jsonString);
         }
 
+        public void SendMessage(string message)
+        {
+            connection.InvokeAsync("SendMessage", message);
+        }
+
+        public void UndoMessage(string message)
+        {
+            connection.InvokeAsync("UndoMessage", message);
+        }
     }
 }
