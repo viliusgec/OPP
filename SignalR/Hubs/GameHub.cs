@@ -13,5 +13,13 @@ namespace SignalRChat.Hubs
         {
             await Clients.Others.SendAsync("ReceiveMap", x);
         }
+        public async Task SendMessage(string x)
+        {
+            await Clients.Others.SendAsync("ReceiveMessage", x);
+        }
+        public async Task UndoMessage(string x)
+        {
+            await Clients.Others.SendAsync("ReceiveUndoMessage", x);
+        }
     }
 }

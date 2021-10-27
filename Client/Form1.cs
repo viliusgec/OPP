@@ -43,7 +43,7 @@ namespace Client
                 gameForm.ShowDialog();
                 this.Show();
             }
-            catch (Exception ex)
+            catch
             {
                 label1.Text = "You can't connect second time.";//ex.ToString();
             }
@@ -59,11 +59,8 @@ namespace Client
 
         }
 
-
-        
         private void label1_Click(object sender, EventArgs e)
         {
-
 
         }
     }
