@@ -60,7 +60,6 @@ namespace Client.PictureBoxBuilder
             boxWidth = (endX - startX) / mapx;
             boxHeight = boxWidth;
             pictureBox1.Width = boxWidth;
-            //getPickaxesResized
     
             pictureBox1.Size = new Size(boxWidth, boxHeight);
             pictureBox2.Size = new Size(boxWidth, boxHeight);

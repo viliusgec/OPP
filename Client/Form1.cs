@@ -40,7 +40,6 @@ namespace Client
 
                 label1.Text = "Connection started";
                 this.Hide();
-             //   gameForm.sen
                 gameForm.ShowDialog();
                 this.Show();
             }
@@ -60,16 +59,7 @@ namespace Client
 
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
 
-        }
-
-
-        private void listBox2_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-        
-        }
         
         private void label1_Click(object sender, EventArgs e)
         {
