@@ -77,6 +77,21 @@ namespace Client.PictureBoxBuilder
             }
         }
 
+        public void EditMinedBox(int x, int y)
+        {
+            for (int i = 0; i < mapx; i++)
+            {
+                for (int j = 0; j < mapy; j++)
+                {
+                    if (boxes[i, j].Location == new Point(x, y))
+                    {
+                        boxes[i, j].Hide();
+                        boxes[i, j].Enabled = false;
+                    }
+                }
+            }
+        }
+
         public void CreateMap(ImageList imageList1, Map.MapBase map)
         {
             Map.Block[,] blocks = map.getBlocks();

@@ -1,6 +1,7 @@
 ﻿using Client.PictureBoxBuilder;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
+using System;
 using System.Drawing;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -27,6 +28,13 @@ namespace Client.Observer
                 enemy.Location = new Point(int.Parse(x), int.Parse(y));
             });
         }
+        public void ReceiveMinedBoxCoordinates()
+        {
+            connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
+            {
+                MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
+            });
+        }
 
         public MapBuilder ReceiveMap(Map.MapBase map, PictureBox pictureBox1, PictureBox pictureBox2, Button button1, ImageList imageList1, Control.ControlCollection control, Size size)
         {
@@ -51,5 +59,6 @@ namespace Client.Observer
             string jsonString = JsonConvert.SerializeObject(map);
             await connection.InvokeAsync("SendMap", jsonString);
         }
+
     }
 }

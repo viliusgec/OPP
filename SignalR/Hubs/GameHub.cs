@@ -13,5 +13,9 @@ namespace SignalRChat.Hubs
         {
             await Clients.Others.SendAsync("ReceiveMap", x);
         }
+        public async Task SendMinedBoxCoordinates(string x, string y)
+        {
+            await Clients.Others.SendAsync("ReceiveMinedBoxCoordinates", x, y);
+        }
     }
 }
