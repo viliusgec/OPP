@@ -38,6 +38,12 @@ namespace Client
 
             ServerObserver.ReceiveCoordinates(pictureBox2);
             MapBuilder = ServerObserver.ReceiveMap(map, pictureBox1, pictureBox2, button1, imageList1, Controls, Size);
+            connection.On<string>("ReceiveMap", (jsonString) =>
+            {
+                map = ServerObserver.GetMap();
+                MapBuilder = ServerObserver.GetBuilder();
+            });
+            
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -70,18 +76,13 @@ namespace Client
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            bool boxesAdded = false;
             int mapx = 10;
             int mapy = 10;
 
             map = new Map.MapBase(mapx, mapy);
             map.setFactory(1);
             map.CreateMap();
-            if (!boxesAdded)
-            {
-                MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, Controls, Size);
-                boxesAdded = true;
-            }
+            MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, Controls, Size);
 
             MapBuilder.CreateMap(imageList1, map);
             _ = ServerObserver.SendMap(map);

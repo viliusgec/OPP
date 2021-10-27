@@ -12,6 +12,7 @@ namespace Client.Observer
     {
         private readonly HubConnection connection;
         readonly MapBuilder MapBuilder;
+        private Map.MapBase tempMap;
 
         public ServerObserver()
         {
@@ -33,11 +34,8 @@ namespace Client.Observer
             {
                 map = JsonConvert.DeserializeObject<Map.MapBase>(jsonString);
                 map.DeserializeBlocks();
-                if (!MapBuilder.boxesAdded)
-                {
-                    MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, control, size);
-                    MapBuilder.boxesAdded = true;
-                }
+                tempMap = map;
+                MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, control, size);
                 MapBuilder.CreateMap(imageList1, map);
                 button1.Hide();
             });
@@ -59,6 +57,8 @@ namespace Client.Observer
                 textBox.Text = textBox.Text.Replace("Enemy: " + x + "\r\n", "");
             });
         }
+        public Map.MapBase GetMap() { return tempMap; }
+        public MapBuilder GetBuilder() { return MapBuilder; }
 
         public async Task SendMap(Map.MapBase map)
         {
