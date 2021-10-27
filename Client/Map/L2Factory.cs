@@ -14,21 +14,24 @@ namespace Client.Map
             string name = "";
             string image = "";
             Effect.IEffect effect = null;
-            return new L2StaticBlock(name,image,effect);
+            string health = "75";
+            return new L2StaticBlock(name,image,effect,health);
         }
         public override Block GetFalling()
         {
             string name = "";
             string image = "";
             Effect.IEffect effect = null;
-            return new L2FallingBlock(name, image, effect);
+            string health = "75";
+            return new L2FallingBlock(name, image, effect, health);
         }
         public override Block GetUnbreakable()
         {
             string name = "";
             string image = "";
             Effect.IEffect effect = null;
-            return new L2UnbreakableBlock(name, image, effect);
+            string health = "75";
+            return new L2UnbreakableBlock(name, image, effect, health);
         }
     }
 }

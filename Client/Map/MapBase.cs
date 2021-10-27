@@ -15,6 +15,7 @@ namespace Client.Map
         public string[,] blockImages { get; set; }
         public string[,] blockTypes { get; set; }
         public string[,] blockEffectTypes { get; set; }
+        public string[,] blockHealths { get; set; }
         public int x { get; set; }
         public int y { get; set; }
         public MapBase(int mapX, int mapY)
@@ -39,6 +40,7 @@ namespace Client.Map
             blockImages = new string[x, y];
             blockTypes = new string[x, y];
             blockEffectTypes = new string[x, y];
+            blockHealths = new string[x, y];
             for (int i = 0; i < x; i++)
             {
                 
@@ -47,6 +49,7 @@ namespace Client.Map
                     blockNames[i, j] = blocks[i, j].GetName();
                     blockImages[i, j] = blocks[i, j].GetImage();
                     blockTypes[i, j] = blocks[i, j].GetBlockType();
+                    blockHealths[i, j] = blocks[i, j].GetHealth();
                     if (blocks[i, j].GetEffect() != null)
                         blockEffectTypes[i, j] = blocks[i, j].GetEffect().EffectType;
                     else
@@ -68,15 +71,15 @@ namespace Client.Map
                     switch (blockTypes[i, j])
                     {
                         case "static":
-                            blocks[i, j] = new L1StaticBlock(blockNames[i, j], blockImages[i, j], effect);
+                            blocks[i, j] = new L1StaticBlock(blockNames[i, j], blockImages[i, j], effect, blockHealths[i, j]);
                             blocks[i, j].SetBlockType("static");
                             break;
                         case "falling":
-                            blocks[i, j] = new L1FallingBlock(blockNames[i, j], blockImages[i, j], effect);
+                            blocks[i, j] = new L1FallingBlock(blockNames[i, j], blockImages[i, j], effect, blockHealths[i, j]);
                             blocks[i, j].SetBlockType("falling");
                             break;
                         case "unbreakable":
-                            blocks[i, j] = new L1UnbreakableBlock(blockNames[i, j], blockImages[i, j], effect);
+                            blocks[i, j] = new L1UnbreakableBlock(blockNames[i, j], blockImages[i, j], effect, blockHealths[i, j]);
                             blocks[i, j].SetBlockType("unbreakable");
                             break;
                     }

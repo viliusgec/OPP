@@ -43,6 +43,13 @@ namespace Client.Builder
             block.SetEffect(effect);
             return this;
         }
+
+        public override BlockBuilder addHealth(string health)
+        {
+            block.SetHealth(health);
+            return this;
+        }
+
         public override Block getBuildable()
         {
             return block;

@@ -32,7 +32,7 @@ namespace Client.PictureBoxBuilder
             return null;
         }
 
-        public Map.Block GetBlock(Point loc, Map.MapBase map)
+        public static Map.Block GetBlock(Point loc, Map.MapBase map)
         {
             for (int i = 0; i < mapx; i++)
             {
@@ -60,6 +60,7 @@ namespace Client.PictureBoxBuilder
             boxWidth = (endX - startX) / mapx;
             boxHeight = boxWidth;
             pictureBox1.Width = boxWidth;
+    
             pictureBox1.Size = new Size(boxWidth, boxHeight);
             pictureBox2.Size = new Size(boxWidth, boxHeight);
             pictureBox1.Location = new Point(startX + ((mapx / 2 - 1) * boxWidth), startY - boxHeight);

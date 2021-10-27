@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -12,6 +13,7 @@ namespace Client
     {
         Form gameForm;
         Algorithm strategy;
+        Player player;
         private HubConnection connection;
         public Form1()
         {
@@ -19,13 +21,14 @@ namespace Client
 
             SingletonConnection temp_connection = SingletonConnection.GetInstance();
             connection = temp_connection.GetConnection();
+          
+         
             gameForm = new GameForm();
             
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         //connection button
@@ -33,7 +36,8 @@ namespace Client
         {
             try
             {
-                await connection.StartAsync();
+                await connection.StartAsync();           
+
                 label1.Text = "Connection started";
                 this.Hide();
                 gameForm.ShowDialog();
@@ -55,13 +59,11 @@ namespace Client
 
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
-
+        
         private void label1_Click(object sender, EventArgs e)
         {
+
 
         }
     }

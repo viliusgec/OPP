@@ -9,7 +9,7 @@ namespace Client.Map
     [Serializable]
     class L2UnbreakableBlock : UnbreakableBlock
     {
-        public L2UnbreakableBlock(string name, string image, Effect.IEffect effect) : base(name, image, effect)
+        public L2UnbreakableBlock(string name, string image, Effect.IEffect effect, string health) : base(name, image, effect, health)
         {
 
         }

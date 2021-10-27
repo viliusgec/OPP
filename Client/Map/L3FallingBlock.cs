@@ -9,7 +9,7 @@ namespace Client.Map
     [Serializable]
     class L3FallingBlock : FallingBlock
     {
-        public L3FallingBlock(string name, string image, Effect.IEffect effect) : base(name, image, effect)
+        public L3FallingBlock(string name, string image, Effect.IEffect effect, string health) : base(name, image, effect, health)
         {
 
         }

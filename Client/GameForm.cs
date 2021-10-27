@@ -38,14 +38,13 @@ namespace Client
 
         private void GameForm_Load(object sender, EventArgs e)
         {
-
         }
 
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
         {
             int[] temp;
 
-            temp = movement.SendBoxCoordinates(sender, e, pictureBox1);
+            temp = movement.SendBoxCoordinates(sender, e, pictureBox1, map);
 
             if (temp[0] == 0 && temp[1] == 0)
                 return;
@@ -56,7 +55,7 @@ namespace Client
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space || e.KeyCode == Keys.Q || e.KeyCode == Keys.E) 
                 Thread.Sleep(25);
 
-            movement.fall_down(temp, pictureBox1);
+            movement.fall_down(temp, pictureBox1, map);
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)
