@@ -1,4 +1,6 @@
-﻿using Client.PictureBoxBuilder;
+﻿using Client.Observer;
+using Client.PictureBoxBuilder;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,7 +13,9 @@ namespace Client.Adapter
 {
     class BlockCheckerAdaptees
     {
-        public bool check_if_block_exists_specific(int side, int x, int y, PictureBox pictureBox1, Map.MapBase map)
+        ServerObserver ServerObserver = new();
+
+        public bool check_if_block_exists_specific(int side, int x, int y, PictureBox pictureBox1, Map.MapBase map, HubConnection connection)
         {
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
@@ -35,6 +39,8 @@ namespace Client.Adapter
                         {
                             box.Hide();
                             box.Enabled = false;
+                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                            ServerObserver.ReceiveMinedBoxCoordinates();
 
                             return true;
                         }
@@ -105,6 +111,8 @@ namespace Client.Adapter
                         {
                             box.Hide();
                             box.Enabled = false;
+                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                            ServerObserver.ReceiveMinedBoxCoordinates();
                             return true;
                         }
                     }
@@ -126,6 +134,8 @@ namespace Client.Adapter
                         {
                             box.Hide();
                             box.Enabled = false;
+                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                            ServerObserver.ReceiveMinedBoxCoordinates();
                             return true;
                         }
                     }
@@ -135,5 +145,12 @@ namespace Client.Adapter
                     return false;
             }
         }
+        private async Task SendMinedBoxCoordinatesAsync(int x, int y, HubConnection connection)
+        {
+            await connection.InvokeAsync("SendMinedBoxCoordinates",
+                    x.ToString(), y.ToString());
+        }
+
+   
     }
 }
