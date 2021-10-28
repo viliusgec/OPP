@@ -1,6 +1,7 @@
 ﻿using Client.PictureBoxBuilder;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
+using System;
 using System.Drawing;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -27,6 +28,13 @@ namespace Client.Observer
                 enemy.Location = new Point(int.Parse(x), int.Parse(y));
             });
         }
+        public void ReceiveMinedBoxCoordinates()
+        {
+            connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
+            {
+                MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
+            });
+        }
 
         public MapBuilder ReceiveMap(Map.MapBase map, PictureBox pictureBox1, PictureBox pictureBox2, Button button1, ImageList imageList1, Control.ControlCollection control, Size size)
         {
@@ -42,6 +50,21 @@ namespace Client.Observer
             return MapBuilder;
         }
 
+        public void ReceiveMessage(TextBox textBox)
+        {
+            connection.On<string>("ReceiveMessage", (x) =>
+            {
+                textBox.AppendText("Enemy: " + x + "\r\n");
+            });
+        }
+
+        public void ReceiveUndoMessage(TextBox textBox)
+        {
+            connection.On<string>("ReceiveUndoMessage", (x) =>
+            {
+                textBox.Text = textBox.Text.Replace("Enemy: " + x + "\r\n", "");
+            });
+        }
         public Map.MapBase GetMap() { return tempMap; }
         public MapBuilder GetBuilder() { return MapBuilder; }
 
@@ -50,6 +73,16 @@ namespace Client.Observer
             map.SerializeBlocks();
             string jsonString = JsonConvert.SerializeObject(map);
             await connection.InvokeAsync("SendMap", jsonString);
+        }
+
+        public void SendMessage(string message)
+        {
+            connection.InvokeAsync("SendMessage", message);
+        }
+
+        public void UndoMessage(string message)
+        {
+            connection.InvokeAsync("UndoMessage", message);
         }
     }
 }

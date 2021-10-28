@@ -16,6 +16,7 @@ namespace Client.Strategy
 {
     class Movement
     {
+        ServerObserver ServerObserver = new();
         Algorithm strategy;
         HubConnection connection;
 
@@ -102,6 +103,12 @@ namespace Client.Strategy
             BlockChecker blockchecker = new BlockCheckerAdapter(side, x, y, pictureBox1, map);
 
             return blockchecker.check_if_block_exists();
+        }
+
+        private async Task SendMinedBoxCoordinatesAsync(int x, int y)
+        {
+            await connection.InvokeAsync("SendMinedBoxCoordinates",
+                    x.ToString(), y.ToString());
         }
 
         public void fall_down(int[] coords, PictureBox pictureBox1, Map.MapBase map)
