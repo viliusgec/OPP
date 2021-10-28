@@ -35,7 +35,6 @@ namespace Client
             KeyPreview = false;
             KeyDown += SendBoxCoordinates;
 
-
             ServerObserver.ReceiveCoordinates(pictureBox2);
             MapBuilder = ServerObserver.ReceiveMap(map, pictureBox1, pictureBox2, button1, imageList1, Controls, Size);
             connection.On<string>("ReceiveMap", (jsonString) =>
@@ -56,6 +55,11 @@ namespace Client
                 label2.Enabled = false;
                 KeyPreview = true;
             });           
+
+            connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
+            {
+                MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
+            });
         }
 
         private void GameForm_Load(object sender, EventArgs e)

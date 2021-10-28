@@ -15,6 +15,7 @@ namespace Client.Strategy
 {
     class Movement
     {
+        ServerObserver ServerObserver = new();
         Algorithm strategy;
         HubConnection connection;
 
@@ -118,6 +119,8 @@ namespace Client.Strategy
                         {
                             box.Hide();
                             box.Enabled = false;
+                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y);
+                            ServerObserver.ReceiveMinedBoxCoordinates();
 
                             return true;
                         }
@@ -188,6 +191,8 @@ namespace Client.Strategy
                         {
                             box.Hide();
                             box.Enabled = false;
+                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y);
+                            ServerObserver.ReceiveMinedBoxCoordinates();
                             return true;
                         }
                     }
@@ -209,6 +214,8 @@ namespace Client.Strategy
                         {
                             box.Hide();
                             box.Enabled = false;
+                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y);
+                            ServerObserver.ReceiveMinedBoxCoordinates();
                             return true;
                         }
                     }
@@ -217,6 +224,12 @@ namespace Client.Strategy
                 default:
                     return false;
             }
+        }
+
+        private async Task SendMinedBoxCoordinatesAsync(int x, int y)
+        {
+            await connection.InvokeAsync("SendMinedBoxCoordinates",
+                    x.ToString(), y.ToString());
         }
 
         public void fall_down(int[] coords, PictureBox pictureBox1, Map.MapBase map)

@@ -8,6 +8,7 @@ namespace Client.Observer
     interface IServerObserver
     {
         public void ReceiveCoordinates(PictureBox enemy);
+        public void ReceiveMinedBoxCoordinates();
         public Task SendMap(Map.MapBase map);
         public void SendMessage(string message);
         public void ReceiveMessage(TextBox textBox);

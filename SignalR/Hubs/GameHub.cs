@@ -13,6 +13,12 @@ namespace SignalRChat.Hubs
         {
             await Clients.Others.SendAsync("ReceiveMap", x);
         }
+
+        public async Task SendMinedBoxCoordinates(string x, string y)
+        {
+            await Clients.Others.SendAsync("ReceiveMinedBoxCoordinates", x, y);
+        }
+
         public async Task SendMessage(string x)
         {
             await Clients.Others.SendAsync("ReceiveMessage", x);
@@ -20,6 +26,7 @@ namespace SignalRChat.Hubs
         public async Task UndoMessage(string x)
         {
             await Clients.Others.SendAsync("ReceiveUndoMessage", x);
+
         }
     }
 }
