@@ -15,7 +15,7 @@ namespace Client.Adapter
     {
         ServerObserver ServerObserver = new();
 
-        public bool check_if_block_exists_specific(int side, int x, int y, PictureBox pictureBox1, Map.MapBase map, HubConnection connection)
+        public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection)
         {
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
@@ -23,7 +23,7 @@ namespace Client.Adapter
             switch (side)
             {
                 case 0:
-                    loc = new Point(x, y + pictureBox1.Height);
+                    loc = new Point(x, y + editor.pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     var blockDown = MapBuilder.GetBlock(loc, map);
                     blockDown.SetHealth((Int32.Parse(blockDown.GetHealth()) - 25).ToString());
@@ -41,14 +41,14 @@ namespace Client.Adapter
                             box.Enabled = false;
                             _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
                             ServerObserver.ReceiveMinedBoxCoordinates();
-
+                            editor.addScore();
                             return true;
                         }
                     }
 
                     return false;
                 case 1:
-                    loc = new Point(x, y - pictureBox1.Height);
+                    loc = new Point(x, y - editor.pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     if (box == null)
                         return true;
@@ -56,7 +56,7 @@ namespace Client.Adapter
                         return false;
                     return true;
                 case 2:
-                    loc = new Point(x - pictureBox1.Width, y);
+                    loc = new Point(x - editor.pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
                     if (box == null)
                         return true;
@@ -64,7 +64,7 @@ namespace Client.Adapter
                         return false;
                     return true;
                 case 3:
-                    loc = new Point(x + pictureBox1.Width, y);
+                    loc = new Point(x + editor.pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
                     if (box == null)
                         return true;
@@ -72,7 +72,7 @@ namespace Client.Adapter
                         return false;
                     return true;
                 case 4:
-                    loc = new Point(x - pictureBox1.Width, y - pictureBox1.Height);
+                    loc = new Point(x - editor.pictureBox1.Width, y - editor.pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     if (box == null)
                         return true;
@@ -80,7 +80,7 @@ namespace Client.Adapter
                         return false;
                     return true;
                 case 5:
-                    loc = new Point(x + pictureBox1.Width, y - pictureBox1.Height);
+                    loc = new Point(x + editor.pictureBox1.Width, y - editor.pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     if (box == null)
                         return true;
@@ -88,7 +88,7 @@ namespace Client.Adapter
                         return false;
                     return true;
                 case 6:
-                    loc = new Point(x, y + pictureBox1.Height);
+                    loc = new Point(x, y + editor.pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     if (box == null)
                         return false;
@@ -96,7 +96,7 @@ namespace Client.Adapter
                         return true;
                     return false;
                 case 7:
-                    loc = new Point(x - pictureBox1.Width, y);
+                    loc = new Point(x - editor.pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
                     var blockLeft = MapBuilder.GetBlock(loc, map);
                     blockLeft.SetHealth((Int32.Parse(blockLeft.GetHealth()) - 25).ToString());
@@ -113,13 +113,14 @@ namespace Client.Adapter
                             box.Enabled = false;
                             _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
                             ServerObserver.ReceiveMinedBoxCoordinates();
+                            editor.addScore();
                             return true;
                         }
                     }
 
                     return false;
                 case 8:
-                    loc = new Point(x + pictureBox1.Width, y);
+                    loc = new Point(x + editor.pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
                     var blockRight = MapBuilder.GetBlock(loc, map);
                     blockRight.SetHealth((Int32.Parse(blockRight.GetHealth()) - 25).ToString());
@@ -136,6 +137,7 @@ namespace Client.Adapter
                             box.Enabled = false;
                             _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
                             ServerObserver.ReceiveMinedBoxCoordinates();
+                            editor.addScore();
                             return true;
                         }
                     }
@@ -150,7 +152,5 @@ namespace Client.Adapter
             await connection.InvokeAsync("SendMinedBoxCoordinates",
                     x.ToString(), y.ToString());
         }
-
-   
     }
 }

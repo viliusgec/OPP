@@ -13,17 +13,17 @@ namespace Client.Adapter
         int side;
         int x;
         int y;
-        PictureBox pictureBox1;
+        FormsEditor editor;
         Map.MapBase map;
         HubConnection connection;
         private BlockCheckerAdaptees check;
 
-        public BlockCheckerAdapter(int side, int x, int y, PictureBox pictureBox1, Map.MapBase map, HubConnection connection)
+        public BlockCheckerAdapter(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection)
         {
             this.side = side;
             this.x = x;
             this.y = y;
-            this.pictureBox1 = pictureBox1;
+            this.editor = editor;
             this.map = map;
             this.connection = connection;
         }
@@ -32,7 +32,7 @@ namespace Client.Adapter
             check = new BlockCheckerAdaptees();
             bool exist =false;
 
-            exist = check.check_if_block_exists_specific(side, x, y, pictureBox1, map, connection);
+            exist = check.check_if_block_exists_specific(side, x, y, editor, map, connection);
 
             return exist;
         }
