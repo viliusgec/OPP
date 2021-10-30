@@ -19,18 +19,20 @@ namespace Client
         Movement movement;
         private Map.MapBase map;
         Command.Message message;
+        FormsEditor editor;
 
         public GameForm()
         {
             InitializeComponent();
-            label1.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q - Jump up left \n E - jump up right\n SHIFT - dig down\n J - dig left\n K - dig right";
+            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q - Jump up left \n E - jump up right\n SHIFT - dig down\n J - dig left\n K - dig right";
+            FormsEditor tempEdit = new FormsEditor(pictureBox1, pictureBox2, ScoreLabel);
+            editor = tempEdit;
             connection = SingletonConnection.GetInstance().GetConnection();
             movement = new Movement(connection);
 
             message = new Command.Message(textBox2);
             message.ReceiveUndoMessage();
             message.RecieveMessage();
-            
 
             KeyPreview = false;
             KeyDown += SendBoxCoordinates;
@@ -69,9 +71,7 @@ namespace Client
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
         {
             int[] temp;
-
-            temp = movement.SendBoxCoordinates(sender, e, pictureBox1, map);
-
+            temp = movement.SendBoxCoordinates(sender, e, editor, map);
             if (temp[0] == 0 && temp[1] == 0)
                 return;
 
@@ -81,7 +81,7 @@ namespace Client
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space || e.KeyCode == Keys.Q || e.KeyCode == Keys.E) 
                 Thread.Sleep(25);
 
-            movement.fall_down(temp, pictureBox1, map);
+            movement.fall_down(temp, editor, map);
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)

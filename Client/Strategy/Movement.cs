@@ -25,10 +25,10 @@ namespace Client.Strategy
             this.connection = connection;
         }
 
-        public int[] SendBoxCoordinates(object sender, KeyEventArgs e, PictureBox pictureBox1, Map.MapBase map)
+        public int[] SendBoxCoordinates(object sender, KeyEventArgs e, FormsEditor editor, Map.MapBase map)
         {
-            int x = pictureBox1.Location.X;
-            int y = pictureBox1.Location.Y;
+            int x = editor.pictureBox1.Location.X;
+            int y = editor.pictureBox1.Location.Y;
             int[] temp = { 0, 0 };
 
 
@@ -36,85 +36,88 @@ namespace Client.Strategy
             switch (e.KeyCode)
             {
                 case (Keys.Q):
-                    if (check_if_block_exists(4, x, y, pictureBox1, map))
-                        strategy = new MoveUpLeft(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(4, x, y, editor, map))
+                        strategy = new MoveUpLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.E):
-                    if (check_if_block_exists(5, x, y, pictureBox1, map))
-                        strategy = new MoveUpRight(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(5, x, y, editor, map))
+                        strategy = new MoveUpRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.A):
-                    if (check_if_block_exists(2, x, y, pictureBox1, map))
-                        strategy = new MoveLeft(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(2, x, y, editor, map))
+                        strategy = new MoveLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.D):
-                    if (check_if_block_exists(3, x, y, pictureBox1, map))
-                        strategy = new MoveRight(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(3, x, y, editor, map))
+                        strategy = new MoveRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.Space):
                 case (Keys.W):
-                    if (check_if_block_exists(1, x, y, pictureBox1, map))
-                        strategy = new Jump(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(1, x, y, editor, map))
+                        strategy = new Jump(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.ShiftKey):
-                    if (check_if_block_exists(0, x, y, pictureBox1, map))
-                        strategy = new Mine(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(0, x, y, editor, map))
+                        strategy = new Mine(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.J):
-                    if (check_if_block_exists(7, x, y, pictureBox1, map))
-                        strategy = new MineLeft(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(7, x, y, editor, map))
+                        strategy = new MineLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.K):
-                    if (check_if_block_exists(8, x, y, pictureBox1, map))
-                        strategy = new MineRight(x, y, pictureBox1.Height, pictureBox1.Width);
+                    if (check_if_block_exists(8, x, y, editor, map))
+                        strategy = new MineRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
+                case (Keys.B):
+                    editor.buyMenu(); /// <<< šitaip accessinsim buy menu. Returninsim reikšmes ir editinsim žaidėjo stats.
+                    return temp;
                 default:
                     return temp;
             }
 
-            temp = strategy.Behave(x, y, pictureBox1.Height, pictureBox1.Width);
+            temp = strategy.Behave(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
             return temp;
         }
         /**
  * side meanings: 0 - down, 1 - up, 2 - left, 3 - right, 4 - up left, 5 - up right,
  * 6 - just to check if block exists, no action taken, 7 - Mine Left, 8 - Mine Right
  */
-        private bool check_if_block_exists(int side, int x, int y, PictureBox pictureBox1, Map.MapBase map)
+        private bool check_if_block_exists(int side, int x, int y, FormsEditor editor, Map.MapBase map)
         {
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
 
-            BlockChecker blockchecker = new BlockCheckerAdapter(side, x, y, pictureBox1, map, connection);
+            BlockChecker blockchecker = new BlockCheckerAdapter(side, x, y, editor, map, connection);
 
             return blockchecker.check_if_block_exists();
         }
 
 
-        public void fall_down(int[] coords, PictureBox pictureBox1, Map.MapBase map)
+        public void fall_down(int[] coords, FormsEditor editor, Map.MapBase map)
         {
-            while (check_if_block_exists(6, coords[0], coords[1], pictureBox1, map) == false)
+            while (check_if_block_exists(6, coords[0], coords[1], editor, map) == false)
             {
-                pictureBox1.Location = new Point(coords[0], coords[1] + pictureBox1.Height);
-                _ = SendGetCoordinatesAsync(coords[0], coords[1] + pictureBox1.Height);
-                coords[1] += pictureBox1.Height;
+                editor.pictureBox1.Location = new Point(coords[0], coords[1] + editor.pictureBox1.Height);
+                _ = SendGetCoordinatesAsync(coords[0], coords[1] + editor.pictureBox1.Height);
+                coords[1] += editor.pictureBox1.Height;
                 Thread.Sleep(25);
-                if (coords[1] > (pictureBox1.Height) * 15)
+                if (coords[1] > (editor.pictureBox1.Height) * 15)
                     break;
             }
         }
