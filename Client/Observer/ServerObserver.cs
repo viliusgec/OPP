@@ -1,4 +1,5 @@
 ﻿using Client.PictureBoxBuilder;
+using Client.Strategy;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System;
@@ -9,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Client.Observer
 {
-    public class ServerObserver : IServerObserver
+    class ServerObserver : IServerObserver
     {
         private readonly HubConnection connection;
         readonly MapBuilder MapBuilder;
@@ -21,11 +22,13 @@ namespace Client.Observer
             MapBuilder = new MapBuilder();
         }
 
-        public void ReceiveCoordinates(PictureBox enemy)
+        public void ReceiveCoordinates(PictureBox enemy, Movement movement)
         {
             connection.On<string, string>("ReceiveCoordinates", (x, y) =>
             {
+                var prevLoc = enemy.Location;
                 enemy.Location = new Point(int.Parse(x), int.Parse(y));
+                movement.FlipImage(enemy, prevLoc, true);
             });
         }
         public void ReceiveMinedBoxCoordinates()
