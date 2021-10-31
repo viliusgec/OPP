@@ -20,12 +20,13 @@ namespace Client
         private Map.MapBase map;
         Command.Message message;
         FormsEditor editor;
+        
 
         public GameForm()
         {
             InitializeComponent();
             MovementLabel.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q - Jump up left \n E - jump up right\n SHIFT - dig down\n J - dig left\n K - dig right";
-            FormsEditor tempEdit = new FormsEditor(pictureBox1, pictureBox2, ScoreLabel);
+            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel);
             editor = tempEdit;
             connection = SingletonConnection.GetInstance().GetConnection();
             movement = new Movement(connection);
@@ -34,15 +35,29 @@ namespace Client
             message.ReceiveUndoMessage();
             message.RecieveMessage();
 
+
+            playerPictureBox.Hide();
+            enemyPictureBox.Hide();
+            playerPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            enemyPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+
+
+            this.Size = new Size(800, 800);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             KeyPreview = false;
             KeyDown += SendBoxCoordinates;
 
-            ServerObserver.ReceiveCoordinates(pictureBox2);
-            MapBuilder = ServerObserver.ReceiveMap(map, pictureBox1, pictureBox2, button1, imageList1, Controls, Size);
+            ServerObserver.ReceiveCoordinates(enemyPictureBox, movement);
+            MapBuilder = ServerObserver.ReceiveMap(map, playerPictureBox, enemyPictureBox, button1, imageList1, Controls, Size);
             connection.On<string>("ReceiveMap", (jsonString) =>
             {
+                playerPictureBox.Show();
+                enemyPictureBox.Show();
                 map = ServerObserver.GetMap();
                 MapBuilder = ServerObserver.GetBuilder();
+                Point tempPoint = enemyPictureBox.Location;
+                enemyPictureBox.Location = playerPictureBox.Location;
+                playerPictureBox.Location = tempPoint;
                 button1.Hide();
                 button2.Hide();
                 button3.Hide();
@@ -71,11 +86,17 @@ namespace Client
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
         {
             int[] temp;
+            Point prevLoc = playerPictureBox.Location;
             temp = movement.SendBoxCoordinates(sender, e, editor, map);
             if (temp[0] == 0 && temp[1] == 0)
                 return;
 
-            pictureBox1.Location = new Point(temp[0], temp[1]);
+            
+
+            playerPictureBox.Location = new Point(temp[0], temp[1]);
+            movement.FlipImage(playerPictureBox, prevLoc, false);
+            
+
             _ = SendGetCoordinatesAsync(temp[0], temp[1]);
 
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space || e.KeyCode == Keys.Q || e.KeyCode == Keys.E) 
@@ -92,16 +113,18 @@ namespace Client
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            int mapx = 10;
-            int mapy = 10;
+            int mapx = 11;
+            int mapy = 12;
 
             map = new Map.MapBase(mapx, mapy);
             map.setFactory(1);
             map.CreateMap();
-            MapBuilder.AddPictureBoxes(pictureBox1, pictureBox2, Controls, Size);
+            MapBuilder.AddPictureBoxes(playerPictureBox, enemyPictureBox, Controls, Size);
 
             MapBuilder.CreateMap(imageList1, map);
             _ = ServerObserver.SendMap(map);
+            playerPictureBox.Show();
+            enemyPictureBox.Show();
             button1.Hide();
             button2.Hide();
             button3.Hide();

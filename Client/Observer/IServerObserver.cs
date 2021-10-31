@@ -1,4 +1,5 @@
 ﻿using Client.PictureBoxBuilder;
+using Client.Strategy;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -7,7 +8,7 @@ namespace Client.Observer
 {
     interface IServerObserver
     {
-        public void ReceiveCoordinates(PictureBox enemy);
+        public void ReceiveCoordinates(PictureBox enemy, Movement movement);
         public void ReceiveMinedBoxCoordinates();
         public Task SendMap(Map.MapBase map);
         public void SendMessage(string message);

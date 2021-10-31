@@ -18,7 +18,7 @@ namespace Client.Map
             string workingDirectory = Environment.CurrentDirectory;
             string currentDir = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
             string name = "Dirt";
-            string image = currentDir + @"\Resources\dirt.png";
+            string image = currentDir + @"\Resources\dirt1.png";
             Effect.IEffect effect = GetEffect();
             string health = "75";
             var block = new L1StaticBlock();
@@ -31,7 +31,7 @@ namespace Client.Map
             string workingDirectory = Environment.CurrentDirectory;
             string currentDir = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
             string name = "Sand";
-            string image = currentDir + @"\Resources\sand.png";
+            string image = currentDir + @"\Resources\sand1.png";
             Effect.IEffect effect = GetEffect();
             string health = "75";
             var block = new L1StaticBlock();
@@ -44,7 +44,7 @@ namespace Client.Map
             string workingDirectory = Environment.CurrentDirectory;
             string currentDir = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
             string name = "Rock";
-            string image = currentDir + @"\Resources\rock.png";
+            string image = currentDir + @"\Resources\rock1.png";
             Effect.IEffect effect = GetEffect();
             string health = "75";
             var block = new L1StaticBlock();

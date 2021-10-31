@@ -19,10 +19,40 @@ namespace Client.Strategy
         ServerObserver ServerObserver = new();
         Algorithm strategy;
         HubConnection connection;
+        bool playerLookingRight = true;
+        bool enemyLookingRight = true;
 
         public Movement(HubConnection connection)
         {
             this.connection = connection;
+        }
+
+        public void FlipImage(PictureBox pictureBox, Point prevLoc, bool enemy)
+        {
+            bool lookingRight = playerLookingRight;
+            if (enemy)
+            {
+                lookingRight = enemyLookingRight;
+            }
+            if (prevLoc.X > pictureBox.Location.X && lookingRight)
+            {
+                pictureBox.Image.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                lookingRight = false;
+            }
+            else if (prevLoc.X < pictureBox.Location.X && !lookingRight)
+            {
+                pictureBox.Image.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                lookingRight = true;
+            }
+            if (enemy)
+            {
+                enemyLookingRight = lookingRight;
+            }
+            else
+            {
+                playerLookingRight = lookingRight;
+            }
+            pictureBox.Refresh();
         }
 
         public int[] SendBoxCoordinates(object sender, KeyEventArgs e, FormsEditor editor, Map.MapBase map)

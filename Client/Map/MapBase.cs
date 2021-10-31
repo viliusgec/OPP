@@ -106,6 +106,11 @@ namespace Client.Map
                 {
                     Random rnd = new Random();
                     int a = rnd.Next(100);
+                    if(i == 5)
+                    {
+                        blocks[i, j] = factory.GetUnbreakable();
+                        continue;
+                    }
                     if(a < 50)
                     {
                         blocks[i, j] = factory.GetStatic();
