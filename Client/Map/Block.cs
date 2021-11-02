@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Client.Bridge;
 using System.Threading.Tasks;
 
 namespace Client.Map
@@ -56,7 +57,7 @@ namespace Client.Map
 
         public void SetImage(string image)
         {
-            this.image = image;
+            this.image = BlockSkin.SetImage(health, name);
         }
 
         public void SetName(string n)

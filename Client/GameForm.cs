@@ -71,12 +71,20 @@ namespace Client
                 textBox2.Enabled = false;
                 label2.Enabled = false;
                 KeyPreview = true;
-            });           
+            });
+
+
+            connection.On<string, string, string>("ReceiveMinedBoxSkin", (x, y, path) =>
+            {
+                MapBuilder.EditMinedBoxSkin(Int32.Parse(x), Int32.Parse(y), path);
+            });
 
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
             });
+
+            
         }
 
         private void GameForm_Load(object sender, EventArgs e)

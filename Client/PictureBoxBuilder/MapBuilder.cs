@@ -115,6 +115,20 @@ namespace Client.PictureBoxBuilder
             }
         }
 
+        public void EditMinedBoxSkin(int x, int y, string path)
+        {
+            for (int i = 0; i < mapx; i++)
+            {
+                for (int j = 0; j < mapy; j++)
+                {
+                    if (boxes[i, j].Location == new Point(x, y))
+                    {
+                        boxes[i, j].ImageLocation = path;
+                    }
+                }
+            }
+        }
+
         public void CreateMap(ImageList imageList1, Map.MapBase map)
         {
             Map.Block[,] blocks = map.getBlocks();

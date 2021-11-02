@@ -14,7 +14,7 @@ namespace Client.Map
             string name = "";
             string image = "";
             Effect.IEffect effect = null;
-            string health = "75";
+            string health = "125";
             return new L3StaticBlock(name, image, effect, health);
         }
         public override Block GetFalling()
@@ -22,7 +22,7 @@ namespace Client.Map
             string name = "";
             string image = "";
             Effect.IEffect effect = null;
-            string health = "75";
+            string health = "125";
             return new L3FallingBlock(name, image, effect, health);
         }
         public override Block GetUnbreakable()
@@ -30,7 +30,7 @@ namespace Client.Map
             string name = "";
             string image = "";
             Effect.IEffect effect = null;
-            string health = "75";
+            string health = "125";
             return new L3UnbreakableBlock(name, image, effect, health);
         }
     }
