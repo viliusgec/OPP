@@ -127,12 +127,14 @@ namespace Client
             map = new Map.MapBase(mapx, mapy);
             map.setFactory(1);
             map.CreateMap();
+
             MapBuilder.AddPictureBoxes(playerPictureBox, enemyPictureBox, Controls, Size);
 
             MapBuilder.CreateMap(imageList1, map);
             _ = ServerObserver.SendMap(map);
             playerPictureBox.Show();
             enemyPictureBox.Show();
+            editor.scoreZero();
             button1.Hide();
             button2.Hide();
             button3.Hide();

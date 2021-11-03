@@ -19,26 +19,31 @@ namespace Client.Adapter
         {
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
+            var block = MapBuilder.GetBlock(loc, map);
 
             switch (side)
             {
                 case 0:
                     loc = new Point(x, y + editor.pictureBox1.Height);
                     box = MapBuilder.GetPictureBox(loc);
-                    var blockDown = MapBuilder.GetBlock(loc, map);
-                 
-                    blockDown.SetHealth((Int32.Parse(blockDown.GetHealth()) - 25).ToString());
 
                     if (box == null)
                         return false;
 
-                    blockDown.SetImage("");
+                    block = MapBuilder.GetBlock(loc, map);
 
-                    box.ImageLocation = blockDown.GetImage();
-                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, blockDown.GetImage());
+                    if (block.GetBlockType() == "unbreakable")
+                        return false;
+
+                    block.SetHealth((Int32.Parse(block.GetHealth()) - 25).ToString());
+
+                    block.SetImage("");
+
+                    box.ImageLocation = block.GetImage();
+                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
                     ServerObserver.ReceiveMinedBoxSkin();
 
-                    if (Int32.Parse(blockDown.GetHealth()) <= 0)
+                    if (Int32.Parse(block.GetHealth()) <= 0)
                     {
 
                         if (box.Enabled)
@@ -104,18 +109,23 @@ namespace Client.Adapter
                 case 7:
                     loc = new Point(x - editor.pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
-                    var blockLeft = MapBuilder.GetBlock(loc, map);
-                    blockLeft.SetHealth((Int32.Parse(blockLeft.GetHealth()) - 25).ToString());
 
                     if (box == null)
                         return false;
 
-                    blockLeft.SetImage("");
-                    box.ImageLocation = blockLeft.GetImage();
-                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, blockLeft.GetImage());
+                    block = MapBuilder.GetBlock(loc, map);
+
+                    if (block.GetBlockType() == "unbreakable")
+                        return false;
+
+                    block.SetHealth((Int32.Parse(block.GetHealth()) - 25).ToString());
+
+                    block.SetImage("");
+                    box.ImageLocation = block.GetImage();
+                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
                     ServerObserver.ReceiveMinedBoxSkin();
 
-                    if (Int32.Parse(blockLeft.GetHealth()) <= 0)
+                    if (Int32.Parse(block.GetHealth()) <= 0)
                     {
 
                         if (box.Enabled)
@@ -133,18 +143,23 @@ namespace Client.Adapter
                 case 8:
                     loc = new Point(x + editor.pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
-                    var blockRight = MapBuilder.GetBlock(loc, map);
-                    blockRight.SetHealth((Int32.Parse(blockRight.GetHealth()) - 25).ToString());
 
                     if (box == null)
                         return false;
 
-                    blockRight.SetImage("");
-                    box.ImageLocation = blockRight.GetImage();
-                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, blockRight.GetImage());
+                    block = MapBuilder.GetBlock(loc, map);
+
+                    if (block.GetBlockType() == "unbreakable")
+                        return false;
+
+                    block.SetHealth((Int32.Parse(block.GetHealth()) - 25).ToString());
+                        
+                    block.SetImage("");
+                    box.ImageLocation = block.GetImage();
+                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
                     ServerObserver.ReceiveMinedBoxSkin();
 
-                    if (Int32.Parse(blockRight.GetHealth()) <= 0)
+                    if (Int32.Parse(block.GetHealth()) <= 0)
                     {
 
                         if (box.Enabled)

@@ -125,9 +125,9 @@ namespace Client.Strategy
             return temp;
         }
         /**
- * side meanings: 0 - down, 1 - up, 2 - left, 3 - right, 4 - up left, 5 - up right,
- * 6 - just to check if block exists, no action taken, 7 - Mine Left, 8 - Mine Right
- */
+         * side meanings: 0 - down, 1 - up, 2 - left, 3 - right, 4 - up left, 5 - up right,
+         * 6 - just to check if block exists, no action taken, 7 - Mine Left, 8 - Mine Right
+         */
         private bool check_if_block_exists(int side, int x, int y, FormsEditor editor, Map.MapBase map)
         {
             var loc = new Point(x, y);

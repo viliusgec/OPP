@@ -63,7 +63,6 @@ namespace Client.PictureBoxBuilder
             boxWidth = (endX - startX) / mapx;
             boxHeight = boxWidth;
             pictureBox1.Width = boxWidth;
-    
             pictureBox1.Size = new Size(boxWidth, boxHeight);
             pictureBox2.Size = new Size(boxWidth, boxHeight);
             pictureBox1.Location = new Point(startX + ((mapx / 2 - 1) * boxWidth), startY - boxHeight);
@@ -77,6 +76,7 @@ namespace Client.PictureBoxBuilder
                 for (int j = 0; j < mapy+1; j++)
                 {
                     boxes[i, j] = new PictureBox();
+                    boxes[i, j].BackColor = System.Drawing.Color.Transparent;
                     boxes[i, j].Size = new Size(boxWidth, boxHeight);
                     boxes[i, j].Location = new Point(startX + boxWidth * (i), startY + boxHeight * (j));
                     boxes[i, j].SizeMode = PictureBoxSizeMode.StretchImage;

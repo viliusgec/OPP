@@ -31,5 +31,9 @@ namespace Client
             score += 10;
             scoreLabel.Text = "Score: " + score;
         }
+        public void scoreZero()
+        {
+            scoreLabel.Text = "Score: 0";
+        }
     }
 }

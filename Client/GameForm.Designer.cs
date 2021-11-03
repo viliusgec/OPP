@@ -51,9 +51,10 @@ namespace Client
             // 
             this.enemyPictureBox.BackColor = System.Drawing.Color.Transparent;
             this.enemyPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("enemyPictureBox.Image")));
-            this.enemyPictureBox.Location = new System.Drawing.Point(443, 16);
+            this.enemyPictureBox.Location = new System.Drawing.Point(388, 12);
+            this.enemyPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.enemyPictureBox.Name = "enemyPictureBox";
-            this.enemyPictureBox.Size = new System.Drawing.Size(73, 100);
+            this.enemyPictureBox.Size = new System.Drawing.Size(64, 75);
             this.enemyPictureBox.TabIndex = 7;
             this.enemyPictureBox.TabStop = false;
             this.enemyPictureBox.Click += new System.EventHandler(this.pictureBox2_Click);
@@ -62,18 +63,20 @@ namespace Client
             // 
             this.playerPictureBox.BackColor = System.Drawing.Color.Transparent;
             this.playerPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("playerPictureBox.Image")));
-            this.playerPictureBox.Location = new System.Drawing.Point(363, 12);
+            this.playerPictureBox.Location = new System.Drawing.Point(318, 9);
+            this.playerPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.playerPictureBox.Name = "playerPictureBox";
-            this.playerPictureBox.Size = new System.Drawing.Size(73, 104);
+            this.playerPictureBox.Size = new System.Drawing.Size(64, 78);
             this.playerPictureBox.TabIndex = 8;
             this.playerPictureBox.TabStop = false;
             this.playerPictureBox.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(13, 16);
+            this.button1.Location = new System.Drawing.Point(11, 12);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 29);
+            this.button1.Size = new System.Drawing.Size(82, 22);
             this.button1.TabIndex = 18;
             this.button1.Text = "Generate";
             this.button1.UseVisualStyleBackColor = true;
@@ -82,18 +85,21 @@ namespace Client
             // MovementLabel
             // 
             this.MovementLabel.AutoSize = true;
-            this.MovementLabel.Location = new System.Drawing.Point(13, 265);
+            this.MovementLabel.BackColor = System.Drawing.Color.Transparent;
+            this.MovementLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.MovementLabel.Location = new System.Drawing.Point(11, 199);
             this.MovementLabel.Name = "MovementLabel";
-            this.MovementLabel.Size = new System.Drawing.Size(50, 20);
+            this.MovementLabel.Size = new System.Drawing.Size(38, 15);
             this.MovementLabel.TabIndex = 19;
             this.MovementLabel.Text = "label1";
             this.MovementLabel.Click += new System.EventHandler(this.label1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(582, 55);
+            this.button2.Location = new System.Drawing.Point(509, 41);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(176, 29);
+            this.button2.Size = new System.Drawing.Size(154, 22);
             this.button2.TabIndex = 20;
             this.button2.Text = "Send Message";
             this.button2.UseVisualStyleBackColor = true;
@@ -102,25 +108,27 @@ namespace Client
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(363, 149);
+            this.label2.Location = new System.Drawing.Point(318, 112);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(42, 20);
+            this.label2.Size = new System.Drawing.Size(35, 15);
             this.label2.TabIndex = 21;
             this.label2.Text = "Chat:";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(582, 12);
+            this.textBox1.Location = new System.Drawing.Point(509, 9);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(175, 27);
+            this.textBox1.Size = new System.Drawing.Size(154, 23);
             this.textBox1.TabIndex = 22;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(582, 91);
+            this.button3.Location = new System.Drawing.Point(509, 68);
+            this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(176, 29);
+            this.button3.Size = new System.Drawing.Size(154, 22);
             this.button3.TabIndex = 23;
             this.button3.Text = "Undo Message";
             this.button3.UseVisualStyleBackColor = true;
@@ -128,10 +136,11 @@ namespace Client
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(363, 173);
+            this.textBox2.Location = new System.Drawing.Point(318, 130);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(395, 189);
+            this.textBox2.Size = new System.Drawing.Size(346, 143);
             this.textBox2.TabIndex = 25;
             // 
             // contextMenuStrip1
@@ -150,17 +159,18 @@ namespace Client
             // 
             this.ScoreLabel.AutoSize = true;
             this.ScoreLabel.Font = new System.Drawing.Font("Arial Narrow", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.ScoreLabel.Location = new System.Drawing.Point(13, 12);
+            this.ScoreLabel.Location = new System.Drawing.Point(6, 80);
             this.ScoreLabel.Name = "ScoreLabel";
-            this.ScoreLabel.Size = new System.Drawing.Size(0, 55);
+            this.ScoreLabel.Size = new System.Drawing.Size(0, 43);
             this.ScoreLabel.TabIndex = 26;
+            this.ScoreLabel.BackColor = System.Drawing.Color.Transparent;
             // 
             // GameForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(800, 451);
+            this.ClientSize = new System.Drawing.Size(700, 338);
             this.Controls.Add(this.ScoreLabel);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button3);
@@ -171,6 +181,7 @@ namespace Client
             this.Controls.Add(this.button1);
             this.Controls.Add(this.playerPictureBox);
             this.Controls.Add(this.enemyPictureBox);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GameForm";
             this.Text = "GameForm";
             this.Load += new System.EventHandler(this.GameForm_Load);
