@@ -20,11 +20,11 @@ namespace Client.Map
             string name = "Dirt";
             string image = currentDir + @"\Resources\dirt1.png";
             Effect.IEffect effect = GetEffect();
-            string health = "75";
+            string health = "125";
             var block = new L1StaticBlock();
             BlockBuilder builder = new StaticBuilder();
             
-            return builder.startBuild(block).addName(name).addImage(image).addBlockType("static").addEffect(effect).addHealth(health).getBuildable();
+            return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("static").addEffect(effect).getBuildable();
         }
         public override Block GetFalling()
         {
@@ -33,11 +33,11 @@ namespace Client.Map
             string name = "Sand";
             string image = currentDir + @"\Resources\sand1.png";
             Effect.IEffect effect = GetEffect();
-            string health = "75";
+            string health = "125";
             var block = new L1StaticBlock();
             BlockBuilder builder = new StaticBuilder();
 
-            return builder.startBuild(block).addName(name).addImage(image).addBlockType("falling").addEffect(effect).addHealth(health).getBuildable();
+            return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("falling").addEffect(effect).addHealth(health).getBuildable();
         }
         public override Block GetUnbreakable()
         {
@@ -46,11 +46,11 @@ namespace Client.Map
             string name = "Rock";
             string image = currentDir + @"\Resources\rock1.png";
             Effect.IEffect effect = GetEffect();
-            string health = "75";
+            string health = "125";
             var block = new L1StaticBlock();
             BlockBuilder builder = new StaticBuilder();
 
-            return builder.startBuild(block).addName(name).addImage(image).addBlockType("unbreakable").addEffect(effect).addHealth(health).getBuildable();
+            return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("unbreakable").addEffect(effect).addHealth(health).getBuildable();
         }
 
         public Effect.IEffect GetEffect()

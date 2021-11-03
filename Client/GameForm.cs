@@ -71,12 +71,20 @@ namespace Client
                 textBox2.Enabled = false;
                 label2.Enabled = false;
                 KeyPreview = true;
-            });           
+            });
+
+
+            connection.On<string, string, string>("ReceiveMinedBoxSkin", (x, y, path) =>
+            {
+                MapBuilder.EditMinedBoxSkin(Int32.Parse(x), Int32.Parse(y), path);
+            });
 
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
             });
+
+            
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -119,12 +127,14 @@ namespace Client
             map = new Map.MapBase(mapx, mapy);
             map.setFactory(1);
             map.CreateMap();
+
             MapBuilder.AddPictureBoxes(playerPictureBox, enemyPictureBox, Controls, Size);
 
             MapBuilder.CreateMap(imageList1, map);
             _ = ServerObserver.SendMap(map);
             playerPictureBox.Show();
             enemyPictureBox.Show();
+            editor.scoreZero();
             button1.Hide();
             button2.Hide();
             button3.Hide();

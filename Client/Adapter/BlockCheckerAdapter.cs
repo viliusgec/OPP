@@ -26,11 +26,11 @@ namespace Client.Adapter
             this.editor = editor;
             this.map = map;
             this.connection = connection;
+            check = new BlockCheckerAdaptees();
         }
         public override bool check_if_block_exists()
         {
-            check = new BlockCheckerAdaptees();
-            bool exist =false;
+            bool exist = false;
 
             exist = check.check_if_block_exists_specific(side, x, y, editor, map, connection);
 

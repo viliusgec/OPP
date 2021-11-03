@@ -39,6 +39,14 @@ namespace Client.Observer
             });
         }
 
+        public void ReceiveMinedBoxSkin()
+        {
+            connection.On<string, string, string>("ReceiveMinedBoxSkin", (x, y, path) =>
+            {
+                MapBuilder.EditMinedBoxSkin(Int32.Parse(x), Int32.Parse(y), path);
+            });
+        }
+
         public MapBuilder ReceiveMap(Map.MapBase map, PictureBox pictureBox1, PictureBox pictureBox2, Button button1, ImageList imageList1, Control.ControlCollection control, Size size)
         {
             connection.On<string>("ReceiveMap", (jsonString) =>
