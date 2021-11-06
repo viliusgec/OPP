@@ -8,6 +8,7 @@ using System.Threading;
 using Client.Observer;
 using Client.Command;
 using Client.PictureBoxBuilder;
+using Client.Decorator;
 
 namespace Client
 {
@@ -20,7 +21,9 @@ namespace Client
         private Map.MapBase map;
         Command.Message message;
         FormsEditor editor;
-        
+        Character player;
+
+
 
         public GameForm()
         {
@@ -34,7 +37,12 @@ namespace Client
             message = new Command.Message(textBox2);
             message.ReceiveUndoMessage();
             message.RecieveMessage();
+            player = new Player();
+            player = new MineDeep(player);
+            player = new MineWide(player);
+            player = new MineStronger(player);
 
+            MovementLabel.Text = player.Mine("");
 
             playerPictureBox.Hide();
             enemyPictureBox.Hide();
@@ -99,7 +107,7 @@ namespace Client
             if (temp[0] == 0 && temp[1] == 0)
                 return;
 
-            
+        
 
             playerPictureBox.Location = new Point(temp[0], temp[1]);
             movement.FlipImage(playerPictureBox, prevLoc, false);

@@ -13,7 +13,6 @@ namespace Client
     {
         Form gameForm;
         Algorithm strategy;
-        Player player;
         private HubConnection connection;
         public Form1()
         {
