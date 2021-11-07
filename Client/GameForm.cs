@@ -38,11 +38,7 @@ namespace Client
             message.ReceiveUndoMessage();
             message.RecieveMessage();
             player = new Player();
-            player = new MineDeep(player);
-            player = new MineWide(player);
-            player = new MineStronger(player);
-
-            MovementLabel.Text = player.Mine("");
+       
 
             playerPictureBox.Hide();
             enemyPictureBox.Hide();
@@ -103,11 +99,35 @@ namespace Client
         {
             int[] temp;
             Point prevLoc = playerPictureBox.Location;
-            temp = movement.SendBoxCoordinates(sender, e, editor, map);
+            temp = movement.SendBoxCoordinates(sender, e, editor, map, player);
             if (temp[0] == 0 && temp[1] == 0)
                 return;
 
-        
+            //Jeigu dalinas is 5 be liekanos score
+            if (editor.getScore() % 5 == 0 && !editor.getEffectIsGranted())
+            {
+                Random rnd = new Random();
+                int randomNr = rnd.Next(1, 4);
+                //Cia gaunas po kiekvieno movemento buna
+                switch (randomNr)
+                {
+                    case 1:
+                        player = new MineDeep(player);
+                        editor.setEffectIsGranted(true);
+                        break;
+                    case 2:
+                        player = new MineStronger(player);
+                        editor.setEffectIsGranted(true);
+                        break;
+                   case 3:
+                        player = new MineWide(player);
+                        editor.setEffectIsGranted(true);
+                        break;
+                }
+            }
+         
+
+            MovementLabel.Text = player.Mine("");
 
             playerPictureBox.Location = new Point(temp[0], temp[1]);
             movement.FlipImage(playerPictureBox, prevLoc, false);
@@ -118,7 +138,7 @@ namespace Client
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space || e.KeyCode == Keys.Q || e.KeyCode == Keys.E) 
                 Thread.Sleep(25);
 
-            movement.fall_down(temp, editor, map);
+            movement.fall_down(temp, editor, map, player);
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)
