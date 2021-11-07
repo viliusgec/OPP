@@ -108,7 +108,6 @@ namespace Client
             {
                 Random rnd = new Random();
                 int randomNr = rnd.Next(1, 4);
-                //Cia gaunas po kiekvieno movemento buna
                 switch (randomNr)
                 {
                     case 1:
@@ -125,9 +124,6 @@ namespace Client
                         break;
                 }
             }
-         
-
-            MovementLabel.Text = player.Mine("");
 
             playerPictureBox.Location = new Point(temp[0], temp[1]);
             movement.FlipImage(playerPictureBox, prevLoc, false);
