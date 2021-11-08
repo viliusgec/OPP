@@ -13,6 +13,7 @@ namespace Client
         public PictureBox pictureBox2;
         public Label scoreLabel;
         int score = 0;
+        bool effectIsGranted = false;
 
         public FormsEditor(PictureBox pictureBox1, PictureBox pictureBox2, Label scoreLabel)
         {
@@ -26,6 +27,22 @@ namespace Client
             score += 1;
             scoreLabel.Text = "Score: " + score;
         }
+
+        public int getScore()
+        {
+            return score;
+        }
+
+        public bool getEffectIsGranted()
+        {
+            return effectIsGranted;
+        }
+
+        public void setEffectIsGranted(bool effectState)
+        {
+            effectIsGranted = effectState;
+        }
+
         public void buyMenu()
         {
             score += 10;

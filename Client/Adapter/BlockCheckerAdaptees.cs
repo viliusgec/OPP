@@ -1,4 +1,5 @@
-﻿using Client.Observer;
+﻿using Client.Decorator;
+using Client.Observer;
 using Client.PictureBoxBuilder;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
@@ -15,7 +16,7 @@ namespace Client.Adapter
     {
         ServerObserver ServerObserver = new();
 
-        public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection)
+        public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player)
         {
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
@@ -24,36 +25,68 @@ namespace Client.Adapter
             switch (side)
             {
                 case 0:
-                    loc = new Point(x, y + editor.pictureBox1.Height);
-                    box = MapBuilder.GetPictureBox(loc);
+                    var playerPowerUpsDeep = player.Mine("").Split(';');
 
-                    if (box == null)
-                        return false;
-
-                    block = MapBuilder.GetBlock(loc, map);
-
-                    if (block.GetBlockType() == "unbreakable")
-                        return false;
-
-                    block.SetHealth((Int32.Parse(block.GetHealth()) - 25).ToString());
-
-                    block.SetImage("");
-
-                    box.ImageLocation = block.GetImage();
-                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
-                    ServerObserver.ReceiveMinedBoxSkin();
-
-                    if (Int32.Parse(block.GetHealth()) <= 0)
+                    int mineDeep = 1;
+                    int mineStrongerDeep = 1;
+                    foreach (string playerPowerUp in playerPowerUpsDeep)
                     {
-
-                        if (box.Enabled)
+                        if (playerPowerUp == "mineDeep")
                         {
-                            box.Hide();
-                            box.Enabled = false;
-                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
-                            ServerObserver.ReceiveMinedBoxCoordinates();
-                            editor.addScore();
-                            return true;
+                            mineDeep++;
+                        }
+                        if (playerPowerUp == "mineStronger")
+                        {
+                            mineStrongerDeep++;
+                        }
+                    }
+
+                    var defaultLoc = new Point(x, y + editor.pictureBox1.Height);
+
+                    for (int i = 1; i <= mineDeep; i++)
+                    {
+                        loc = new Point(x, y + editor.pictureBox1.Height * i);
+                        box = MapBuilder.GetPictureBox(loc);
+
+                        if (box == null)
+                            return false;
+
+                        block = MapBuilder.GetBlock(loc, map);
+
+                        if (block.GetBlockType() == "unbreakable")
+                            return false;
+
+                        block.SetHealth((Int32.Parse(block.GetHealth()) - (25 * mineStrongerDeep)).ToString());
+                        block.SetImage("");
+
+                        box.ImageLocation = block.GetImage();
+                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
+                        ServerObserver.ReceiveMinedBoxSkin();
+
+                        if (Int32.Parse(block.GetHealth()) <= 0)
+                        {
+
+                            if (box.Enabled)
+                            {
+                                box.Hide();
+                                box.Enabled = false;
+                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                                ServerObserver.ReceiveMinedBoxCoordinates();
+                                editor.addScore();
+
+                                if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)
+                                {
+                                    editor.setEffectIsGranted(false);
+                                }
+
+                                if (loc == defaultLoc)
+                                {
+                                    return true;
+                                } else
+                                {
+                                    return false;
+                                }
+                            }
                         }
                     }
 
@@ -107,69 +140,135 @@ namespace Client.Adapter
                         return true;
                     return false;
                 case 7:
-                    loc = new Point(x - editor.pictureBox1.Width, y);
-                    box = MapBuilder.GetPictureBox(loc);
+                    var playerPowerUpsLeft = player.Mine("").Split(';');
 
-                    if (box == null)
-                        return false;
-
-                    block = MapBuilder.GetBlock(loc, map);
-
-                    if (block.GetBlockType() == "unbreakable")
-                        return false;
-
-                    block.SetHealth((Int32.Parse(block.GetHealth()) - 25).ToString());
-
-                    block.SetImage("");
-                    box.ImageLocation = block.GetImage();
-                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
-                    ServerObserver.ReceiveMinedBoxSkin();
-
-                    if (Int32.Parse(block.GetHealth()) <= 0)
+                    int mineWideLeft = 1;
+                    int mineStrongerLeft = 1;
+                    foreach (string playerPowerUp in playerPowerUpsLeft)
                     {
-
-                        if (box.Enabled)
+                        if (playerPowerUp == "mineWide")
                         {
-                            box.Hide();
-                            box.Enabled = false;
-                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
-                            ServerObserver.ReceiveMinedBoxCoordinates();
-                            editor.addScore();
-                            return true;
+                            mineWideLeft++;
+                        }
+                        if (playerPowerUp == "mineStronger")
+                        {
+                            mineStrongerLeft++;
+                        }
+                    }
+
+                    var defaultLocLeft = new Point(x - editor.pictureBox1.Width, y);
+
+                    for (int i = 1; i <= mineWideLeft; i++)
+                    {
+                        loc = new Point(x - editor.pictureBox1.Width * i, y);
+                        box = MapBuilder.GetPictureBox(loc);
+
+                        if (box == null)
+                            return false;
+
+                        block = MapBuilder.GetBlock(loc, map);
+
+                        if (block.GetBlockType() == "unbreakable")
+                            return false;
+
+                        block.SetHealth((Int32.Parse(block.GetHealth()) - (25 * mineStrongerLeft)).ToString());
+
+                        block.SetImage("");
+                        box.ImageLocation = block.GetImage();
+                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
+                        ServerObserver.ReceiveMinedBoxSkin();
+
+                        if (Int32.Parse(block.GetHealth()) <= 0)
+                        {
+
+                            if (box.Enabled)
+                            {
+                                box.Hide();
+                                box.Enabled = false;
+                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                                ServerObserver.ReceiveMinedBoxCoordinates();
+                                editor.addScore();
+
+                                if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)
+                                {
+                                    editor.setEffectIsGranted(false);
+                                }
+
+                                if (loc == defaultLocLeft)
+                                {
+                                    return true;
+                                } else
+                                {
+                                    return false;
+                                }
+                            }
                         }
                     }
 
                     return false;
                 case 8:
-                    loc = new Point(x + editor.pictureBox1.Width, y);
-                    box = MapBuilder.GetPictureBox(loc);
+                    var playerPowerUpsRight = player.Mine("").Split(';');
 
-                    if (box == null)
-                        return false;
-
-                    block = MapBuilder.GetBlock(loc, map);
-
-                    if (block.GetBlockType() == "unbreakable")
-                        return false;
-
-                    block.SetHealth((Int32.Parse(block.GetHealth()) - 25).ToString());
-                        
-                    block.SetImage("");
-                    box.ImageLocation = block.GetImage();
-                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
-                    ServerObserver.ReceiveMinedBoxSkin();
-
-                    if (Int32.Parse(block.GetHealth()) <= 0)
+                    int mineWideRight = 1;
+                    int mineStrongerRight = 1;
+                    foreach (string playerPowerUp in playerPowerUpsRight)
                     {
-
-                        if (box.Enabled)
+                        if (playerPowerUp == "mineWide")
                         {
-                            box.Hide();
-                            box.Enabled = false;
-                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
-                            ServerObserver.ReceiveMinedBoxCoordinates();
-                            editor.addScore();
-                            return true;
+                            mineWideRight++;
+                        }
+                        if (playerPowerUp == "mineStronger")
+                        {
+                            mineStrongerRight++;
+                        }
+                    }
+
+                    var defaultLocRight = new Point(x + editor.pictureBox1.Width, y);
+
+                    for (int i = 1; i <= mineWideRight; i++)
+                    {
+                        loc = new Point(x + editor.pictureBox1.Width * i, y);
+                        box = MapBuilder.GetPictureBox(loc);
+
+                        if (box == null)
+                            return false;
+
+                        block = MapBuilder.GetBlock(loc, map);
+
+                        if (block.GetBlockType() == "unbreakable")
+                            return false;
+
+                        block.SetHealth((Int32.Parse(block.GetHealth()) - (25 * mineStrongerRight)).ToString());
+
+                        block.SetImage("");
+                        box.ImageLocation = block.GetImage();
+                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
+                        ServerObserver.ReceiveMinedBoxSkin();
+
+                        if (Int32.Parse(block.GetHealth()) <= 0)
+                        {
+
+                            if (box.Enabled)
+                            {
+                                box.Hide();
+                                box.Enabled = false;
+                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                                ServerObserver.ReceiveMinedBoxCoordinates();
+                                editor.addScore();
+
+                                if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)
+                                {
+                                    editor.setEffectIsGranted(false);
+                                }
+
+                                if (loc == defaultLocRight)
+                                {
+                                    return true;
+                                } else
+                                {
+                                    return false;
+                                }
+                            }
                         }
                     }
 

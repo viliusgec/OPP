@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace Client
+namespace Client.Decorator
 {
-    public class Player
-    {   
-      
+    abstract class Character
+    {
+        public abstract string Mine(string s);
     }
 }
