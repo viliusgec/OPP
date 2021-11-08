@@ -3,29 +3,34 @@ using System.Windows.Forms;
 
 namespace Client.Command
 {
-    class Message : IMessage
+    class SendMessage : ICommand
     {
         public TextBox TextBox;
         private string myLastMessage;
         private readonly ServerObserver observer = new();
-        public Message(TextBox textBox)
+        public SendMessage(TextBox textBox)
         {
             TextBox = textBox;
         }
 
-        public void SendMessage(string message)
+        public void Send(string message)
         {
             myLastMessage = message;
             observer.SendMessage(message);
             TextBox.AppendText("Me: " + message + "\r\n");
         }
 
-        public void UndoMessage()
+        public void Undo()
         {
-            observer.UndoMessage(myLastMessage);
-            TextBox.Text = TextBox.Text.Replace("Me: " + myLastMessage + "\r\n", "");
+            observer.UndoMessage();
+            var index = TextBox.Text.LastIndexOf("Me: ");
+            if(index >= 0)
+            {
+                var endIndex = TextBox.Text.IndexOf("\r\n", index);
+                TextBox.Text = TextBox.Text.Remove(index, endIndex - index + 1);
+            }     
         }
-
+            
         public void RecieveMessage()
         {
             observer.ReceiveMessage(TextBox);
