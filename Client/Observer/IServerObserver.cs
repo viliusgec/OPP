@@ -13,7 +13,7 @@ namespace Client.Observer
         public Task SendMap(Map.MapBase map);
         public void SendMessage(string message);
         public void ReceiveMessage(TextBox textBox);
-        public void UndoMessage(string message);
+        public void UndoMessage();
         public void ReceiveUndoMessage(TextBox textBox);
         public MapBuilder ReceiveMap(Map.MapBase map, PictureBox pictureBox1, PictureBox pictureBox2, Button button1, ImageList imageList1, Control.ControlCollection control, Size size);
     }

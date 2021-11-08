@@ -73,7 +73,10 @@ namespace Client.Observer
         {
             connection.On<string>("ReceiveUndoMessage", (x) =>
             {
-                textBox.Text = textBox.Text.Replace("Enemy: " + x + "\r\n", "");
+                var index = textBox.Text.LastIndexOf("Enemy: ");
+                var endIndex = textBox.Text.IndexOf("\r\n", index);
+                if (index >= 0)
+                    textBox.Text = textBox.Text.Remove(index, endIndex - index + 1);
             });
         }
         public Map.MapBase GetMap() { return tempMap; }
@@ -91,9 +94,9 @@ namespace Client.Observer
             connection.InvokeAsync("SendMessage", message);
         }
 
-        public void UndoMessage(string message)
+        public void UndoMessage()
         {
-            connection.InvokeAsync("UndoMessage", message);
+            connection.InvokeAsync("UndoMessage", "");
         }
     }
 }

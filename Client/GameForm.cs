@@ -9,6 +9,7 @@ using Client.Observer;
 using Client.Command;
 using Client.PictureBoxBuilder;
 using Client.Decorator;
+using System.Collections.Generic;
 
 namespace Client
 {
@@ -19,10 +20,11 @@ namespace Client
         MapBuilder MapBuilder = new();
         Movement movement;
         private Map.MapBase map;
-        Command.Message message;
+        Command.SendMessage message;
+        Command.SendEmote emote;
         FormsEditor editor;
         Character player;
-
+        private List<ICommand> ChatCommands = new();
 
 
         public GameForm()
@@ -34,11 +36,12 @@ namespace Client
             connection = SingletonConnection.GetInstance().GetConnection();
             movement = new Movement(connection);
 
-            message = new Command.Message(textBox2);
+            message = new Command.SendMessage(textBox2);
+            emote = new Command.SendEmote(textBox2);
             message.ReceiveUndoMessage();
             message.RecieveMessage();
             player = new Player();
-       
+
 
             playerPictureBox.Hide();
             enemyPictureBox.Hide();
@@ -88,7 +91,7 @@ namespace Client
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
             });
 
-            
+
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -118,7 +121,7 @@ namespace Client
                         player = new MineStronger(player);
                         editor.setEffectIsGranted(true);
                         break;
-                   case 3:
+                    case 3:
                         player = new MineWide(player);
                         editor.setEffectIsGranted(true);
                         break;
@@ -127,11 +130,11 @@ namespace Client
 
             playerPictureBox.Location = new Point(temp[0], temp[1]);
             movement.FlipImage(playerPictureBox, prevLoc, false);
-            
+
 
             _ = SendGetCoordinatesAsync(temp[0], temp[1]);
 
-            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space || e.KeyCode == Keys.Q || e.KeyCode == Keys.E) 
+            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space || e.KeyCode == Keys.Q || e.KeyCode == Keys.E)
                 Thread.Sleep(25);
 
             movement.fall_down(temp, editor, map, player);
@@ -196,10 +199,11 @@ namespace Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(textBox1.Text != string.Empty)
+            if (textBox1.Text != string.Empty)
             {
-                message.SendMessage(textBox1.Text);
+                message.Send(textBox1.Text);
                 textBox1.Text = "";
+                ChatCommands.Add(message);
             }
         }
 
@@ -215,7 +219,17 @@ namespace Client
 
         private void button3_Click(object sender, EventArgs e)
         {
-            message.UndoMessage();
+            int index = ChatCommands.Count-1;
+            ICommand cmd = ChatCommands[index];
+            ChatCommands.RemoveAt(index);
+            cmd.Undo();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            emote.Send(textBox1.Text);
+            textBox1.Text = "";
+            ChatCommands.Add(emote);
         }
     }
 }
