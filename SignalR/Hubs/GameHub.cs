@@ -5,6 +5,10 @@ namespace SignalRChat.Hubs
 {
     public class GameHub : Hub
     {
+        public async Task SendState(string state)
+        {
+            await Clients.Others.SendAsync("ReceiveState", state);
+        }
         public async Task SendCoordinates(string x, string y)
         {
             await Clients.Others.SendAsync("ReceiveCoordinates", x, y);

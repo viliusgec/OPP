@@ -15,6 +15,7 @@ namespace Client
 {
     public partial class GameForm : Form
     {
+        string game_state = "playing";
         private static HubConnection connection;
         ServerObserver ServerObserver = new();
         MapBuilder MapBuilder = new();
@@ -53,7 +54,7 @@ namespace Client
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             KeyPreview = false;
             KeyDown += SendBoxCoordinates;
-
+            gameStateLabel.Location = new Point((this.Width / 2)-80, (this.Height / 2));
             ServerObserver.ReceiveCoordinates(enemyPictureBox, movement);
             MapBuilder = ServerObserver.ReceiveMap(map, playerPictureBox, enemyPictureBox, button1, imageList1, Controls, Size);
             connection.On<string>("ReceiveMap", (jsonString) =>
@@ -91,6 +92,14 @@ namespace Client
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
             });
 
+            connection.On<string>("ReceiveState", (state) =>
+            {
+                if (game_state != "end")
+                {
+                    game_state = state;
+                    gameStateLabel.Text = "You lost!";
+                }
+            });
 
         }
 
@@ -100,6 +109,8 @@ namespace Client
 
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
         {
+            if (game_state == "end")
+                return;
             int[] temp;
             Point prevLoc = playerPictureBox.Location;
             temp = movement.SendBoxCoordinates(sender, e, editor, map, player);
@@ -138,6 +149,23 @@ namespace Client
                 Thread.Sleep(25);
 
             movement.fall_down(temp, editor, map, player);
+            check_if_win();
+        }
+
+        public void check_if_win()
+        {
+            if (playerPictureBox.Location.Y >= playerPictureBox.Height*15)
+            {
+                game_state = "end";
+                gameStateLabel.Text = "You won!";
+                _=SendState(game_state);
+            }
+        }
+
+        private async Task SendState(string state)
+        {
+            await connection.InvokeAsync("SendState",
+                    state.ToString());
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)
@@ -230,6 +258,11 @@ namespace Client
             emote.Send(textBox1.Text);
             textBox1.Text = "";
             ChatCommands.Add(emote);
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
