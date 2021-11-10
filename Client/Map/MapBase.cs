@@ -132,6 +132,21 @@ namespace Client.Map
                         // ir idet i random koordinates kazkokias ar kazka
                         // blocks[i,j].Clone
                     }
+                    var unbreakableCount = 0;
+                    for(int ii = 0; ii < x; ii++)
+                    {
+                        if(blocks[ii, j] != null && blocks[ii, j].GetBlockType() == "unbreakable")
+                        {
+                            unbreakableCount++;
+                        }
+                    }
+                    if (unbreakableCount > 3)
+                    {
+                        if(a < 50)
+                            blocks[i, j] = factory.GetStatic();
+                        else
+                            blocks[i, j] = factory.GetFalling();
+                    }
                 }
             }
         }

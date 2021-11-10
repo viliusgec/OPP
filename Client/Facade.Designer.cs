@@ -1,7 +1,7 @@
 ﻿
 namespace Client
 {
-    partial class GameForm
+    partial class Facade
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace Client
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Facade));
             this.enemyPictureBox = new System.Windows.Forms.PictureBox();
             this.playerPictureBox = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
