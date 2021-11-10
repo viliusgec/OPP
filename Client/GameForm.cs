@@ -69,6 +69,7 @@ namespace Client
                 button1.Hide();
                 button2.Hide();
                 button3.Hide();
+                button4.Hide();
                 textBox1.Hide();
                 textBox2.Hide();
                 label2.Hide();
@@ -90,6 +91,7 @@ namespace Client
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
+                MapBuilder.BlocksFall(map, editor, int.Parse(x), int.Parse(y));
             });
 
             connection.On<string>("ReceiveState", (state) =>
@@ -113,12 +115,12 @@ namespace Client
                 return;
             int[] temp;
             Point prevLoc = playerPictureBox.Location;
-            temp = movement.SendBoxCoordinates(sender, e, editor, map, player);
+            temp = movement.SendBoxCoordinates(sender, e, editor, map, player, MapBuilder);
             if (temp[0] == 0 && temp[1] == 0)
                 return;
 
             //Jeigu dalinas is 5 be liekanos score
-            if (editor.getScore() % 5 == 0 && !editor.getEffectIsGranted())
+            if (editor.getScore() % 5 == 0 && !editor.getEffectIsGranted() && editor.getScore() != 0)
             {
                 Random rnd = new Random();
                 int randomNr = rnd.Next(1, 4);
@@ -193,6 +195,7 @@ namespace Client
             button1.Hide();
             button2.Hide();
             button3.Hide();
+            button4.Hide();
             textBox1.Hide();
             textBox2.Hide();
             label2.Hide();

@@ -56,7 +56,7 @@ namespace Client.Strategy
             pictureBox.Refresh();
         }
 
-        public int[] SendBoxCoordinates(object sender, KeyEventArgs e, FormsEditor editor, Map.MapBase map, Character player)
+        public int[] SendBoxCoordinates(object sender, KeyEventArgs e, FormsEditor editor, Map.MapBase map, Character player, MapBuilder mapBuilder)
         {
             int x = editor.pictureBox1.Location.X;
             int y = editor.pictureBox1.Location.Y;
@@ -67,50 +67,50 @@ namespace Client.Strategy
             switch (e.KeyCode)
             {
                 case (Keys.Q):
-                    if (check_if_block_exists(4, x, y, editor, map, player))
+                    if (check_if_block_exists(4, x, y, editor, map, player, mapBuilder))
                         strategy = new MoveUpLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.E):
-                    if (check_if_block_exists(5, x, y, editor, map, player))
+                    if (check_if_block_exists(5, x, y, editor, map, player, mapBuilder))
                         strategy = new MoveUpRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.A):
-                    if (check_if_block_exists(2, x, y, editor, map, player))
+                    if (check_if_block_exists(2, x, y, editor, map, player, mapBuilder))
                         strategy = new MoveLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.D):
-                    if (check_if_block_exists(3, x, y, editor, map, player))
+                    if (check_if_block_exists(3, x, y, editor, map, player, mapBuilder))
                         strategy = new MoveRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.Space):
                 case (Keys.W):
-                    if (check_if_block_exists(1, x, y, editor, map, player))
+                    if (check_if_block_exists(1, x, y, editor, map, player, mapBuilder))
                         strategy = new Jump(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.ShiftKey):
-                    if (check_if_block_exists(0, x, y, editor, map, player))
+                    if (check_if_block_exists(0, x, y, editor, map, player, mapBuilder))
                         strategy = new Mine(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.J):
-                    if (check_if_block_exists(7, x, y, editor, map, player))
+                    if (check_if_block_exists(7, x, y, editor, map, player, mapBuilder))
                         strategy = new MineLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
                     break;
                 case (Keys.K):
-                    if (check_if_block_exists(8, x, y, editor, map, player))
+                    if (check_if_block_exists(8, x, y, editor, map, player, mapBuilder))
                         strategy = new MineRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
                     else
                         return temp;
@@ -129,12 +129,12 @@ namespace Client.Strategy
          * side meanings: 0 - down, 1 - up, 2 - left, 3 - right, 4 - up left, 5 - up right,
          * 6 - just to check if block exists, no action taken, 7 - Mine Left, 8 - Mine Right
          */
-        private bool check_if_block_exists(int side, int x, int y, FormsEditor editor, Map.MapBase map, Character player)
+        private bool check_if_block_exists(int side, int x, int y, FormsEditor editor, Map.MapBase map, Character player, MapBuilder mapBuilder)
         {
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
 
-            BlockChecker blockchecker = new BlockCheckerAdapter(side, x, y, editor, map, connection, player);
+            BlockChecker blockchecker = new BlockCheckerAdapter(side, x, y, editor, map, connection, player, mapBuilder);
 
             return blockchecker.check_if_block_exists();
         }
@@ -142,7 +142,7 @@ namespace Client.Strategy
 
         public void fall_down(int[] coords, FormsEditor editor, Map.MapBase map, Character player)
         {
-            while (check_if_block_exists(6, coords[0], coords[1], editor, map, player) == false)
+            while (check_if_block_exists(6, coords[0], coords[1], editor, map, player,new MapBuilder()) == false)
             {
                 editor.pictureBox1.Location = new Point(coords[0], coords[1] + editor.pictureBox1.Height);
                 _ = SendGetCoordinatesAsync(coords[0], coords[1] + editor.pictureBox1.Height);

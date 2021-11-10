@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Client.PictureBoxBuilder
 {
-    public class MapBuilder
+    class MapBuilder
     {
         public int boxWidth;
         public int boxHeight;
@@ -12,12 +12,72 @@ namespace Client.PictureBoxBuilder
         readonly static int mapy = 12;
         static PictureBox[,] boxes;
         public bool boxesAdded = false;
+        public int startX;
+        public int startY;
+        public int endX;
+        public int endY;
+
         PictureBox mid1;
         PictureBox mid2;
 
         public MapBuilder()
         {
 
+        }
+
+        public void BlocksFall(Map.MapBase map, FormsEditor editor, int x, int y)
+        {
+            var loc = new Point(x, y - boxHeight);
+            if (GetPictureBox(loc) != null && GetPictureBox(loc).Enabled == true)
+            {
+                var block = GetBlock(loc, map);
+                if (block.GetBlockType() == "falling") 
+                {
+                    while(GetPictureBox(loc).Enabled != false && block != null && block.GetBlockType() == "falling")
+                    {
+                        var oldBox = GetPictureBox(loc);
+                        var newBox = GetPictureBox(new Point(x, y));
+
+
+
+                        var oldBlock = GetBlock(loc, map);
+                        var newBlock = GetBlock(new Point(x, y), map);
+                        var tempBlock = (Map.Block)newBlock.Clone();
+
+                        if (oldBlock != null && oldBlock.GetBlockType() == "falling")
+                        {
+                            newBlock.SetBlockType(oldBlock.GetBlockType());
+                            newBlock.SetEffect(oldBlock.GetEffect());
+                            newBlock.SetName(oldBlock.GetName());
+                            newBlock.SetHealth(oldBlock.GetHealth());
+                            newBlock.SetImage(oldBlock.GetImage());
+
+                            oldBlock.SetBlockType(tempBlock.GetBlockType());
+                            oldBlock.SetEffect(tempBlock.GetEffect());
+                            oldBlock.SetName(tempBlock.GetName());
+                            oldBlock.SetHealth(tempBlock.GetHealth());
+                            oldBlock.SetImage(tempBlock.GetImage());
+
+                            GetPictureBox(new Point(x, y)).Enabled = true;
+                            GetPictureBox(loc).Enabled = false;
+                            GetPictureBox(new Point(x, y)).Show();
+                            GetPictureBox(loc).Hide();
+
+                            GetPictureBox(new Point(x, y)).ImageLocation = newBlock.GetImage();
+                            GetPictureBox(new Point(x, y)).Refresh();
+                            y = y - boxHeight;
+                            loc = new Point(x, y - boxHeight);
+                            block = GetBlock(loc, map);
+                            if (block == null)
+                                break;
+                            
+                        }
+                        else
+                            break;
+                        
+                    }
+                }
+            }
         }
 
         public static PictureBox GetPictureBox(Point loc)
@@ -49,6 +109,35 @@ namespace Client.PictureBoxBuilder
             }
             return null;
         }
+        public static void SetPictureBox(Point loc, PictureBox box)
+        {
+            for (int i = 0; i < mapx; i++)
+            {
+                for (int j = 0; j < mapy + 1; j++)
+                {
+                    if (boxes[i, j].Location == loc)
+                    {
+                        boxes[i, j] = box;
+                    }
+                }
+            }
+        }
+
+        public static void SetBlock(Point loc, Map.MapBase map, Map.Block block)
+        {
+            for (int i = 0; i < mapx; i++)
+            {
+                for (int j = 0; j < mapy; j++)
+                {
+                    if (boxes[i, j].Location == loc)
+                    {
+                        var blox = map.getBlocks();
+                        blox[i, j] = block;
+                        map.setBlocks(blox);
+                    }
+                }
+            }
+        }
 
         public void AddPictureBoxes(PictureBox pictureBox1, PictureBox pictureBox2, Control.ControlCollection controls, Size size)
         {
@@ -56,10 +145,10 @@ namespace Client.PictureBoxBuilder
             var formSize = size;
             int width = formSize.Width;
             int height = formSize.Height;
-            int startX = width / 5;
-            int startY = height / 5;
-            int endX = width / 5 * 4;
-            int endY = height / 7 * 6;
+            startX = width / 5;
+            startY = height / 5;
+            endX = width / 5 * 4;
+            endY = height / 7 * 6;
             boxWidth = (endX - startX) / mapx;
             boxHeight = boxWidth;
             pictureBox1.Width = boxWidth;

@@ -19,8 +19,9 @@ namespace Client.Adapter
         HubConnection connection;
         Character player;
         private BlockCheckerAdaptees check;
+        PictureBoxBuilder.MapBuilder mapBuilder;
 
-        public BlockCheckerAdapter(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player)
+        public BlockCheckerAdapter(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, PictureBoxBuilder.MapBuilder mapBuilder)
         {
             this.side = side;
             this.x = x;
@@ -29,13 +30,14 @@ namespace Client.Adapter
             this.map = map;
             this.connection = connection;
             this.player = player;
+            this.mapBuilder = mapBuilder;
             check = new BlockCheckerAdaptees();
         }
         public override bool check_if_block_exists()
         {
             bool exist = false;
 
-            exist = check.check_if_block_exists_specific(side, x, y, editor, map, connection, player);
+            exist = check.check_if_block_exists_specific(side, x, y, editor, map, connection, player, mapBuilder);
 
             return exist;
         }

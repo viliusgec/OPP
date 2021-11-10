@@ -22,7 +22,7 @@ namespace Client.Strategy
         }
         public int[] Behave(int x, int y, int height, int width)
         {
-            int[] coords = { x - width, y };
+            int[] coords = { x, y };
             return coords;
         }
     }
