@@ -16,7 +16,7 @@ namespace Client.Adapter
     {
         ServerObserver ServerObserver = new();
 
-        public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player)
+        public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, MapBuilder mapBuilder)
         {
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
@@ -71,7 +71,7 @@ namespace Client.Adapter
                                 box.Hide();
                                 box.Enabled = false;
                                 _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
-                                ServerObserver.ReceiveMinedBoxCoordinates();
+                                ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                                 editor.addScore();
 
                                 if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)
@@ -102,6 +102,8 @@ namespace Client.Adapter
                 case 2:
                     loc = new Point(x - editor.pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
+                    if (mapBuilder.startX > loc.X)
+                        return false;
                     if (box == null)
                         return true;
                     if (box.Enabled)
@@ -110,6 +112,8 @@ namespace Client.Adapter
                 case 3:
                     loc = new Point(x + editor.pictureBox1.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
+                    if (mapBuilder.endX - mapBuilder.boxWidth < loc.X)
+                        return false;
                     if (box == null)
                         return true;
                     if (box.Enabled)
@@ -186,7 +190,8 @@ namespace Client.Adapter
                                 box.Hide();
                                 box.Enabled = false;
                                 _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
-                                ServerObserver.ReceiveMinedBoxCoordinates();
+                                mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
+                                ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                                 editor.addScore();
 
                                 if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)
@@ -253,7 +258,8 @@ namespace Client.Adapter
                                 box.Hide();
                                 box.Enabled = false;
                                 _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
-                                ServerObserver.ReceiveMinedBoxCoordinates();
+                                mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
+                                ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                                 editor.addScore();
 
                                 if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)

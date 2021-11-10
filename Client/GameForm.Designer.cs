@@ -162,7 +162,7 @@ namespace Client
             this.ScoreLabel.AutoSize = true;
             this.ScoreLabel.BackColor = System.Drawing.Color.Transparent;
             this.ScoreLabel.Font = new System.Drawing.Font("Arial Narrow", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.ScoreLabel.Location = new System.Drawing.Point(6, 80);
+            this.ScoreLabel.Location = new System.Drawing.Point(6, 40);
             this.ScoreLabel.Name = "ScoreLabel";
             this.ScoreLabel.Size = new System.Drawing.Size(0, 43);
             this.ScoreLabel.TabIndex = 26;

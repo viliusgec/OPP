@@ -31,11 +31,12 @@ namespace Client.Observer
                 movement.FlipImage(enemy, prevLoc, true);
             });
         }
-        public void ReceiveMinedBoxCoordinates()
+        public void ReceiveMinedBoxCoordinates(MapBuilder tempMapBuilder, Map.MapBase map, FormsEditor editor)
         {
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
+                
             });
         }
 
