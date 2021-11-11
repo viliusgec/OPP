@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Client
 {
-    public partial class GameForm : Form
+    public partial class Facade : Form
     {
         string game_state = "playing";
         private static HubConnection connection;
@@ -28,15 +28,17 @@ namespace Client
         private List<ICommand> ChatCommands = new();
 
 
-        public GameForm()
+        public Facade()
         {
             InitializeComponent();
             MovementLabel.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q - Jump up left \n E - jump up right\n SHIFT - dig down\n J - dig left\n K - dig right";
             FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel);
             editor = tempEdit;
+            //Singleton
             connection = SingletonConnection.GetInstance().GetConnection();
             movement = new Movement(connection);
 
+            //Command
             message = new Command.SendMessage(textBox2);
             emote = new Command.SendEmote(textBox2);
             message.ReceiveUndoMessage();
@@ -120,6 +122,7 @@ namespace Client
                 return;
 
             //Jeigu dalinas is 5 be liekanos score
+            //Decorator
             if (editor.getScore() % 5 == 0 && !editor.getEffectIsGranted() && editor.getScore() != 0)
             {
                 Random rnd = new Random();
@@ -141,6 +144,7 @@ namespace Client
                 }
             }
 
+            //Strategy
             playerPictureBox.Location = new Point(temp[0], temp[1]);
             movement.FlipImage(playerPictureBox, prevLoc, false);
 
@@ -181,6 +185,7 @@ namespace Client
             int mapx = 11;
             int mapy = 12;
 
+            //AbstractFactory, Factory, Bridge
             map = new Map.MapBase(mapx, mapy);
             map.setFactory(1);
             map.CreateMap();

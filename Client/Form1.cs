@@ -22,7 +22,7 @@ namespace Client
             connection = temp_connection.GetConnection();
           
          
-            gameForm = new GameForm();
+            gameForm = new Facade();
             
         }
 
