@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Client.Command
 {
-    class SendEmote : ICommand
+    public class SendEmote : ICommand
     {
         public TextBox TextBox;
         private readonly ServerObserver observer = new();

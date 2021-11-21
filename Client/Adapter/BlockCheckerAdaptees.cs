@@ -14,7 +14,7 @@ namespace Client.Adapter
 {
     class BlockCheckerAdaptees
     {
-        ServerObserver ServerObserver = new ServerObserver();
+        ServerObserver ServerObserver = new();
 
         public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, MapBuilder mapBuilder)
         {
