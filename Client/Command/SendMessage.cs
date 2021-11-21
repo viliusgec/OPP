@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Client.Command
 {
-    class SendMessage : ICommand
+    public class SendMessage : ICommand
     {
         public TextBox TextBox;
         private string myLastMessage;
