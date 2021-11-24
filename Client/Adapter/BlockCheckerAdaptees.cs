@@ -16,7 +16,7 @@ namespace Client.Adapter
     {
         ServerObserver ServerObserver = new();
 
-        public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, MapBuilder mapBuilder)
+        public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, MapBuilder mapBuilder, string room)
         {
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
@@ -60,7 +60,7 @@ namespace Client.Adapter
                         block.SetImage("");
 
                         box.ImageLocation = block.GetImage();
-                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
+                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(),room);
                         ServerObserver.ReceiveMinedBoxSkin();
 
                         if (Int32.Parse(block.GetHealth()) <= 0)
@@ -70,7 +70,7 @@ namespace Client.Adapter
                             {
                                 box.Hide();
                                 box.Enabled = false;
-                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection,room);
                                 ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                                 editor.addScore();
 
@@ -179,7 +179,7 @@ namespace Client.Adapter
 
                         block.SetImage("");
                         box.ImageLocation = block.GetImage();
-                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
+                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
                         ServerObserver.ReceiveMinedBoxSkin();
 
                         if (Int32.Parse(block.GetHealth()) <= 0)
@@ -189,7 +189,7 @@ namespace Client.Adapter
                             {
                                 box.Hide();
                                 box.Enabled = false;
-                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                                 mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                                 ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                                 editor.addScore();
@@ -247,7 +247,7 @@ namespace Client.Adapter
 
                         block.SetImage("");
                         box.ImageLocation = block.GetImage();
-                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage());
+                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
                         ServerObserver.ReceiveMinedBoxSkin();
 
                         if (Int32.Parse(block.GetHealth()) <= 0)
@@ -257,7 +257,7 @@ namespace Client.Adapter
                             {
                                 box.Hide();
                                 box.Enabled = false;
-                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection);
+                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                                 mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                                 ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                                 editor.addScore();
@@ -283,16 +283,16 @@ namespace Client.Adapter
                     return false;
             }
         }
-        private async Task SendMinedBoxCoordinatesAsync(int x, int y, HubConnection connection)
+        private async Task SendMinedBoxCoordinatesAsync(int x, int y, HubConnection connection,string room)
         {
             await connection.InvokeAsync("SendMinedBoxCoordinates",
-                    x.ToString(), y.ToString());
+                    x.ToString(), y.ToString(), room);
         }
 
-        private async Task SendMinedBoxSkinAsync(int x, int y, HubConnection connection, string path)
+        private async Task SendMinedBoxSkinAsync(int x, int y, HubConnection connection, string path,string room)
         {
             await connection.InvokeAsync("SendMinedBoxSkin",
-                    x.ToString(), y.ToString(), path);
+                    x.ToString(), y.ToString(), path, room);
         }
     }
 }

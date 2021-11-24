@@ -20,8 +20,9 @@ namespace Client.Adapter
         Character player;
         private BlockCheckerAdaptees check;
         PictureBoxBuilder.MapBuilder mapBuilder;
+        string room;
 
-        public BlockCheckerAdapter(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, PictureBoxBuilder.MapBuilder mapBuilder)
+        public BlockCheckerAdapter(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, PictureBoxBuilder.MapBuilder mapBuilder, string room)
         {
             this.side = side;
             this.x = x;
@@ -31,13 +32,14 @@ namespace Client.Adapter
             this.connection = connection;
             this.player = player;
             this.mapBuilder = mapBuilder;
+            this.room = room;
             check = new BlockCheckerAdaptees();
         }
         public override bool check_if_block_exists()
         {
             bool exist = false;
 
-            exist = check.check_if_block_exists_specific(side, x, y, editor, map, connection, player, mapBuilder);
+            exist = check.check_if_block_exists_specific(side, x, y, editor, map, connection, player, mapBuilder, room);
 
             return exist;
         }

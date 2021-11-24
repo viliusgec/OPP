@@ -10,6 +10,7 @@ using Client.Command;
 using Client.PictureBoxBuilder;
 using Client.Decorator;
 using System.Collections.Generic;
+using Client.Composite;
 
 namespace Client
 {
@@ -26,17 +27,20 @@ namespace Client
         FormsEditor editor;
         Character player;
         private List<ICommand> ChatCommands = new();
+        Room room;
+        bool generator = false;
 
 
-        public Facade()
+        public Facade(Room gameRoom)
         {
             InitializeComponent();
+            this.room = gameRoom;
             MovementLabel.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q - Jump up left \n E - jump up right\n SHIFT - dig down\n J - dig left\n K - dig right";
             FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel);
             editor = tempEdit;
             //Singleton
             connection = SingletonConnection.GetInstance().GetConnection();
-            movement = new Movement(connection);
+            movement = new Movement(connection, room.GetName());
 
             //Command
             message = new Command.SendMessage(textBox2);
@@ -61,27 +65,31 @@ namespace Client
             MapBuilder = ServerObserver.ReceiveMap(map, playerPictureBox, enemyPictureBox, button1, imageList1, Controls, Size);
             connection.On<string>("ReceiveMap", (jsonString) =>
             {
-                playerPictureBox.Show();
-                enemyPictureBox.Show();
-                map = ServerObserver.GetMap();
-                MapBuilder = ServerObserver.GetBuilder();
-                Point tempPoint = enemyPictureBox.Location;
-                enemyPictureBox.Location = playerPictureBox.Location;
-                playerPictureBox.Location = tempPoint;
-                button1.Hide();
-                button2.Hide();
-                button3.Hide();
-                button4.Hide();
-                textBox1.Hide();
-                textBox2.Hide();
-                label2.Hide();
-                button1.Enabled = false;
-                button2.Enabled = false;
-                button3.Enabled = false;
-                textBox1.Enabled = false;
-                textBox2.Enabled = false;
-                label2.Enabled = false;
-                KeyPreview = true;
+                if (!generator)
+                {
+                    playerPictureBox.Show();
+                    enemyPictureBox.Show();
+                    map = ServerObserver.GetMap();
+                    MapBuilder = ServerObserver.GetBuilder();
+                    Point tempPoint = enemyPictureBox.Location;
+                    enemyPictureBox.Location = playerPictureBox.Location;
+                    playerPictureBox.Location = tempPoint;
+                    button1.Hide();
+                    button2.Hide();
+                    button3.Hide();
+                    button4.Hide();
+                    textBox1.Hide();
+                    textBox2.Hide();
+                    label2.Hide();
+                    button1.Enabled = false;
+                    button2.Enabled = false;
+                    button3.Enabled = false;
+                    textBox1.Enabled = false;
+                    textBox2.Enabled = false;
+                    label2.Enabled = false;
+                    KeyPreview = true;
+                }
+                
             });
 
 
@@ -171,17 +179,18 @@ namespace Client
         private async Task SendState(string state)
         {
             await connection.InvokeAsync("SendState",
-                    state.ToString());
+                    state.ToString(), room.GetName());
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)
         {
             await connection.InvokeAsync("SendCoordinates",
-                    x.ToString(), y.ToString());
+                    x.ToString(), y.ToString(), room.GetName());
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            generator = true;
             int mapx = 11;
             int mapy = 12;
 
@@ -193,7 +202,7 @@ namespace Client
             MapBuilder.AddPictureBoxes(playerPictureBox, enemyPictureBox, Controls, Size);
 
             MapBuilder.CreateMap(imageList1, map);
-            _ = ServerObserver.SendMap(map);
+            _ = ServerObserver.SendMap(map, room.GetName());
             playerPictureBox.Show();
             enemyPictureBox.Show();
             editor.scoreZero();
@@ -237,7 +246,7 @@ namespace Client
         {
             if (textBox1.Text != string.Empty)
             {
-                message.Send(textBox1.Text);
+                message.Send(textBox1.Text,room.GetName());
                 textBox1.Text = "";
                 ChatCommands.Add(message);
             }
@@ -258,12 +267,12 @@ namespace Client
             int index = ChatCommands.Count-1;
             ICommand cmd = ChatCommands[index];
             ChatCommands.RemoveAt(index);
-            cmd.Undo();
+            cmd.Undo(room.GetName());
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            emote.Send(textBox1.Text);
+            emote.Send(textBox1.Text, room.GetName());
             textBox1.Text = "";
             ChatCommands.Add(emote);
         }
