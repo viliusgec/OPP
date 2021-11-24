@@ -91,7 +91,12 @@ namespace Client
             {
                 roomHub.GetRoom(x).players--;
                 if (roomHub.GetRoom(x).players <= 0)
+                {
                     roomHub.RemoveRoom(roomHub.GetRoom(x));
+                    roomListBox.Items.Clear();
+                    roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
+                }
+                    
             });
             connection.On<string, string>("ReceiveRoom", (name, password) => {
                 if(roomHub.GetRoom(name) == null)
@@ -101,7 +106,15 @@ namespace Client
                     roomListBox.Items.Clear();
                     roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
                 }
-                
+            });
+            connection.On<string>("ReceiveRemoveRoom", (name) => {
+                if (roomHub.GetRoom(name) == null)
+                {
+                    roomHub.RemoveRoom(roomHub.GetRoom(name));
+                    roomListBox.Items.Clear();
+                    roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
+                }
+
             });
 
         }
@@ -180,9 +193,11 @@ namespace Client
                 this.Hide();
                 gameForm.ShowDialog();
                 selectedRoom.LeaveRoom(connection);
+                roomHub.GetRoom(selectedRoom.GetName()).players--;
                 if (selectedRoom.players <= 0)
                 {
                     roomHub.RemoveRoom(selectedRoom);
+                    connection.InvokeAsync("SendRemoveRoom", selectedRoom.GetName());
                     roomListBox.Items.Clear();
                     roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
                 }

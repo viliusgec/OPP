@@ -15,40 +15,45 @@ namespace SignalRChat.Hubs
             await Clients.Others.SendAsync("ReceiveRoom", room, password).ConfigureAwait(true);
         }
 
+        public async Task SendRemoveRoom(string room)
+        {
+            await Clients.Others.SendAsync("ReceiveRemoveRoom", room).ConfigureAwait(true);
+        }
+
         public Task LeaveRoom(string room)
         {
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, room);
         }
         public async Task SendState(string state, string room)
         {
-            await Clients.Group(room).SendAsync("ReceiveState", state).ConfigureAwait(true);
+            await Clients.OthersInGroup(room).SendAsync("ReceiveState", state).ConfigureAwait(true);
         }
         public async Task SendCoordinates(string x, string y, string room)
         {
-            await Clients.Group(room).SendAsync("ReceiveCoordinates", x, y).ConfigureAwait(true);
+            await Clients.OthersInGroup(room).SendAsync("ReceiveCoordinates", x, y).ConfigureAwait(true);
         }
         public async Task SendMap(string x,string room)
         {
-            await Clients.Group(room).SendAsync("ReceiveMap", x).ConfigureAwait(true);
+            await Clients.OthersInGroup(room).SendAsync("ReceiveMap", x).ConfigureAwait(true);
         }
 
         public async Task SendMinedBoxCoordinates(string x, string y, string room)
         {
-            await Clients.Group(room).SendAsync("ReceiveMinedBoxCoordinates", x, y).ConfigureAwait(true);
+            await Clients.OthersInGroup(room).SendAsync("ReceiveMinedBoxCoordinates", x, y).ConfigureAwait(true);
         }
 
         public async Task SendMinedBoxSkin(string x, string y, string path, string room)
         {
-            await Clients.Group(room).SendAsync("ReceiveMinedBoxSkin", x, y, path).ConfigureAwait(true);
+            await Clients.OthersInGroup(room).SendAsync("ReceiveMinedBoxSkin", x, y, path).ConfigureAwait(true);
         }
 
         public async Task SendMessage(string x,string room)
         {
-            await Clients.Group(room).SendAsync("ReceiveMessage", x).ConfigureAwait(true);
+            await Clients.OthersInGroup(room).SendAsync("ReceiveMessage", x).ConfigureAwait(true);
         }
         public async Task UndoMessage(string x,string room)
         {
-            await Clients.Group(room).SendAsync("ReceiveUndoMessage", x).ConfigureAwait(true);
+            await Clients.OthersInGroup(room).SendAsync("ReceiveUndoMessage", x).ConfigureAwait(true);
 
         }
         public async Task AddPlayer(string room)
