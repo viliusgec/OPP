@@ -3,10 +3,8 @@ using Client.Observer;
 using Client.PictureBoxBuilder;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,144 +19,73 @@ namespace Client.Adapter
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
             var block = MapBuilder.GetBlock(loc, map);
+            int[] neededEffectScore = { 5, 10, 15, 20, 25, 30 };
 
             switch (side)
             {
                 case 0:
-                    var playerPowerUpsDeep = player.Mine("").Split(';');
-
-                    int mineDeep = 1;
-                    int mineStrongerDeep = 1;
-                    foreach (string playerPowerUp in playerPowerUpsDeep)
-                    {
-                        if (playerPowerUp == "mineDeep")
-                        {
-                            mineDeep++;
-                        }
-                        if (playerPowerUp == "mineStronger")
-                        {
-                            mineStrongerDeep++;
-                        }
-                    }
+                    int mineDeep = 1, mineStrongerDeep = 1;
+                    PowerUpCount(ref mineDeep, ref mineStrongerDeep, player, "mineDeep");
 
                     var defaultLoc = new Point(x, y + editor.pictureBox1.Height);
 
                     for (int i = 1; i <= mineDeep; i++)
                     {
-                        loc = new Point(x, y + editor.pictureBox1.Height * i);
-                        box = MapBuilder.GetPictureBox(loc);
-
-                        if (box == null)
-                            return false;
-
+                        box = GetBox(x, y + editor.pictureBox1.Height * i);
                         block = MapBuilder.GetBlock(loc, map);
 
-                        if (block.GetBlockType() == "unbreakable")
+                        if (block.GetBlockType() == "unbreakable" || box == null)
                             return false;
 
-                        block.SetHealth((Int32.Parse(block.GetHealth()) - (25 * mineStrongerDeep)).ToString());
+                        block.SetHealth((int.Parse(block.GetHealth()) - (25 * mineStrongerDeep)).ToString());
                         block.SetImage("");
 
                         box.ImageLocation = block.GetImage();
-                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(),room);
+                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
                         ServerObserver.ReceiveMinedBoxSkin();
 
-                        if (Int32.Parse(block.GetHealth()) <= 0)
+                        if (int.Parse(block.GetHealth()) <= 0)
                         {
-
                             if (box.Enabled)
                             {
                                 box.Hide();
                                 box.Enabled = false;
-                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection,room);
+                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                                 ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                                 editor.addScore();
 
-                                if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)
-                                {
-                                    editor.setEffectIsGranted(false);
-                                }
+                                if (neededEffectScore.Contains(editor.getScore())) editor.setEffectIsGranted(false);
 
-                                if (loc == defaultLoc)
-                                {
-                                    return true;
-                                } else
-                                {
-                                    return false;
-                                }
+                                return loc == defaultLoc;
                             }
                         }
                     }
-
                     return false;
                 case 1:
-                    loc = new Point(x, y - editor.pictureBox1.Height);
-                    box = MapBuilder.GetPictureBox(loc);
-                    if (box == null)
-                        return true;
-                    if (box.Enabled)
-                        return false;
-                    return true;
+                    box = GetBox(x, y - editor.pictureBox1.Height);
+                    return CheckBox(box);
                 case 2:
-                    loc = new Point(x - editor.pictureBox1.Width, y);
-                    box = MapBuilder.GetPictureBox(loc);
-                    if (mapBuilder.startX > loc.X)
-                        return false;
-                    if (box == null)
-                        return true;
-                    if (box.Enabled)
-                        return false;
-                    return true;
+                    box = GetBox(x - editor.pictureBox1.Width, y);
+                    if (box == null) return false;
+                    return mapBuilder.startX <= box.Location.X && CheckBox(box);
                 case 3:
-                    loc = new Point(x + editor.pictureBox1.Width, y);
-                    box = MapBuilder.GetPictureBox(loc);
-                    if (mapBuilder.endX - mapBuilder.boxWidth < loc.X)
-                        return false;
-                    if (box == null)
-                        return true;
-                    if (box.Enabled)
-                        return false;
-                    return true;
+                    box = GetBox(x + editor.pictureBox1.Width, y);
+                    //is loc.X i box.location.x paziet ar veikia
+                    if (box == null) return false;
+                    return (mapBuilder.endX - mapBuilder.boxWidth) >= box.Location.X && CheckBox(box);
                 case 4:
-                    loc = new Point(x - editor.pictureBox1.Width, y - editor.pictureBox1.Height);
-                    box = MapBuilder.GetPictureBox(loc);
-                    if (box == null)
-                        return true;
-                    if (box.Enabled)
-                        return false;
-                    return true;
+                    box = GetBox(x - editor.pictureBox1.Width, y - editor.pictureBox1.Height);
+                    return CheckBox(box);
                 case 5:
-                    loc = new Point(x + editor.pictureBox1.Width, y - editor.pictureBox1.Height);
-                    box = MapBuilder.GetPictureBox(loc);
-                    if (box == null)
-                        return true;
-                    if (box.Enabled)
-                        return false;
-                    return true;
+                    box = GetBox(x + editor.pictureBox1.Width, y - editor.pictureBox1.Height);
+                    return CheckBox(box);
                 case 6:
-                    loc = new Point(x, y + editor.pictureBox1.Height);
-                    box = MapBuilder.GetPictureBox(loc);
-                    if (box == null)
-                        return false;
-                    if (box.Enabled)
-                        return true;
-                    return false;
-                case 7:
-                    var playerPowerUpsLeft = player.Mine("").Split(';');
 
-                    int mineWideLeft = 1;
-                    int mineStrongerLeft = 1;
-                    foreach (string playerPowerUp in playerPowerUpsLeft)
-                    {
-                        if (playerPowerUp == "mineWide")
-                        {
-                            mineWideLeft++;
-                        }
-                        if (playerPowerUp == "mineStronger")
-                        {
-                            mineStrongerLeft++;
-                        }
-                    }
+                    box = GetBox(x, y + editor.pictureBox1.Height);
+                    return !CheckBox(box);
+                case 7:
+                    int mineWideLeft = 1, mineStrongerLeft = 1;
+                    PowerUpCount(ref mineWideLeft, ref mineStrongerLeft, player, "mineWide");
 
                     var defaultLocLeft = new Point(x - editor.pictureBox1.Width, y);
 
@@ -166,67 +93,37 @@ namespace Client.Adapter
                     {
                         loc = new Point(x - editor.pictureBox1.Width * i, y);
                         box = MapBuilder.GetPictureBox(loc);
-
-                        if (box == null)
-                            return false;
-
                         block = MapBuilder.GetBlock(loc, map);
 
-                        if (block.GetBlockType() == "unbreakable")
+                        if (block.GetBlockType() == "unbreakable" || box == null)
                             return false;
 
-                        block.SetHealth((Int32.Parse(block.GetHealth()) - (25 * mineStrongerLeft)).ToString());
+                        block.SetHealth((int.Parse(block.GetHealth()) - (25 * mineStrongerLeft)).ToString());
 
                         block.SetImage("");
                         box.ImageLocation = block.GetImage();
                         _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
                         ServerObserver.ReceiveMinedBoxSkin();
 
-                        if (Int32.Parse(block.GetHealth()) <= 0)
+                        if (int.Parse(block.GetHealth()) <= 0 && box.Enabled)
                         {
+                            box.Hide();
+                            box.Enabled = false;
+                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
+                            mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
+                            ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
+                            editor.addScore();
 
-                            if (box.Enabled)
-                            {
-                                box.Hide();
-                                box.Enabled = false;
-                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
-                                mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
-                                ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                                editor.addScore();
+                            if (neededEffectScore.Contains(editor.getScore())) editor.setEffectIsGranted(false);
 
-                                if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)
-                                {
-                                    editor.setEffectIsGranted(false);
-                                }
-
-                                if (loc == defaultLocLeft)
-                                {
-                                    return true;
-                                } else
-                                {
-                                    return false;
-                                }
-                            }
+                            return loc == defaultLocLeft;
                         }
                     }
 
                     return false;
                 case 8:
-                    var playerPowerUpsRight = player.Mine("").Split(';');
-
-                    int mineWideRight = 1;
-                    int mineStrongerRight = 1;
-                    foreach (string playerPowerUp in playerPowerUpsRight)
-                    {
-                        if (playerPowerUp == "mineWide")
-                        {
-                            mineWideRight++;
-                        }
-                        if (playerPowerUp == "mineStronger")
-                        {
-                            mineStrongerRight++;
-                        }
-                    }
+                    int mineWideRight = 1, mineStrongerRight = 1;
+                    PowerUpCount(ref mineWideRight, ref mineStrongerRight, player, "mineWide");
 
                     var defaultLocRight = new Point(x + editor.pictureBox1.Width, y);
 
@@ -234,65 +131,79 @@ namespace Client.Adapter
                     {
                         loc = new Point(x + editor.pictureBox1.Width * i, y);
                         box = MapBuilder.GetPictureBox(loc);
-
-                        if (box == null)
-                            return false;
-
                         block = MapBuilder.GetBlock(loc, map);
 
-                        if (block.GetBlockType() == "unbreakable")
+                        if (block.GetBlockType() == "unbreakable" || box == null)
                             return false;
 
-                        block.SetHealth((Int32.Parse(block.GetHealth()) - (25 * mineStrongerRight)).ToString());
+                        block.SetHealth((int.Parse(block.GetHealth()) - (25 * mineStrongerRight)).ToString());
 
                         block.SetImage("");
                         box.ImageLocation = block.GetImage();
                         _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
                         ServerObserver.ReceiveMinedBoxSkin();
 
-                        if (Int32.Parse(block.GetHealth()) <= 0)
+                        if (int.Parse(block.GetHealth()) <= 0 && box.Enabled)
                         {
+                            box.Hide();
+                            box.Enabled = false;
+                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
+                            mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
+                            ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
+                            editor.addScore();
 
-                            if (box.Enabled)
-                            {
-                                box.Hide();
-                                box.Enabled = false;
-                                _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
-                                mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
-                                ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                                editor.addScore();
+                            if (neededEffectScore.Contains(editor.getScore())) editor.setEffectIsGranted(false);
 
-                                if (editor.getScore() == 5 || editor.getScore() == 10 || editor.getScore() == 15 || editor.getScore() == 20 || editor.getScore() == 25 || editor.getScore() == 30)
-                                {
-                                    editor.setEffectIsGranted(false);
-                                }
-
-                                if (loc == defaultLocRight)
-                                {
-                                    return true;
-                                } else
-                                {
-                                    return false;
-                                }
-                            }
+                            return loc == defaultLocRight;
                         }
                     }
-
                     return false;
                 default:
                     return false;
             }
         }
-        private async Task SendMinedBoxCoordinatesAsync(int x, int y, HubConnection connection,string room)
+        private async Task SendMinedBoxCoordinatesAsync(int x, int y, HubConnection connection, string room)
         {
             await connection.InvokeAsync("SendMinedBoxCoordinates",
                     x.ToString(), y.ToString(), room);
         }
 
-        private async Task SendMinedBoxSkinAsync(int x, int y, HubConnection connection, string path,string room)
+        private async Task SendMinedBoxSkinAsync(int x, int y, HubConnection connection, string path, string room)
         {
             await connection.InvokeAsync("SendMinedBoxSkin",
                     x.ToString(), y.ToString(), path, room);
+        }
+
+        private bool CheckBox(PictureBox? box)
+        {
+            if (box == null)
+                return true;
+            if (box.Enabled)
+                return false;
+            return true;
+        }
+
+        private PictureBox GetBox(int x, int y)
+        {
+            var loc = new Point(x, y);
+            return MapBuilder.GetPictureBox(loc);
+        }
+
+        private void PowerUpCount(ref int mineWide, ref int mineStronger, Character player, string firstAbility)
+        {
+            var playerPowerUpsRight = player.Mine("").Split(';');
+
+            foreach (string playerPowerUp in playerPowerUpsRight)
+            {
+                if (playerPowerUp == firstAbility)
+                {
+                    mineWide++;
+                }
+                if (playerPowerUp == "mineStronger")
+                {
+                    mineStronger++;
+                }
+            }
         }
     }
 }
