@@ -37,11 +37,7 @@ namespace Client.Adapter
         }
         public override bool check_if_block_exists()
         {
-            bool exist = false;
-
-            exist = check.check_if_block_exists_specific(side, x, y, editor, map, connection, player, mapBuilder, room);
-
-            return exist;
+            return check.check_if_block_exists_specific(side, x, y, editor, map, connection, player, mapBuilder, room);
         }
     }
 }
