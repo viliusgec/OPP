@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Strategy
 {
-    class MoveUpRight : Algorithm
+    public class MoveUpRight : Algorithm
     {
         public int x;
         public int y;

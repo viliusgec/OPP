@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Client
 {
-    class SingletonConnection
+    public class SingletonConnection
     {
         private static SingletonConnection instance = null;
         private static HubConnection connection;

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿/*using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Client.Command;
 using System.Windows.Forms;
 
@@ -68,3 +68,4 @@ namespace ClientTests
         }
     }
 }
+*/

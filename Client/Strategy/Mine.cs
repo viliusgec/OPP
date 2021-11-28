@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Strategy
 {
-    class Mine : Algorithm
+    public class Mine : Algorithm
     {
         // not working for now
         public int x;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Strategy
 {
-    internal interface Algorithm
+    public interface Algorithm
     {
         int[] Behave(int x, int y, int height, int width);
     }
