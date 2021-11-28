@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Strategy
 {
-    internal class Jump : Algorithm
+    public class Jump : Algorithm
     {
         // not working for now
         public int x;
