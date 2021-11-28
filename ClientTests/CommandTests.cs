@@ -1,4 +1,4 @@
-﻿/*using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Client.Command;
 using System.Windows.Forms;
 
@@ -8,13 +8,13 @@ namespace ClientTests
     public class CommandTests
     {
         TextBox textBox = new();
-
+        string roomName = "Room";
         [TestMethod]
         public void TestSendMessageToTextBox()
         {
             var a = "Me: Test\r\n";
             SendMessage sendMessage = new (textBox);
-            sendMessage.Send("Test");
+            sendMessage.Send("Test", roomName);
             Assert.AreEqual(a, textBox.Text);
         }
 
@@ -23,9 +23,9 @@ namespace ClientTests
         {
             var a = "Me: Test\r\n\n";
             SendMessage sendMessage = new(textBox);
-            sendMessage.Send("Test");
-            sendMessage.Send("Test2");
-            sendMessage.Undo();
+            sendMessage.Send("Test", roomName);
+            sendMessage.Send("Test2", roomName);
+            sendMessage.Undo(roomName);
             Assert.AreEqual(a, textBox.Text);
         }
 
@@ -34,7 +34,7 @@ namespace ClientTests
         {
             var a = "";
             SendMessage sendMessage = new(textBox);
-            sendMessage.Undo();
+            sendMessage.Undo(roomName);
             Assert.AreEqual(a, textBox.Text);
         }
 
@@ -43,7 +43,7 @@ namespace ClientTests
         {
             var a = "Me: ༼ つ ◕_◕ ༽つ \r\n";
             SendEmote sendMessage = new(textBox);
-            sendMessage.Send("");
+            sendMessage.Send("", roomName);
             Assert.AreEqual(a, textBox.Text);
         }
 
@@ -52,9 +52,9 @@ namespace ClientTests
         {
             var a = "Me: ༼ つ ◕_◕ ༽つ \r\n\n";
             SendEmote sendMessage = new(textBox);
-            sendMessage.Send("");
-            sendMessage.Send("");
-            sendMessage.Undo();
+            sendMessage.Send("", roomName);
+            sendMessage.Send("", roomName);
+            sendMessage.Undo(roomName);
             Assert.AreEqual(a, textBox.Text);
         }
 
@@ -63,9 +63,8 @@ namespace ClientTests
         {
             var a = "";
             SendEmote sendMessage = new(textBox);
-            sendMessage.Undo();
+            sendMessage.Undo(roomName);
             Assert.AreEqual(a, textBox.Text);
         }
     }
 }
-*/
