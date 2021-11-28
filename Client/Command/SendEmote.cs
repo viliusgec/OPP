@@ -13,15 +13,15 @@ namespace Client.Command
             TextBox = textBox;
         }
 
-        public void Send(string message)
+        public void Send(string message, string room)
         {
-            observer.SendMessage("༼ つ ◕_◕ ༽つ");
+            observer.SendMessage("༼ つ ◕_◕ ༽つ",room);
             TextBox.AppendText("Me: ༼ つ ◕_◕ ༽つ \r\n");
         }
 
-        public void Undo()
+        public void Undo(string room)
         {
-            observer.UndoMessage();
+            observer.UndoMessage(room);
             var index = TextBox.Text.LastIndexOf("Me: ");
             if (index >= 0)
             {

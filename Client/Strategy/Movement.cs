@@ -22,10 +22,12 @@ namespace Client.Strategy
         HubConnection connection;
         bool playerLookingRight = true;
         bool enemyLookingRight = true;
+        string room;
 
-        public Movement(HubConnection connection)
+        public Movement(HubConnection connection, string room)
         {
             this.connection = connection;
+            this.room = room;
         }
 
         public void FlipImage(PictureBox pictureBox, Point prevLoc, bool enemy)
@@ -134,7 +136,7 @@ namespace Client.Strategy
             var loc = new Point(x, y);
             var box = MapBuilder.GetPictureBox(loc);
 
-            BlockChecker blockchecker = new BlockCheckerAdapter(side, x, y, editor, map, connection, player, mapBuilder);
+            BlockChecker blockchecker = new BlockCheckerAdapter(side, x, y, editor, map, connection, player, mapBuilder, room);
 
             return blockchecker.check_if_block_exists();
         }
@@ -156,7 +158,7 @@ namespace Client.Strategy
         private async Task SendGetCoordinatesAsync(int x, int y)
         {
             await connection.InvokeAsync("SendCoordinates",
-                    x.ToString(), y.ToString());
+                    x.ToString(), y.ToString(), room);
         }
 
       

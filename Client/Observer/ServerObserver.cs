@@ -83,21 +83,36 @@ namespace Client.Observer
         public Map.MapBase GetMap() { return tempMap; }
         public MapBuilder GetBuilder() { return MapBuilder; }
 
-        public async Task SendMap(Map.MapBase map)
+        public async Task SendMap(Map.MapBase map, string room)
         {
             map.SerializeBlocks();
             string jsonString = JsonConvert.SerializeObject(map);
-            await connection.InvokeAsync("SendMap", jsonString);
+            await connection.InvokeAsync("SendMap", jsonString, room);
         }
 
-        public void SendMessage(string message)
+        public void SendMessage(string message,string room)
         {
-            connection.InvokeAsync("SendMessage", message);
+            connection.InvokeAsync("SendMessage", message,room);
         }
 
-        public void UndoMessage()
+        public void UndoMessage(string room)
         {
-            connection.InvokeAsync("UndoMessage", "");
+            connection.InvokeAsync("UndoMessage", "", room);
+        }
+
+        public void AddPlayer(string room)
+        {
+            connection.InvokeAsync("AddPlayer", room);
+        }
+
+        public void RemovePlayer(string room)
+        {
+            connection.InvokeAsync("RemovePlayer", room);
+        }
+
+        public void SendRoom(string name, string password)
+        {
+            connection.InvokeAsync("SendRoom", name, password);
         }
     }
 }
