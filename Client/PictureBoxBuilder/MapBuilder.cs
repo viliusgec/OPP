@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Client.PictureBoxBuilder
 {
-    class MapBuilder
+    public class MapBuilder
     {
         public int boxWidth;
         public int boxHeight;
@@ -16,9 +16,6 @@ namespace Client.PictureBoxBuilder
         public int startY;
         public int endX;
         public int endY;
-
-        PictureBox mid1;
-        PictureBox mid2;
 
         public MapBuilder()
         {
@@ -35,11 +32,6 @@ namespace Client.PictureBoxBuilder
                 {
                     while(GetPictureBox(loc).Enabled != false && block != null && block.GetBlockType() == "falling")
                     {
-                        var oldBox = GetPictureBox(loc);
-                        var newBox = GetPictureBox(new Point(x, y));
-
-
-
                         var oldBlock = GetBlock(loc, map);
                         var newBlock = GetBlock(new Point(x, y), map);
                         var tempBlock = (Map.Block)newBlock.Clone();
@@ -65,7 +57,7 @@ namespace Client.PictureBoxBuilder
 
                             GetPictureBox(new Point(x, y)).ImageLocation = newBlock.GetImage();
                             GetPictureBox(new Point(x, y)).Refresh();
-                            y = y - boxHeight;
+                            y -= boxHeight;
                             loc = new Point(x, y - boxHeight);
                             block = GetBlock(loc, map);
                             if (block == null)

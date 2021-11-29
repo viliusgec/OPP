@@ -3,24 +3,22 @@ using Client.Observer;
 using Client.PictureBoxBuilder;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client.Adapter
 {
-    class BlockCheckerAdaptees
+    public class BlockCheckerAdaptees
     {
         ServerObserver ServerObserver = new();
 
         public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, MapBuilder mapBuilder, string room)
         {
             var loc = new Point(x, y);
-            var box = MapBuilder.GetPictureBox(loc);
-            var block = MapBuilder.GetBlock(loc, map);
+            PictureBox box;
+            Client.Map.Block block;
             int[] neededEffectScore = { 5, 10, 15, 20, 25, 30 };
 
             switch (side)
@@ -181,7 +179,7 @@ namespace Client.Adapter
                     x.ToString(), y.ToString(), path, room);
         }
 
-        private bool CheckBox(PictureBox? box)
+        public bool CheckBox(PictureBox? box)
         {
             if (box == null)
                 return true;
@@ -190,11 +188,11 @@ namespace Client.Adapter
             return true;
         }
 
-        private void PowerUpCount(ref int mineWide, ref int mineStronger, Character player, string firstAbility)
+        public void PowerUpCount(ref int mineWide, ref int mineStronger, Character player, string firstAbility)
         {
-            var playerPowerUpsRight = player.Mine("").Split(';');
+            var playerPowerUps = player.Mine("").Split(';');
 
-            foreach (string playerPowerUp in playerPowerUpsRight)
+            foreach (string playerPowerUp in playerPowerUps)
             {
                 if (playerPowerUp == firstAbility)
                 {

@@ -1,15 +1,9 @@
 ﻿using Client.Decorator;
 using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Client.Adapter
 {
-    class BlockCheckerAdapter : BlockChecker
+    public class BlockCheckerAdapter : BlockChecker
     {
         int side;
         int x;

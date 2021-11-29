@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Decorator
 {
-    abstract class Character
+    public abstract class Character
     {
         public abstract string Mine(string s);
     }

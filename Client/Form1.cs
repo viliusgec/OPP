@@ -71,7 +71,7 @@ namespace Client
                 label1.Text = "You can't connect second time.";//ex.ToString();
             }
 
-            connection.InvokeAsync("RequestRooms", "");
+            _ = connection.InvokeAsync("RequestRooms", "");
 
             connection.On<string>("ReceiveRequestRooms", (x) =>
             {

@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Client
 {
-    class FormsEditor
+    public class FormsEditor
     {
         public PictureBox pictureBox1;
         public PictureBox pictureBox2;
