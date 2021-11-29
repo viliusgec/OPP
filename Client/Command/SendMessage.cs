@@ -30,6 +30,12 @@ namespace Client.Command
                 TextBox.Text = TextBox.Text.Remove(index, endIndex - index + 1);
             }     
         }
+
+        public string SeeText(string text)
+        {
+            TextBox.Text = text;
+            return TextBox.Text;
+        }
             
         public void RecieveMessage()
         {
