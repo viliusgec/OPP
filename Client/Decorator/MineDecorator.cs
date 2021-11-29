@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Client.Decorator
 {
-    abstract class MineDecorator : Player
+    public abstract class MineDecorator : Player
     {
         Character wrapee;
 

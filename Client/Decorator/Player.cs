@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Decorator
 {
-    class Player : Character
+    public class Player : Character
     {
         public Player()
         {

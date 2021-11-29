@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Decorator
 {
-    class MineDeep : MineDecorator
+    public class MineDeep : MineDecorator
     {
         public MineDeep(Character wrapee) : base(wrapee)
         {
