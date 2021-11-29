@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    class BlindEffect : IEffect
+    public class BlindEffect : IEffect
     {
         private string _effectType;
         public string EffectType  // read-write instance property

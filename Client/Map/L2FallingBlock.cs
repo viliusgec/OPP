@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Client.Map
 {
     [Serializable]
-    class L2FallingBlock : FallingBlock
+    public class L2FallingBlock : FallingBlock
     {
         public L2FallingBlock(string name, string image, Effect.IEffect effect, string health) : base(name, image, effect, health)
         {

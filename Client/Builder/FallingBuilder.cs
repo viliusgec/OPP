@@ -8,7 +8,7 @@ using Client.Effect;
 
 namespace Client.Builder
 {
-    class FallingBuilder : BlockBuilder
+    public class FallingBuilder : BlockBuilder
     {
         Block block;
         public FallingBuilder()
