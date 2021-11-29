@@ -34,7 +34,7 @@ namespace Client.Map
             string image = currentDir + @"\Resources\sand1.png";
             Effect.IEffect effect = GetEffect();
             string health = "125";
-            var block = new L1StaticBlock();
+            var block = new L1FallingBlock();
             BlockBuilder builder = new StaticBuilder();
 
             return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("falling").addEffect(effect).addHealth(health).getBuildable();
@@ -47,7 +47,7 @@ namespace Client.Map
             string image = currentDir + @"\Resources\rock1.png";
             Effect.IEffect effect = GetEffect();
             string health = "125";
-            var block = new L1StaticBlock();
+            var block = new L1UnbreakableBlock();
             BlockBuilder builder = new StaticBuilder();
 
             return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("unbreakable").addEffect(effect).addHealth(health).getBuildable();

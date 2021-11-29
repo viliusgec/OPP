@@ -6,7 +6,7 @@ using Client.Effect;
 namespace ClientTests
 {
     [TestClass]
-    class BuilderTests
+    public class BuilderTests2
     {
         [TestMethod]
         public void TestFallingBuilder()
@@ -16,11 +16,12 @@ namespace ClientTests
             string image = "image";
             IEffect effect = new JumpEffect();
             string health = "125";
-            var block2 = new L1FallingBlock(name,image,effect,health);
+            var block2 = new L1FallingBlock(name, image, effect, health);
             block2.SetBlockType("falling");
+            block2.SetImage(image);
             BlockBuilder builder = new FallingBuilder();
             block = builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("falling").addEffect(effect).getBuildable();
-            Assert.AreEqual(block2, block);
+            Assert.IsTrue(block2.Equals(block));
         }
 
         [TestMethod]
@@ -33,13 +34,15 @@ namespace ClientTests
             string health = "125";
             var block2 = new L1StaticBlock(name, image, effect, health);
             block2.SetBlockType("static");
+            block2.SetImage(image);
             BlockBuilder builder = new StaticBuilder();
             block = builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("static").addEffect(effect).getBuildable();
-            Assert.AreEqual(block2, block);
+            Assert.IsTrue(block2.Equals(block));
         }
 
+
         [TestMethod]
-        public void TestUnbreakableBuilder()
+        public void TestUnbreakable()
         {
             Block block = new L1UnbreakableBlock();
             string name = "name";
@@ -48,9 +51,10 @@ namespace ClientTests
             string health = "125";
             var block2 = new L1UnbreakableBlock(name, image, effect, health);
             block2.SetBlockType("unbreakable");
+            block2.SetImage(image);
             BlockBuilder builder = new UnbreakableBuilder();
             block = builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("unbreakable").addEffect(effect).getBuildable();
-            Assert.AreEqual(block2, block);
+            Assert.IsTrue(block2.Equals(block));
         }
     }
 }
