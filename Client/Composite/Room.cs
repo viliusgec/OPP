@@ -34,5 +34,14 @@ namespace Client.Composite
 
         public abstract void JoinRoom(HubConnection connection);
         public abstract void LeaveRoom(HubConnection connection);
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is Room))
+                return false;
+            return (this.name == ((Room)obj).GetName());
+        }
     }
 }

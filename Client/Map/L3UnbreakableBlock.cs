@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Client.Map
 {
     [Serializable]
-    class L3UnbreakableBlock : UnbreakableBlock
+    public class L3UnbreakableBlock : UnbreakableBlock
     {
         public L3UnbreakableBlock(string name, string image, Effect.IEffect effect, string health) : base(name, image, effect, health)
         {

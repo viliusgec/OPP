@@ -8,7 +8,7 @@ using Client.Effect;
 
 namespace Client.Builder
 {
-    class UnbreakableBuilder : BlockBuilder
+    public class UnbreakableBuilder : BlockBuilder
     {
         Block block;
         public UnbreakableBuilder()

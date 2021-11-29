@@ -34,5 +34,13 @@ namespace Client.Composite
                     this.GetName());
             players--;
         }
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is ChatRoom))
+                return false;
+            return ((this.GetName() == ((ChatRoom)obj).GetName()) && (this.GetPassword() == ((GameRoom)obj).GetPassword()));
+        }
     }
 }

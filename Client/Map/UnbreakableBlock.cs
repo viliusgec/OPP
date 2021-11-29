@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Client.Map
 {
     [Serializable]
-    class UnbreakableBlock : Block
+    public class UnbreakableBlock : Block
     {
         public UnbreakableBlock(string name, string image, Effect.IEffect effect, string health) : base(name, image, effect, health)
         {

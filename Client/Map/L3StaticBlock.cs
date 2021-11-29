@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Client.Map
 {
     [Serializable]
-    class L3StaticBlock : StaticBlock
+    public class L3StaticBlock : StaticBlock
     {
         public L3StaticBlock(string name, string image, Effect.IEffect effect, string health) : base(name, image, effect, health)
         {

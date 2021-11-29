@@ -8,7 +8,7 @@ using Client.Effect;
 
 namespace Client.Builder
 {
-    class StaticBuilder : BlockBuilder
+    public class StaticBuilder : BlockBuilder
     {
         Block block;
         public StaticBuilder()

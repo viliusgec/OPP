@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Effect
 {
-    class SpeedEffect : IEffect
+    public class SpeedEffect : IEffect
     {
         private string _effectType;
         public string EffectType  // read-write instance property
