@@ -180,7 +180,6 @@ namespace Client.PictureBoxBuilder
                 }
             }
         }
-
         public void EditMinedBox(int x, int y)
         {
             for (int i = 0; i < mapx; i++)
