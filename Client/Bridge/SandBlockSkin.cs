@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Bridge
 {
-    class SandBlockSkin
+    public class SandBlockSkin
     {
         public static string SetSkin(string health)
         {
             string workingDirectory = Environment.CurrentDirectory;
             string currentDir = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-
+          
             return int.Parse(health) switch
             {
                 >= 125 => currentDir + @"\Resources\sand1.png",

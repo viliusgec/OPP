@@ -15,15 +15,6 @@ namespace ClientTests
         PictureBox box = new();
 
         [TestMethod]
-        public void TestPowerUpsCount()
-        {
-            BlockCheckerAdaptees a = new();
-            int mineWide = 1, mineStronger = 1;
-            a.PowerUpCount(ref mineWide, ref mineStronger, player, "mineWide");
-            Assert.AreEqual((1,1), (mineStronger, mineStronger));
-        }
-
-        [TestMethod]
         public void TestCheckBox()
         {
             BlockCheckerAdaptees temp = new();
