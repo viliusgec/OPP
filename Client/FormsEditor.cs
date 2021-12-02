@@ -137,6 +137,7 @@ namespace Client
         {
             _buyMenu.Enabled = true;
             _buyMenu.Show();
+            buyMenuButton.Text = "Buy";
             buyMenuButton.Enabled = true;
             buyMenuButton.Show();
         }

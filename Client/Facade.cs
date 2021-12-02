@@ -37,7 +37,7 @@ namespace Client
             InitializeComponent();
             this.room = gameRoom;
             player = new Player();
-            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q - Jump up left \n E - jump up right\n SHIFT - dig down\n J - dig left\n K - dig right";
+            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu";
             FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, buyMenu, buyMenuButton, player, Controls);
             editor = tempEdit;
             //Singleton
