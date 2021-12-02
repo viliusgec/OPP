@@ -19,19 +19,14 @@ namespace Client.Adapter
             var loc = new Point(x, y);
             PictureBox box;
             Client.Map.Block block;
-            int[] neededEffectScore = { 5, 10, 15, 20, 25, 30 };
 
             switch (side)
             {
                 case 0:
-                    int mineDeep = 1, mineStrongerDeep = 1;
-                    PowerUpCount(ref mineDeep, ref mineStrongerDeep, player, "mineDeep");
 
                     var defaultLoc = new Point(x, y + editor.pictureBox1.Height);
 
-                    for (int i = 1; i <= mineDeep; i++)
-                    {
-                        loc = new Point(x, y + editor.pictureBox1.Height * i);
+                        loc = new Point(x, y + editor.pictureBox1.Height);
                         box = MapBuilder.GetPictureBox(loc);
                         if (box == null) return false;
                         block = MapBuilder.GetBlock(loc, map);
@@ -39,7 +34,7 @@ namespace Client.Adapter
                         if (block.GetBlockType() == "unbreakable")
                             return false;
 
-                        block.SetHealth((int.Parse(block.GetHealth()) - (25 * mineStrongerDeep)).ToString());
+                        block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString()); ;
                         block.SetImage("");
 
                         box.ImageLocation = block.GetImage();
@@ -54,11 +49,9 @@ namespace Client.Adapter
                             ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                             editor.addScore();
 
-                            if (neededEffectScore.Contains(editor.getScore())) editor.setEffectIsGranted(false);
-
                             return loc == defaultLoc;
                         }
-                    }
+                
 
                     return false;
                 case 1:
@@ -86,14 +79,10 @@ namespace Client.Adapter
                     box = MapBuilder.GetPictureBox(loc);
                     return !CheckBox(box);
                 case 7:
-                    int mineWideLeft = 1, mineStrongerLeft = 1;
-                    PowerUpCount(ref mineWideLeft, ref mineStrongerLeft, player, "mineWide");
-
                     var defaultLocLeft = new Point(x - editor.pictureBox1.Width, y);
 
-                    for (int i = 1; i <= mineWideLeft; i++)
-                    {
-                        loc = new Point(x - editor.pictureBox1.Width * i, y);
+
+                        loc = new Point(x - editor.pictureBox1.Width, y);
                         box = MapBuilder.GetPictureBox(loc);
                         if (box == null) return false;
                         block = MapBuilder.GetBlock(loc, map);
@@ -101,7 +90,7 @@ namespace Client.Adapter
                         if (block.GetBlockType() == "unbreakable")
                             return false;
 
-                        block.SetHealth((int.Parse(block.GetHealth()) - (25 * mineStrongerLeft)).ToString());
+                        block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString());
 
                         block.SetImage("");
                         box.ImageLocation = block.GetImage();
@@ -116,23 +105,16 @@ namespace Client.Adapter
                             mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                             ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                             editor.addScore();
-
-                            if (neededEffectScore.Contains(editor.getScore())) editor.setEffectIsGranted(false);
 
                             return loc == defaultLocLeft;
                         }
-                    }
 
                     return false;
                 case 8:
-                    int mineWideRight = 1, mineStrongerRight = 1;
-                    PowerUpCount(ref mineWideRight, ref mineStrongerRight, player, "mineWide");
 
                     var defaultLocRight = new Point(x + editor.pictureBox1.Width, y);
 
-                    for (int i = 1; i <= mineWideRight; i++)
-                    {
-                        loc = new Point(x + editor.pictureBox1.Width * i, y);
+                        loc = new Point(x + editor.pictureBox1.Width, y);
                         box = MapBuilder.GetPictureBox(loc);
                         if (box == null) return false;
                         block = MapBuilder.GetBlock(loc, map);
@@ -140,7 +122,7 @@ namespace Client.Adapter
                         if (block.GetBlockType() == "unbreakable")
                             return false;
 
-                        block.SetHealth((int.Parse(block.GetHealth()) - (25 * mineStrongerRight)).ToString());
+                        block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString());
 
                         block.SetImage("");
                         box.ImageLocation = block.GetImage();
@@ -156,11 +138,8 @@ namespace Client.Adapter
                             ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                             editor.addScore();
 
-                            if (neededEffectScore.Contains(editor.getScore())) editor.setEffectIsGranted(false);
-
                             return loc == defaultLocRight;
                         }
-                    }
 
                     return false;
                 default:

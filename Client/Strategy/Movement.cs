@@ -118,7 +118,10 @@ namespace Client.Strategy
                         return temp;
                     break;
                 case (Keys.B):
-                    editor.buyMenu(); /// <<< šitaip accessinsim buy menu. Returninsim reikšmes ir editinsim žaidėjo stats.
+                    editor.buyMenu(player); /// <<< šitaip accessinsim buy menu. Returninsim reikšmes ir editinsim žaidėjo stats.
+                    return temp;
+                case (Keys.Escape):
+                    editor.closeBuyMmenu();
                     return temp;
                 default:
                     return temp;
@@ -149,7 +152,7 @@ namespace Client.Strategy
                 editor.pictureBox1.Location = new Point(coords[0], coords[1] + editor.pictureBox1.Height);
                 _ = SendGetCoordinatesAsync(coords[0], coords[1] + editor.pictureBox1.Height);
                 coords[1] += editor.pictureBox1.Height;
-                Thread.Sleep(25);
+                Thread.Sleep(10);
                 if (coords[1] > (editor.pictureBox1.Height) * 15)
                     break;
             }

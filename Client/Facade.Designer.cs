@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Client
 {
     partial class Facade
@@ -45,6 +47,8 @@ namespace Client
             this.ScoreLabel = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.gameStateLabel = new System.Windows.Forms.Label();
+            this.buyMenu = new System.Windows.Forms.ListBox();
+            this.buyMenuButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.enemyPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -144,6 +148,7 @@ namespace Client
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(346, 143);
             this.textBox2.TabIndex = 25;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // contextMenuStrip1
             // 
@@ -181,20 +186,49 @@ namespace Client
             // gameStateLabel
             // 
             this.gameStateLabel.AutoSize = true;
+            this.gameStateLabel.Enabled = false;
             this.gameStateLabel.Font = new System.Drawing.Font("Arial Narrow", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.gameStateLabel.BackColor = System.Drawing.Color.Transparent;
             this.gameStateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.gameStateLabel.Location = new System.Drawing.Point(262, 248);
             this.gameStateLabel.Name = "gameStateLabel";
             this.gameStateLabel.Size = new System.Drawing.Size(0, 57);
             this.gameStateLabel.TabIndex = 28;
             // 
-            // GameForm
+            // buyMenu
+            // 
+            this.buyMenu.FormattingEnabled = true;
+            this.buyMenu.ItemHeight = 15;
+            this.buyMenu.Enabled = false;
+            this.buyMenu.Hide();
+            this.buyMenu.Location = new System.Drawing.Point(170, 130);
+            this.buyMenu.Name = "buyMenu";
+            this.buyMenu.Size = new System.Drawing.Size(183, 139);
+            this.buyMenu.TabIndex = 29;
+            this.buyMenu.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.buyMenu.Items.Add("White pickaxe - 2 score");
+            this.buyMenu.Items.Add("Black pickaxe - 5 score");
+            this.buyMenu.Items.Add("Diamond pickaxe - 10 score");
+            // 
+            // buyMenuButton
+            // 
+            this.buyMenuButton.Enabled = false;
+            this.buyMenuButton.Hide();
+            this.buyMenuButton.Name = "buyMenuButton";
+            this.buyMenuButton.Size = new System.Drawing.Size(75, 23);
+            this.buyMenuButton.Location = new System.Drawing.Point(278, 268);
+            this.buyMenuButton.TabIndex = 30;
+            this.buyMenuButton.Text = "button5";
+            this.buyMenuButton.UseVisualStyleBackColor = true;
+
+            // 
+            // Facade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(700, 338);
+            this.Controls.Add(this.buyMenuButton);
+            this.Controls.Add(this.buyMenu);
             this.Controls.Add(this.gameStateLabel);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.ScoreLabel);
@@ -208,7 +242,7 @@ namespace Client
             this.Controls.Add(this.playerPictureBox);
             this.Controls.Add(this.enemyPictureBox);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "GameForm";
+            this.Name = "Facade";
             this.Text = "GameForm";
             this.Load += new System.EventHandler(this.GameForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.enemyPictureBox)).EndInit();
@@ -234,5 +268,7 @@ namespace Client
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label gameStateLabel;
+        private System.Windows.Forms.ListBox buyMenu;
+        private System.Windows.Forms.Button buyMenuButton;
     }
 }

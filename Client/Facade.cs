@@ -11,6 +11,7 @@ using Client.PictureBoxBuilder;
 using Client.Decorator;
 using System.Collections.Generic;
 using Client.Composite;
+using Client.Flyweight;
 
 namespace Client
 {
@@ -35,19 +36,18 @@ namespace Client
         {
             InitializeComponent();
             this.room = gameRoom;
+            player = new Player();
             MovementLabel.Text = "Controls:\nW/Space - jump\n A D - left, right\n Q - Jump up left \n E - jump up right\n SHIFT - dig down\n J - dig left\n K - dig right";
-            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel);
+            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, buyMenu, buyMenuButton, player, Controls);
             editor = tempEdit;
             //Singleton
             connection = SingletonConnection.GetInstance().GetConnection();
             movement = new Movement(connection, room.GetName());
-
             //Command
             message = new Command.SendMessage(textBox2);
             emote = new Command.SendEmote(textBox2);
             message.ReceiveUndoMessage();
             message.RecieveMessage();
-            player = new Player();
 
 
             playerPictureBox.Hide();
@@ -92,7 +92,6 @@ namespace Client
                 
             });
 
-
             connection.On<string, string, string>("ReceiveMinedBoxSkin", (x, y, path) =>
             {
                 MapBuilder.EditMinedBoxSkin(Int32.Parse(x), Int32.Parse(y), path);
@@ -128,29 +127,6 @@ namespace Client
             temp = movement.SendBoxCoordinates(sender, e, editor, map, player, MapBuilder);
             if (temp[0] == 0 && temp[1] == 0)
                 return;
-
-            //Jeigu dalinas is 5 be liekanos score
-            //Decorator
-            if (editor.getScore() % 5 == 0 && !editor.getEffectIsGranted() && editor.getScore() != 0)
-            {
-                Random rnd = new Random();
-                int randomNr = rnd.Next(1, 4);
-                switch (randomNr)
-                {
-                    case 1:
-                        player = new MineDeep(player);
-                        editor.setEffectIsGranted(true);
-                        break;
-                    case 2:
-                        player = new MineStronger(player);
-                        editor.setEffectIsGranted(true);
-                        break;
-                    case 3:
-                        player = new MineWide(player);
-                        editor.setEffectIsGranted(true);
-                        break;
-                }
-            }
 
             //Strategy
             playerPictureBox.Location = new Point(temp[0], temp[1]);
@@ -280,6 +256,16 @@ namespace Client
         private void label1_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

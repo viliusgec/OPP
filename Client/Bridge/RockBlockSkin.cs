@@ -13,15 +13,17 @@ namespace Client.Bridge
         {
             string workingDirectory = Environment.CurrentDirectory;
             string currentDir = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-            switch (health)
-            { 
-                case "100":
+            switch (int.Parse(health))
+            {
+                case >= 125:
+                    return currentDir + @"\Resources\rock.png";
+                case >= 100:
                     return currentDir + @"\Resources\rock1.png";
-                case "75":
+                case >= 75:
                     return currentDir + @"\Resources\rock2.png";
-                case "50":
+                case >= 50:
                     return currentDir + @"\Resources\rock3.png";
-                case "25":
+                case >= 0:
                     return currentDir + @"\Resources\rock4.png";
                 default:
                     return currentDir + @"\Resources\rock.png";
