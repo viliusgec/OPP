@@ -19,13 +19,14 @@ namespace Client
         private HubConnection connection;
         private RoomHub roomHub;
         private Room selectedRoom;
-        private AuthenticatorProxy authenticatorTest;
+        private AuthenticatorProxy authenticatorProxy;
 
         public Form1()
         {
             InitializeComponent();
             roomHub = new RoomHub("RoomHub");
-            
+            authenticatorProxy = new AuthenticatorProxy();
+
             //cia sitie jei chato kambarius darysim
             //roomHub.AddRoom(new RoomHub("Chat Rooms"));
             //roomHub.AddRoom(new RoomHub("Game Rooms"));
@@ -182,9 +183,7 @@ namespace Client
 
         private void joinRoomButton_Click(object sender, EventArgs e)
         {
-            //RoomHub roomHub;
-            authenticatorTest = new AuthenticatorProxy();
-            authenticatorTest.AuthenticatePlayerCount(selectedRoom, this, roomHub, roomListBox, connection);
+            authenticatorProxy.AuthenticatePlayerCount(selectedRoom, this, roomHub, roomListBox, connection);
         }
     }
 }
