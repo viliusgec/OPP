@@ -18,7 +18,7 @@ namespace Client.Observer
         public MapBuilder ReceiveMap(Map.MapBase map, PictureBox pictureBox1, PictureBox pictureBox2, Button button1, ImageList imageList1, Control.ControlCollection control, Size size);
         public void AddPlayer(string room);
         public void RemovePlayer(string room);
-        public void SendRoom(string name, string password);
+        public void SendRoom(string name, string password, int players);
 
     }
 }

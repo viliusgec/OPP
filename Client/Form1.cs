@@ -79,7 +79,7 @@ namespace Client
                 {
                     foreach(var room in roomHub.GetRooms())
                     {
-                        connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword());
+                        connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword(), room.GetPlayers());
                     }
                 }
             });
@@ -98,11 +98,14 @@ namespace Client
                 }
                     
             });
-            connection.On<string, string>("ReceiveRoom", (name, password) => {
+            connection.On<string, string, int>("ReceiveRoom", (name, password, players) => {
                 if(roomHub.GetRoom(name) == null)
                 {
                     var room = new GameRoom(name, password);
+                    room.SetPlayers(players);
+
                     roomHub.AddRoom(room);
+
                     roomListBox.Items.Clear();
                     roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
                 }
@@ -147,7 +150,7 @@ namespace Client
                 }
                 room = new GameRoom(roomNameBox.Text, roomPassBox.Text);
                 roomHub.AddRoom(room);
-                connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword());
+                connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword(), room.GetPlayers());
                 /*
                 room.JoinRoom(connection);
                 gameForm = new Facade(room);

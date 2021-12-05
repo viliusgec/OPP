@@ -10,9 +10,9 @@ namespace SignalRChat.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, room);
         }
 
-        public async Task SendRoom(string room, string password)
+        public async Task SendRoom(string room, string password, int players)
         {
-            await Clients.Others.SendAsync("ReceiveRoom", room, password).ConfigureAwait(true);
+            await Clients.Others.SendAsync("ReceiveRoom", room, password, players).ConfigureAwait(true);
         }
 
         public async Task SendRemoveRoom(string room)

@@ -111,9 +111,9 @@ namespace Client.Observer
             connection.InvokeAsync("RemovePlayer", room);
         }
 
-        public void SendRoom(string name, string password)
+        public void SendRoom(string name, string password, int players)
         {
-            connection.InvokeAsync("SendRoom", name, password);
+            connection.InvokeAsync("SendRoom", name, password, players);
         }
     }
 }
