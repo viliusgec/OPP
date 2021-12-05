@@ -23,6 +23,7 @@ namespace Client
         ServerObserver ServerObserver = new();
         MapBuilder MapBuilder = new();
         Movement movement;
+        ConcreteMediator mediator;
         private Map.MapBase map;
         Command.SendMessage message;
         Command.SendEmote emote;
@@ -179,7 +180,8 @@ namespace Client
 
             //AbstractFactory, Factory, Bridge
             map = new Map.MapBase(mapx, mapy);
-            ConcreteMediator mediator = new ConcreteMediator(map, editor, MapBuilder, ServerObserver, room);
+            ConcreteMediator temp_mediator = new ConcreteMediator(map, editor, MapBuilder, ServerObserver, room);
+            mediator = temp_mediator;
             map.setFactory(1); // pirmas mediator component 
 
             playerPictureBox.Show();
