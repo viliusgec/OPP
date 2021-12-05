@@ -12,6 +12,7 @@ using Client.Decorator;
 using System.Collections.Generic;
 using Client.Composite;
 using Client.Flyweight;
+using Client.Mediator;
 
 namespace Client
 {
@@ -22,6 +23,7 @@ namespace Client
         ServerObserver ServerObserver = new();
         MapBuilder MapBuilder = new();
         Movement movement;
+        ConcreteMediator mediator;
         private Map.MapBase map;
         Command.SendMessage message;
         Command.SendEmote emote;
@@ -34,35 +36,35 @@ namespace Client
 
         public Facade(Room gameRoom)
         {
-            InitializeComponent();
             this.room = gameRoom;
-            player = new Player();
-            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu";
-            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, buyMenu, buyMenuButton, player, Controls);
-            editor = tempEdit;
-            //Singleton
+            ElementsSet();
+
             connection = SingletonConnection.GetInstance().GetConnection();
             movement = new Movement(connection, room.GetName());
-            //Command
+
+            CommandPattern();
+
+            KeyDown += SendBoxCoordinates;
+
+            ServerObserver.ReceiveCoordinates(enemyPictureBox, movement);
+            MapBuilder = ServerObserver.ReceiveMap(map, playerPictureBox, enemyPictureBox, button1, imageList1, Controls, Size);
+            ConnectionsHandler();
+        }
+
+        private void GameForm_Load(object sender, EventArgs e)
+        {
+        }
+
+        private void CommandPattern()
+        {
             message = new Command.SendMessage(textBox2);
             emote = new Command.SendEmote(textBox2);
             message.ReceiveUndoMessage();
             message.RecieveMessage();
+        }
 
-
-            playerPictureBox.Hide();
-            enemyPictureBox.Hide();
-            playerPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            enemyPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-
-
-            this.Size = new Size(800, 800);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            KeyPreview = false;
-            KeyDown += SendBoxCoordinates;
-            gameStateLabel.Location = new Point((this.Width / 2)-80, (this.Height / 2));
-            ServerObserver.ReceiveCoordinates(enemyPictureBox, movement);
-            MapBuilder = ServerObserver.ReceiveMap(map, playerPictureBox, enemyPictureBox, button1, imageList1, Controls, Size);
+        private void ConnectionsHandler()
+        {
             connection.On<string>("ReceiveMap", (jsonString) =>
             {
                 if (!generator)
@@ -88,8 +90,8 @@ namespace Client
                     textBox2.Enabled = false;
                     label2.Enabled = false;
                     KeyPreview = true;
+                    MapBuilder.CreateMap(new ImageList(), map);
                 }
-                
             });
 
             connection.On<string, string, string>("ReceiveMinedBoxSkin", (x, y, path) =>
@@ -111,11 +113,18 @@ namespace Client
                     gameStateLabel.Text = "You lost!";
                 }
             });
-
         }
 
-        private void GameForm_Load(object sender, EventArgs e)
+        private void ElementsSet()
         {
+            InitializeComponent();
+            gameStateLabel.Location = new Point((this.Width / 2) - 80, (this.Height / 2));
+            player = new Player();
+            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu";
+            this.Size = new Size(800, 800);
+
+            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, buyMenu, buyMenuButton, imageList1, player, Controls, this.Size);
+            editor = tempEdit;
         }
 
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
@@ -172,13 +181,10 @@ namespace Client
 
             //AbstractFactory, Factory, Bridge
             map = new Map.MapBase(mapx, mapy);
-            map.setFactory(1);
-            map.CreateMap();
+            ConcreteMediator temp_mediator = new ConcreteMediator(map, editor, MapBuilder, ServerObserver, room);
+            mediator = temp_mediator;
+            map.setFactory(1); // pirmas mediator component 
 
-            MapBuilder.AddPictureBoxes(playerPictureBox, enemyPictureBox, Controls, Size);
-
-            MapBuilder.CreateMap(imageList1, map);
-            _ = ServerObserver.SendMap(map, room.GetName());
             playerPictureBox.Show();
             enemyPictureBox.Show();
             editor.scoreZero();

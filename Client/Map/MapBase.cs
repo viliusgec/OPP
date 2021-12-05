@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Client.Mediator;
 
 namespace Client.Map
 {
     [Serializable]
-    public class MapBase
+    public class MapBase : BaseComponent
     {
         private AbstractFactory factory { get; set; }
         private Block[,] blocks { get; set; }
@@ -96,6 +97,8 @@ namespace Client.Map
                 factory = new L3Factory();
             else
                 factory = new L1Factory();
+
+            mediator.notify("A");
         }
 
         public void CreateMap()
@@ -149,6 +152,8 @@ namespace Client.Map
                     }
                 }
             }
+
+            mediator.notify("B");
         }
 
         public AbstractFactory GetL1Factory()

@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Client
 {
@@ -38,6 +39,7 @@ namespace Client
             this.button1 = new System.Windows.Forms.Button();
             this.MovementLabel = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -64,6 +66,8 @@ namespace Client
             this.enemyPictureBox.TabIndex = 7;
             this.enemyPictureBox.TabStop = false;
             this.enemyPictureBox.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.enemyPictureBox.Hide();
+            this.enemyPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             // 
             // playerPictureBox
             // 
@@ -72,6 +76,8 @@ namespace Client
             this.playerPictureBox.Location = new System.Drawing.Point(318, 9);
             this.playerPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.playerPictureBox.Name = "playerPictureBox";
+            this.playerPictureBox.Hide();
+            this.playerPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             this.playerPictureBox.Size = new System.Drawing.Size(64, 78);
             this.playerPictureBox.TabIndex = 8;
             this.playerPictureBox.TabStop = false;

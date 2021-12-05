@@ -1,4 +1,5 @@
-﻿using Client.PictureBoxBuilder;
+﻿using Client.Mediator;
+using Client.PictureBoxBuilder;
 using Client.Strategy;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Client.Observer
 {
-    class ServerObserver : IServerObserver
+    public class ServerObserver : BaseComponent, IServerObserver
     {
         private readonly HubConnection connection;
         readonly MapBuilder MapBuilder;
