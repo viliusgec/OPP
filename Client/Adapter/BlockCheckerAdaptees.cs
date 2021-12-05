@@ -48,6 +48,7 @@ namespace Client.Adapter
                             _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                             ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                             editor.addScore();
+                            editor.addMoney(block.GetPoints());
 
                             return loc == defaultLoc;
                         }
@@ -105,6 +106,7 @@ namespace Client.Adapter
                             mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                             ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                             editor.addScore();
+                            editor.addMoney(block.GetPoints());
 
                             return loc == defaultLocLeft;
                         }
@@ -137,6 +139,7 @@ namespace Client.Adapter
                             mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                             ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
                             editor.addScore();
+                            editor.addMoney(block.GetPoints());
 
                             return loc == defaultLocRight;
                         }

@@ -17,7 +17,7 @@ namespace Client.Map
         private string image;
         private string blockType;
         private Effect.IEffect effect;
-        private string health;
+        public string health;
         public Block(string _name, string _image, Effect.IEffect _effect, string _health)
         {
             name = _name;
@@ -75,10 +75,15 @@ namespace Client.Map
             this.blockType = type;
         }
 
-        public void SetHealth(string health)
+        public abstract void SetHealth(string health);
+
+        public abstract int GetPoints();
+
+        public virtual bool IsBreakable()
         {
-            this.health = health;
+            return true;
         }
+
 
         public abstract void CreateBlock();
 

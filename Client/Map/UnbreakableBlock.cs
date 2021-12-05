@@ -18,6 +18,28 @@ namespace Client.Map
         {
 
         }
+
+        public override bool IsBreakable()
+        {
+            return false;
+        }
+
+        public sealed override void SetHealth(string health)
+        {
+            if (this.IsBreakable())
+                this.health = health;
+            else
+                this.health = "1000";
+        }
+
+        public sealed override int GetPoints()
+        {
+            if (this.IsBreakable())
+                return 2;
+            else
+                return 0;
+        }
+
         public override UnbreakableBlock Clone()
         {
             return (UnbreakableBlock)this.MemberwiseClone();

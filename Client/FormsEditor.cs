@@ -26,6 +26,7 @@ namespace Client
         public Control.ControlCollection control;
         public Size size;
         int score = 0;
+        int money = 0;
         bool effectIsGranted = false;
 
         public FormsEditor(PictureBox pictureBox1, PictureBox pictureBox2, Label scoreLabel, ListBox buyMenu, Button buyMenuButton, ImageList imageList1, Character player, Control.ControlCollection control, Size size)
@@ -64,6 +65,17 @@ namespace Client
         public int getScore()
         {
             return score;
+        }
+
+        public void addMoney(int _money)
+        {
+            money += _money;
+            //scoreLabel.Text = "Score: " + money;
+        }
+
+        public int getMoney()
+        {
+            return money;
         }
 
         public bool getEffectIsGranted()

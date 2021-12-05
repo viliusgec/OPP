@@ -18,6 +18,24 @@ namespace Client.Map
         {
 
         }
+        public sealed override void SetHealth(string health)
+        {
+            if (this.IsBreakable())
+                this.health = health;
+            else
+                this.health = "1000";
+        }
+
+        public sealed override int GetPoints()
+        {
+            Random r = new Random();
+            int money = r.Next(1, 5); 
+            if (this.IsBreakable())
+                return money;
+            else
+                return 0;
+        }
+
         public override StaticBlock Clone()
         {
             return (StaticBlock)this.MemberwiseClone();
