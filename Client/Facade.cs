@@ -90,6 +90,7 @@ namespace Client
                     textBox2.Enabled = false;
                     label2.Enabled = false;
                     KeyPreview = true;
+                    MapBuilder.CreateMap(new ImageList(), map);
                 }
             });
 
