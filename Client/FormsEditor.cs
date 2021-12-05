@@ -12,8 +12,8 @@ namespace Client
 {
     public class FormsEditor
     {
-        public PictureBox pictureBox1;
-        public PictureBox pictureBox2;
+        public PictureBox playerPictureBox;
+        public PictureBox enemyPictureBox;
         public Label scoreLabel;
         PictureBox white;
         PictureBox black;
@@ -22,20 +22,24 @@ namespace Client
         ListBox _buyMenu;
         Button buyMenuButton;
         Character player;
-        Control.ControlCollection control;
+        public ImageList imageList1;
+        public Control.ControlCollection control;
+        public Size size;
         int score = 0;
         bool effectIsGranted = false;
 
-        public FormsEditor(PictureBox pictureBox1, PictureBox pictureBox2, Label scoreLabel, ListBox buyMenu, Button buyMenuButton, Character player, Control.ControlCollection control)
+        public FormsEditor(PictureBox pictureBox1, PictureBox pictureBox2, Label scoreLabel, ListBox buyMenu, Button buyMenuButton, ImageList imageList1, Character player, Control.ControlCollection control, Size size)
         {
-            this.pictureBox1 = pictureBox1;
-            this.pictureBox2 = pictureBox2;
+            this.playerPictureBox = pictureBox1;
+            this.enemyPictureBox = pictureBox2;
             this.scoreLabel = scoreLabel;
             this._buyMenu = buyMenu;
             this.buyMenuButton = buyMenuButton;
+            this.imageList1 = imageList1;
             this.player = player;
             this.control = control;
             this.buyMenuButton.Click += new System.EventHandler(this.buyMenuButton_Click);
+            this.size = size;
             initSkins();
         }
         public void initSkins()
@@ -101,13 +105,13 @@ namespace Client
             switch(skin)
             {
                 case 7:
-                    this.pictureBox1.Image = white.Image;
+                    this.playerPictureBox.Image = white.Image;
                     break;
                 case 10:
-                    this.pictureBox1.Image = black.Image;
+                    this.playerPictureBox.Image = black.Image;
                     break;
                 case 13:
-                    this.pictureBox1.Image = diamond.Image;
+                    this.playerPictureBox.Image = diamond.Image;
                     break;
                 default:
                     break;

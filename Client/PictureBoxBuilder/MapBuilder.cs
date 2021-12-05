@@ -1,10 +1,11 @@
 ﻿using Client.Map;
+using Client.Mediator;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace Client.PictureBoxBuilder
 {
-    public class MapBuilder
+    public class MapBuilder : BaseComponent
     {
         public int boxWidth;
         public int boxHeight;
@@ -179,6 +180,8 @@ namespace Client.PictureBoxBuilder
                     controls.Add(boxes[i, j]);
                 }
             }
+
+            mediator.notify("C"); // antra mediator šaka
         }
         public void EditMinedBox(int x, int y)
         {
@@ -229,6 +232,8 @@ namespace Client.PictureBoxBuilder
             boxes[1, mapy].Image = Image.FromFile(factory.GetUnbreakable().GetImage());
             imageList1.Images.Add(boxes[0, mapy].Image);
             imageList1.Images.Add(boxes[1, mapy].Image);
+
+            mediator.notify("D");
         }
     }
 }

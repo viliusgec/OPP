@@ -15,7 +15,7 @@ using Client.Decorator;
 
 namespace Client.Strategy
 {
-    class Movement
+    public class Movement
     {
         ServerObserver ServerObserver = new();
         Algorithm strategy;
@@ -60,8 +60,8 @@ namespace Client.Strategy
 
         public int[] SendBoxCoordinates(object sender, KeyEventArgs e, FormsEditor editor, Map.MapBase map, Character player, MapBuilder mapBuilder)
         {
-            int x = editor.pictureBox1.Location.X;
-            int y = editor.pictureBox1.Location.Y;
+            int x = editor.playerPictureBox.Location.X;
+            int y = editor.playerPictureBox.Location.Y;
             int[] temp = { 0, 0 };
 
 
@@ -70,50 +70,50 @@ namespace Client.Strategy
             {
                 case (Keys.Q):
                     if (check_if_block_exists(4, x, y, editor, map, player, mapBuilder))
-                        strategy = new MoveUpLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+                        strategy = new MoveUpLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
                     break;
                 case (Keys.E):
                     if (check_if_block_exists(5, x, y, editor, map, player, mapBuilder))
-                        strategy = new MoveUpRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+                        strategy = new MoveUpRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
                     break;
                 case (Keys.A):
                     if (check_if_block_exists(2, x, y, editor, map, player, mapBuilder))
-                        strategy = new MoveLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+                        strategy = new MoveLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
                     break;
                 case (Keys.D):
                     if (check_if_block_exists(3, x, y, editor, map, player, mapBuilder))
-                        strategy = new MoveRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+                        strategy = new MoveRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
                     break;
                 case (Keys.Space):
                 case (Keys.W):
                     if (check_if_block_exists(1, x, y, editor, map, player, mapBuilder))
-                        strategy = new Jump(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+                        strategy = new Jump(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
                     break;
                 case (Keys.ShiftKey):
                     if (check_if_block_exists(0, x, y, editor, map, player, mapBuilder))
-                        strategy = new Mine(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+                        strategy = new Mine(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
                     break;
                 case (Keys.J):
                     if (check_if_block_exists(7, x, y, editor, map, player, mapBuilder))
-                        strategy = new MineLeft(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+                        strategy = new MineLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
                     break;
                 case (Keys.K):
                     if (check_if_block_exists(8, x, y, editor, map, player, mapBuilder))
-                        strategy = new MineRight(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+                        strategy = new MineRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
                     break;
@@ -127,7 +127,7 @@ namespace Client.Strategy
                     return temp;
             }
 
-            temp = strategy.Behave(x, y, editor.pictureBox1.Height, editor.pictureBox1.Width);
+            temp = strategy.Behave(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
             return temp;
         }
         /**
@@ -149,11 +149,11 @@ namespace Client.Strategy
         {
             while (check_if_block_exists(6, coords[0], coords[1], editor, map, player,new MapBuilder()) == false)
             {
-                editor.pictureBox1.Location = new Point(coords[0], coords[1] + editor.pictureBox1.Height);
-                _ = SendGetCoordinatesAsync(coords[0], coords[1] + editor.pictureBox1.Height);
-                coords[1] += editor.pictureBox1.Height;
+                editor.playerPictureBox.Location = new Point(coords[0], coords[1] + editor.playerPictureBox.Height);
+                _ = SendGetCoordinatesAsync(coords[0], coords[1] + editor.playerPictureBox.Height);
+                coords[1] += editor.playerPictureBox.Height;
                 Thread.Sleep(10);
-                if (coords[1] > (editor.pictureBox1.Height) * 15)
+                if (coords[1] > (editor.playerPictureBox.Height) * 15)
                     break;
             }
         }

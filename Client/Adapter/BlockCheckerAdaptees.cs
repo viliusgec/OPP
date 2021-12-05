@@ -24,9 +24,9 @@ namespace Client.Adapter
             {
                 case 0:
 
-                    var defaultLoc = new Point(x, y + editor.pictureBox1.Height);
+                    var defaultLoc = new Point(x, y + editor.playerPictureBox.Height);
 
-                        loc = new Point(x, y + editor.pictureBox1.Height);
+                        loc = new Point(x, y + editor.playerPictureBox.Height);
                         box = MapBuilder.GetPictureBox(loc);
                         if (box == null) return false;
                         block = MapBuilder.GetBlock(loc, map);
@@ -55,34 +55,34 @@ namespace Client.Adapter
 
                     return false;
                 case 1:
-                    loc = new Point(x, y - editor.pictureBox1.Height);
+                    loc = new Point(x, y - editor.playerPictureBox.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     return CheckBox(box);
                 case 2:
-                    loc = new Point(x - editor.pictureBox1.Width, y);
+                    loc = new Point(x - editor.playerPictureBox.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
                     return mapBuilder.startX <= loc.X && CheckBox(box);
                 case 3:
-                    loc = new Point(x + editor.pictureBox1.Width, y);
+                    loc = new Point(x + editor.playerPictureBox.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
                     return (mapBuilder.endX - mapBuilder.boxWidth) >= loc.X && CheckBox(box);
                 case 4:
-                    loc = new Point(x - editor.pictureBox1.Width, y - editor.pictureBox1.Height);
+                    loc = new Point(x - editor.playerPictureBox.Width, y - editor.playerPictureBox.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     return CheckBox(box);
                 case 5:
-                    loc = new Point(x + editor.pictureBox1.Width, y - editor.pictureBox1.Height);
+                    loc = new Point(x + editor.playerPictureBox.Width, y - editor.playerPictureBox.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     return CheckBox(box);
                 case 6:
-                    loc = new Point(x, y + editor.pictureBox1.Height);
+                    loc = new Point(x, y + editor.playerPictureBox.Height);
                     box = MapBuilder.GetPictureBox(loc);
                     return !CheckBox(box);
                 case 7:
-                    var defaultLocLeft = new Point(x - editor.pictureBox1.Width, y);
+                    var defaultLocLeft = new Point(x - editor.playerPictureBox.Width, y);
 
 
-                        loc = new Point(x - editor.pictureBox1.Width, y);
+                        loc = new Point(x - editor.playerPictureBox.Width, y);
                         box = MapBuilder.GetPictureBox(loc);
                         if (box == null) return false;
                         block = MapBuilder.GetBlock(loc, map);
@@ -112,9 +112,9 @@ namespace Client.Adapter
                     return false;
                 case 8:
 
-                    var defaultLocRight = new Point(x + editor.pictureBox1.Width, y);
+                    var defaultLocRight = new Point(x + editor.playerPictureBox.Width, y);
 
-                        loc = new Point(x + editor.pictureBox1.Width, y);
+                        loc = new Point(x + editor.playerPictureBox.Width, y);
                         box = MapBuilder.GetPictureBox(loc);
                         if (box == null) return false;
                         block = MapBuilder.GetBlock(loc, map);
