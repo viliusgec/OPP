@@ -23,35 +23,34 @@ namespace Client.Adapter
             switch (side)
             {
                 case 0:
-
                     var defaultLoc = new Point(x, y + editor.playerPictureBox.Height);
+                    loc = new Point(x, y + editor.playerPictureBox.Height);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null) return false;
+                    block = MapBuilder.GetBlock(loc, map);
+                    if (block == null) return false;
 
-                        loc = new Point(x, y + editor.playerPictureBox.Height);
-                        box = MapBuilder.GetPictureBox(loc);
-                        if (box == null) return false;
-                        block = MapBuilder.GetBlock(loc, map);
+                    if (block.GetBlockType() == "unbreakable")
+                        return false;
 
-                        if (block.GetBlockType() == "unbreakable")
-                            return false;
+                    block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString()); ;
+                    block.SetImage("");
 
-                        block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString()); ;
-                        block.SetImage("");
+                    box.ImageLocation = block.GetImage();
+                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
+                    ServerObserver.ReceiveMinedBoxSkin();
 
-                        box.ImageLocation = block.GetImage();
-                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
-                        ServerObserver.ReceiveMinedBoxSkin();
+                    if (int.Parse(block.GetHealth()) <= 0 && box.Enabled)
+                    {
+                        box.Hide();
+                        box.Enabled = false;
+                        _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
+                        ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
+                        editor.addScore();
+                        editor.addMoney(block.GetPoints());
 
-                        if (int.Parse(block.GetHealth()) <= 0 && box.Enabled)
-                        {
-                            box.Hide();
-                            box.Enabled = false;
-                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
-                            ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                            editor.addScore();
-                            editor.addMoney(block.GetPoints());
-
-                            return loc == defaultLoc;
-                        }
+                        return loc == defaultLoc;
+                    }
                 
 
                     return false;
@@ -70,11 +69,11 @@ namespace Client.Adapter
                 case 4:
                     loc = new Point(x - editor.playerPictureBox.Width, y - editor.playerPictureBox.Height);
                     box = MapBuilder.GetPictureBox(loc);
-                    return CheckBox(box);
+                    return mapBuilder.startX <= loc.X && CheckBox(box);
                 case 5:
                     loc = new Point(x + editor.playerPictureBox.Width, y - editor.playerPictureBox.Height);
                     box = MapBuilder.GetPictureBox(loc);
-                    return CheckBox(box);
+                    return (mapBuilder.endX - mapBuilder.boxWidth) >= loc.X && CheckBox(box);
                 case 6:
                     loc = new Point(x, y + editor.playerPictureBox.Height);
                     box = MapBuilder.GetPictureBox(loc);
@@ -83,66 +82,68 @@ namespace Client.Adapter
                     var defaultLocLeft = new Point(x - editor.playerPictureBox.Width, y);
 
 
-                        loc = new Point(x - editor.playerPictureBox.Width, y);
-                        box = MapBuilder.GetPictureBox(loc);
-                        if (box == null) return false;
-                        block = MapBuilder.GetBlock(loc, map);
+                    loc = new Point(x - editor.playerPictureBox.Width, y);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null) return false;
+                    block = MapBuilder.GetBlock(loc, map);
+                    if (block == null) return false;
 
-                        if (block.GetBlockType() == "unbreakable")
-                            return false;
+                    if (block.GetBlockType() == "unbreakable")
+                        return false;
 
-                        block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString());
+                    block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString());
 
-                        block.SetImage("");
-                        box.ImageLocation = block.GetImage();
-                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
-                        ServerObserver.ReceiveMinedBoxSkin();
+                    block.SetImage("");
+                    box.ImageLocation = block.GetImage();
+                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
+                    ServerObserver.ReceiveMinedBoxSkin();
 
-                        if (int.Parse(block.GetHealth()) <= 0 && box.Enabled)
-                        {
-                            box.Hide();
-                            box.Enabled = false;
-                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
-                            mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
-                            ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                            editor.addScore();
-                            editor.addMoney(block.GetPoints());
+                    if (int.Parse(block.GetHealth()) <= 0 && box.Enabled)
+                    {
+                        box.Hide();
+                        box.Enabled = false;
+                        _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
+                        mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
+                        ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
+                        editor.addScore();
+                        editor.addMoney(block.GetPoints());
 
-                            return loc == defaultLocLeft;
-                        }
+                        return loc == defaultLocLeft;
+                    }
 
                     return false;
                 case 8:
 
                     var defaultLocRight = new Point(x + editor.playerPictureBox.Width, y);
 
-                        loc = new Point(x + editor.playerPictureBox.Width, y);
-                        box = MapBuilder.GetPictureBox(loc);
-                        if (box == null) return false;
-                        block = MapBuilder.GetBlock(loc, map);
+                    loc = new Point(x + editor.playerPictureBox.Width, y);
+                    box = MapBuilder.GetPictureBox(loc);
+                    if (box == null) return false;
+                    block = MapBuilder.GetBlock(loc, map);
 
-                        if (block.GetBlockType() == "unbreakable")
-                            return false;
+                    if (block == null) return false;
+                    if (block.GetBlockType() == "unbreakable")
+                        return false;
 
-                        block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString());
+                    block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString());
 
-                        block.SetImage("");
-                        box.ImageLocation = block.GetImage();
-                        _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
-                        ServerObserver.ReceiveMinedBoxSkin();
+                    block.SetImage("");
+                    box.ImageLocation = block.GetImage();
+                    _ = SendMinedBoxSkinAsync(box.Location.X, box.Location.Y, connection, block.GetImage(), room);
+                    ServerObserver.ReceiveMinedBoxSkin();
 
-                        if (int.Parse(block.GetHealth()) <= 0 && box.Enabled)
-                        {
-                            box.Hide();
-                            box.Enabled = false;
-                            _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
-                            mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
-                            ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                            editor.addScore();
-                            editor.addMoney(block.GetPoints());
+                    if (int.Parse(block.GetHealth()) <= 0 && box.Enabled)
+                    {
+                        box.Hide();
+                        box.Enabled = false;
+                        _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
+                        mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
+                        ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
+                        editor.addScore();
+                        editor.addMoney(block.GetPoints());
 
-                            return loc == defaultLocRight;
-                        }
+                        return loc == defaultLocRight;
+                    }
 
                     return false;
                 default:

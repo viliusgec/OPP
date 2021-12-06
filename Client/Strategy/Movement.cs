@@ -12,6 +12,8 @@ using Client.Observer;
 using Client.PictureBoxBuilder;
 using Client.Adapter;
 using Client.Decorator;
+using Client.ChainOfResponsibility;
+using Microsoft.Extensions.Logging;
 
 namespace Client.Strategy
 {
@@ -23,11 +25,22 @@ namespace Client.Strategy
         bool playerLookingRight = true;
         bool enemyLookingRight = true;
         string room;
+        JumpHandler handler;
 
         public Movement(HubConnection connection, string room)
         {
+            
             this.connection = connection;
             this.room = room;
+            handler = new JumpHandler();
+            var handler2 = new MineHandler();
+            var handler3 = new MineLeftHandler();
+            var handler4 = new MineRightHandler();
+            var handler5 = new MoveLeftHandler();
+            var handler6 = new MoveRightHandler();
+            var handler7 = new MoveUpLeftHandler();
+            var handler8 = new MoveUpRightHandler();
+            handler.SetNext(handler2).SetNext(handler3).SetNext(handler4).SetNext(handler5).SetNext(handler6).SetNext(handler7).SetNext(handler8);
         }
 
         public void FlipImage(PictureBox pictureBox, Point prevLoc, bool enemy)
@@ -64,10 +77,12 @@ namespace Client.Strategy
             int y = editor.playerPictureBox.Location.Y;
             int[] temp = { 0, 0 };
 
-
-
+            var key = e.KeyCode.ToString();
+            Console.WriteLine(key);
+            var strategy = handler.Handle(key, x, y, editor, map, player, mapBuilder, connection, room);
+            
             switch (e.KeyCode)
-            {
+            {/*
                 case (Keys.Q):
                     if (check_if_block_exists(4, x, y, editor, map, player, mapBuilder))
                         strategy = new MoveUpLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
@@ -116,7 +131,7 @@ namespace Client.Strategy
                         strategy = new MineRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                     else
                         return temp;
-                    break;
+                    break;*/
                 case (Keys.B):
                     editor.buyMenu(player); /// <<< šitaip accessinsim buy menu. Returninsim reikšmes ir editinsim žaidėjo stats.
                     return temp;
@@ -124,10 +139,10 @@ namespace Client.Strategy
                     editor.closeBuyMmenu();
                     return temp;
                 default:
-                    return temp;
+                    break;
             }
-
-            temp = strategy.Behave(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+            if(strategy != null)
+                temp = strategy.Behave(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
             return temp;
         }
         /**
