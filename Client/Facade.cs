@@ -13,12 +13,12 @@ using System.Collections.Generic;
 using Client.Composite;
 using Client.Flyweight;
 using Client.Mediator;
+using Client.State;
 
 namespace Client
 {
     public partial class Facade : Form
     {
-        string game_state = "playing";
         private static HubConnection connection;
         ServerObserver ServerObserver = new();
         MapBuilder MapBuilder = new();
@@ -32,6 +32,7 @@ namespace Client
         private List<ICommand> ChatCommands = new();
         Room room;
         bool generator = false;
+        StateContext stateContext = new StateContext(new StartState());
 
 
         public Facade(Room gameRoom)
@@ -91,6 +92,11 @@ namespace Client
                     label2.Enabled = false;
                     KeyPreview = true;
                     MapBuilder.CreateMap(new ImageList(), map);
+
+                    //State
+                    stateContext.TransitionTo(new StartState());
+                    button5.Show();
+                    button5.Enabled = true;
                 }
             });
 
@@ -107,10 +113,32 @@ namespace Client
 
             connection.On<string>("ReceiveState", (state) =>
             {
-                if (game_state != "end")
+                if (state == "StartState")
                 {
-                    game_state = state;
-                    gameStateLabel.Text = "You lost!";
+                    stateContext.TransitionTo(new StartState());
+                    gameStateLabel.Text = string.Empty;
+                    button5.Enabled = true;
+                    button5.Show();
+                }
+                else if (state == "PauseState")
+                {
+                    stateContext.TransitionTo(new PauseState());
+                    gameStateLabel.Text = stateContext.ShowText();
+                    button5.Text = "Resume";
+                }
+                else if (state == "ResumeState")
+                {
+                    stateContext.TransitionTo(new ResumeState());
+                    gameStateLabel.Text = stateContext.ShowText();
+                    button5.Text = "Pause";
+                }
+                else if (state == "EndState")
+                {
+                    stateContext.TransitionTo(new EndState());
+                    gameStateLabel.Text = stateContext.ShowText();
+                    gameStateLabel.Text += "\r\nYou lost!";
+                    button5.Enabled = false;
+                    button5.Hide();
                 }
             });
         }
@@ -129,7 +157,7 @@ namespace Client
 
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
         {
-            if (game_state == "end")
+            if (stateContext.GetState().GetType().Name != "StartState")
                 return;
             int[] temp;
             Point prevLoc = playerPictureBox.Location;
@@ -153,18 +181,16 @@ namespace Client
 
         public void check_if_win()
         {
-            if (playerPictureBox.Location.Y >= playerPictureBox.Height*15)
+            if (playerPictureBox.Location.Y >= playerPictureBox.Height * 15)
             {
-                game_state = "end";
-                gameStateLabel.Text = "You won!";
-                _=SendState(game_state);
+                //State
+                stateContext.TransitionTo(new EndState());
+                gameStateLabel.Text = stateContext.ShowText();
+                gameStateLabel.Text += "\r\nYou won!";
+                button5.Enabled = false;
+                button5.Hide();
+                stateContext.SendState(room.GetName());
             }
-        }
-
-        private async Task SendState(string state)
-        {
-            await connection.InvokeAsync("SendState",
-                    state.ToString(), room.GetName());
         }
 
         private async Task SendGetCoordinatesAsync(int x, int y)
@@ -173,6 +199,7 @@ namespace Client
                     x.ToString(), y.ToString(), room.GetName());
         }
 
+        //Game start
         private void button1_Click_1(object sender, EventArgs e)
         {
             generator = true;
@@ -202,6 +229,12 @@ namespace Client
             textBox2.Enabled = false;
             label2.Enabled = false;
             KeyPreview = true;
+            //State
+            button5.Enabled = true;
+            button5.Show();
+            stateContext.TransitionTo(new StartState());
+            stateContext.SendState(room.GetName());
+            stateContext.ShowText();
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
@@ -228,7 +261,7 @@ namespace Client
         {
             if (textBox1.Text != string.Empty)
             {
-                message.Send(textBox1.Text,room.GetName());
+                message.Send(textBox1.Text, room.GetName());
                 textBox1.Text = "";
                 ChatCommands.Add(message);
             }
@@ -246,7 +279,7 @@ namespace Client
 
         private void button3_Click(object sender, EventArgs e)
         {
-            int index = ChatCommands.Count-1;
+            int index = ChatCommands.Count - 1;
             ICommand cmd = ChatCommands[index];
             ChatCommands.RemoveAt(index);
             cmd.Undo(room.GetName());
@@ -271,7 +304,33 @@ namespace Client
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void gameStateButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (stateContext.GetState().GetType().Name == "PauseState")
+            {
+                stateContext.ChangeToNextState();
+                button5.Text = "Pause";
+                stateContext.SendState(room.GetName());
+                gameStateLabel.Text = stateContext.ShowText();
+                Thread.Sleep(3000);
+                gameStateLabel.Text = string.Empty;
+                stateContext.ChangeToNextState();
+                stateContext.SendState(room.GetName());
+                return;
+            }
+
+            stateContext.TransitionTo(new PauseState());
+            gameStateLabel.Text = stateContext.ShowText();
+            button5.Text = "Resume";
+            stateContext.SendState(room.GetName());
         }
     }
 }
