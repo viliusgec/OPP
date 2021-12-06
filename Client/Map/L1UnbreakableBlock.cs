@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Map
 {
     [Serializable]
+#pragma warning disable CS0659 // 'L1UnbreakableBlock' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     public class L1UnbreakableBlock : UnbreakableBlock
+#pragma warning restore CS0659 // 'L1UnbreakableBlock' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
         public L1UnbreakableBlock(string name, string image, Effect.IEffect effect, string health) : base(name, image, effect, health)
         {

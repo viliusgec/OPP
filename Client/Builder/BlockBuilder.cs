@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Client.Effect;
 using Client.Map;
-using Client.Effect;
 
 namespace Client.Builder
 {
     public abstract class BlockBuilder
     {
+#pragma warning disable CS0169 // The field 'BlockBuilder.block' is never used
         Block block;
+#pragma warning restore CS0169 // The field 'BlockBuilder.block' is never used
         public BlockBuilder()
         {
-            
+
         }
         public abstract BlockBuilder startBuild(Block _block);
         public abstract BlockBuilder addName(string name);

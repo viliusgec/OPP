@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System;
 using System.Drawing;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -37,7 +36,7 @@ namespace Client.Observer
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
-                
+
             });
         }
 
@@ -91,9 +90,9 @@ namespace Client.Observer
             await connection.InvokeAsync("SendMap", jsonString, room);
         }
 
-        public void SendMessage(string message,string room)
+        public void SendMessage(string message, string room)
         {
-            connection.InvokeAsync("SendMessage", message,room);
+            connection.InvokeAsync("SendMessage", message, room);
         }
 
         public void UndoMessage(string room)

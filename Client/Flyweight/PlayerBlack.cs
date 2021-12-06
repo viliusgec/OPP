@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client.Flyweight
@@ -20,7 +16,7 @@ namespace Client.Flyweight
             temp.Hide();
             temp.BackColor = System.Drawing.Color.Transparent;
             temp.SizeMode = PictureBoxSizeMode.StretchImage;
-/*            temp.Size = new Size(boxWidth, boxHeight);*/
+            /*            temp.Size = new Size(boxWidth, boxHeight);*/
             temp.Image = Image.FromFile(currentDir + @"\Resources\PlayerBlack.png");
             return temp;
         }

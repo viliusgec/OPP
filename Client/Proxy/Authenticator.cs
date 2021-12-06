@@ -1,10 +1,6 @@
 ﻿using Client.Composite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.SignalR.Client;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Client.Proxy
@@ -17,7 +13,8 @@ namespace Client.Proxy
             RoomHub roomHub,
             ListBox roomListBox,
             HubConnection connection
-            ) {
+            )
+        {
             if (selectedRoom != null && selectedRoom.players < 2)
             {
                 connection.InvokeAsync("AddPlayer", selectedRoom.GetName());
@@ -42,5 +39,5 @@ namespace Client.Proxy
 
         }
     }
-    
+
 }

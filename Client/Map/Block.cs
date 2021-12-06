@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Client.Bridge;
-using System.Threading.Tasks;
+﻿using Client.Bridge;
+using System;
 
 namespace Client.Map
 {

@@ -1,7 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Client.Builder;
-using Client.Map;
+﻿using Client.Builder;
 using Client.Effect;
+using Client.Map;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ClientTests
 {

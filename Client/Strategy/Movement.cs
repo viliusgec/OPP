@@ -1,26 +1,23 @@
-﻿using System;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
-using System.Text.Json;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
-using Client.Strategy;
-using System.Threading;
+﻿using Client.Adapter;
+using Client.ChainOfResponsibility;
+using Client.Decorator;
 using Client.Observer;
 using Client.PictureBoxBuilder;
-using Client.Adapter;
-using Client.Decorator;
-using Client.ChainOfResponsibility;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.SignalR.Client;
+using System;
+using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Client.Strategy
 {
     public class Movement
     {
         ServerObserver ServerObserver = new();
+#pragma warning disable CS0169 // The field 'Movement.strategy' is never used
         Algorithm strategy;
+#pragma warning restore CS0169 // The field 'Movement.strategy' is never used
         HubConnection connection;
         bool playerLookingRight = true;
         bool enemyLookingRight = true;
@@ -29,7 +26,7 @@ namespace Client.Strategy
 
         public Movement(HubConnection connection, string room)
         {
-            
+
             this.connection = connection;
             this.room = room;
             handler = new JumpHandler();
@@ -80,7 +77,7 @@ namespace Client.Strategy
             var key = e.KeyCode.ToString();
             Console.WriteLine(key);
             var strategy = handler.Handle(key, x, y, editor, map, player, mapBuilder, connection, room);
-            
+
             switch (e.KeyCode)
             {/*
                 case (Keys.Q):
@@ -141,7 +138,7 @@ namespace Client.Strategy
                 default:
                     break;
             }
-            if(strategy != null)
+            if (strategy != null)
                 temp = strategy.Behave(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
             return temp;
         }
@@ -162,7 +159,7 @@ namespace Client.Strategy
 
         public void fall_down(int[] coords, FormsEditor editor, Map.MapBase map, Character player)
         {
-            while (check_if_block_exists(6, coords[0], coords[1], editor, map, player,new MapBuilder()) == false)
+            while (check_if_block_exists(6, coords[0], coords[1], editor, map, player, new MapBuilder()) == false)
             {
                 editor.playerPictureBox.Location = new Point(coords[0], coords[1] + editor.playerPictureBox.Height);
                 _ = SendGetCoordinatesAsync(coords[0], coords[1] + editor.playerPictureBox.Height);
@@ -179,6 +176,6 @@ namespace Client.Strategy
                     x.ToString(), y.ToString(), room);
         }
 
-      
+
     }
 }

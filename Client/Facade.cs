@@ -1,18 +1,17 @@
+using Client.Command;
+using Client.Composite;
+using Client.Decorator;
+using Client.Mediator;
+using Client.Observer;
+using Client.PictureBoxBuilder;
+using Client.Strategy;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
-using Client.Strategy;
-using System.Threading;
-using Client.Observer;
-using Client.Command;
-using Client.PictureBoxBuilder;
-using Client.Decorator;
-using System.Collections.Generic;
-using Client.Composite;
-using Client.Flyweight;
-using Client.Mediator;
 
 namespace Client
 {
@@ -153,11 +152,11 @@ namespace Client
 
         public void check_if_win()
         {
-            if (playerPictureBox.Location.Y >= playerPictureBox.Height*15)
+            if (playerPictureBox.Location.Y >= playerPictureBox.Height * 15)
             {
                 game_state = "end";
                 gameStateLabel.Text = "You won!";
-                _=SendState(game_state);
+                _ = SendState(game_state);
             }
         }
 
@@ -228,7 +227,7 @@ namespace Client
         {
             if (textBox1.Text != string.Empty)
             {
-                message.Send(textBox1.Text,room.GetName());
+                message.Send(textBox1.Text, room.GetName());
                 textBox1.Text = "";
                 ChatCommands.Add(message);
             }
@@ -246,7 +245,7 @@ namespace Client
 
         private void button3_Click(object sender, EventArgs e)
         {
-            int index = ChatCommands.Count-1;
+            int index = ChatCommands.Count - 1;
             ICommand cmd = ChatCommands[index];
             ChatCommands.RemoveAt(index);
             cmd.Undo(room.GetName());
@@ -271,7 +270,7 @@ namespace Client
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
     }
 }

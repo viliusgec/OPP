@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Composite
 {
+#pragma warning disable CS0659 // 'ChatRoom' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     public class ChatRoom : Room
+#pragma warning restore CS0659 // 'ChatRoom' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
         static int roomLimit = 5;
-        public ChatRoom(string name, string password) : base (name, password)
+        public ChatRoom(string name, string password) : base(name, password)
         {
 
         }

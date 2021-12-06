@@ -1,12 +1,8 @@
-﻿using System;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
-using System.Threading;
-using Client.Decorator;
-using System.Collections.Generic;
+﻿using Client.Decorator;
 using Client.Flyweight;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Client
 {
@@ -41,31 +37,32 @@ namespace Client
             this.control = control;
             this.buyMenuButton.Click += new System.EventHandler(this.buyMenuButton_Click);
             this.size = size;
-            initSkins();
+            initPlayerSkins();
         }
-        public void initSkins()
+        public void initPlayerSkins()
         {
-            PlayerSkin skin;
-            skin = factory.PlayerSkin(1);
-            white = skin.ReturnPlayerSkin();
+            PlayerSkin playerSkin;
+            playerSkin = factory.PlayerSkin(1);
+            white = playerSkin.ReturnPlayerSkin();
 
-            skin = factory.PlayerSkin(2);
-            black = skin.ReturnPlayerSkin();
+            playerSkin = factory.PlayerSkin(2);
+            black = playerSkin.ReturnPlayerSkin();
 
-            skin = factory.PlayerSkin(3);
-            diamond = skin.ReturnPlayerSkin();
+            playerSkin = factory.PlayerSkin(3);
+            diamond = playerSkin.ReturnPlayerSkin();
         }
 
-        public void addScore()
+        public void addPlayerScore()
         {
             score += 1;
             scoreLabel.Text = "Score: " + score;
         }
 
-        public int getScore()
+        public int getPlayerScore()
         {
             return score;
         }
+
 
         public void addMoney(int _money)
         {
@@ -103,8 +100,8 @@ namespace Client
             int temp = checkBuyMenuValue(item);
             str = calcStrength(temp); // skinus pagal str skaičių užmest
             if (str == -1)
-                return ;
-            setSkin(str);
+                return;
+            setPlayerSkin(str);
             player.addStr(str);
             score -= temp;
             scoreLabel.Text = "Score: " + score;
@@ -112,9 +109,9 @@ namespace Client
         /*
         *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
         */
-        private void setSkin(int skin)
+        private void setPlayerSkin(int skin)
         {
-            switch(skin)
+            switch (skin)
             {
                 case 7:
                     this.playerPictureBox.Image = white.Image;
@@ -132,7 +129,7 @@ namespace Client
         /*
          *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
          */
-        public int calcStrength(int str) 
+        public int calcStrength(int str)
         {
             if (score < str)
                 return -1;
@@ -144,7 +141,7 @@ namespace Client
                     return 10;
                 case 10:
                     return 13;
-                default: 
+                default:
                     return 5;
             }
         }
@@ -161,11 +158,11 @@ namespace Client
         {
             switch (buff)
             {
-            case "White pickaxe - 2 score":
+                case "White pickaxe - 2 score":
                     return 2;
-            case "Black pickaxe - 5 score":
+                case "Black pickaxe - 5 score":
                     return 5;
-            case "Diamond pickaxe - 10 score":
+                case "Diamond pickaxe - 10 score":
                     return 10;
                 default: return 5;
             }

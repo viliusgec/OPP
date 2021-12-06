@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Map
 {
@@ -29,7 +25,7 @@ namespace Client.Map
         public sealed override int GetPoints()
         {
             Random r = new Random();
-            int money = r.Next(1, 5); 
+            int money = r.Next(1, 5);
             if (this.IsBreakable())
                 return money;
             else

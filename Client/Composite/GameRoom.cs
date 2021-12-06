@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Composite
 {
+#pragma warning disable CS0659 // 'GameRoom' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     public class GameRoom : Room
+#pragma warning restore CS0659 // 'GameRoom' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
         static int roomLimit = 2;
-        public GameRoom(string name, string password) : base (name, password)
+        public GameRoom(string name, string password) : base(name, password)
         {
 
         }
@@ -23,8 +20,8 @@ namespace Client.Composite
         public override async void JoinRoom(HubConnection connection)
         {
             if (players <= roomLimit)
-            await connection.InvokeAsync("JoinRoom",
-                    this.GetName());
+                await connection.InvokeAsync("JoinRoom",
+                        this.GetName());
             players++;
         }
 

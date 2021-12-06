@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Mediator;
+﻿using Client.Mediator;
+using System;
 
 namespace Client.Map
 {
@@ -23,7 +19,7 @@ namespace Client.Map
         {
             x = mapX;
             y = mapY;
-            blocks = new Block[mapX,mapY];
+            blocks = new Block[mapX, mapY];
         }
 
         public void setBlocks(Block[,] newBlocks)
@@ -44,7 +40,7 @@ namespace Client.Map
             blockHealths = new string[x, y];
             for (int i = 0; i < x; i++)
             {
-                
+
                 for (int j = 0; j < y; j++)
                 {
                     blockNames[i, j] = blocks[i, j].GetName();
@@ -67,8 +63,10 @@ namespace Client.Map
                 for (int j = 0; j < y; j++)
                 {
                     Effect.IEffect effect = Effect.EffectFactory.Create(blockEffectTypes[i, j]);
+#pragma warning disable CS0168 // The variable 'block' is declared but never used
                     Map.Block block;
-                  
+#pragma warning restore CS0168 // The variable 'block' is declared but never used
+
                     switch (blockTypes[i, j])
                     {
                         case "static":
@@ -84,7 +82,7 @@ namespace Client.Map
                             blocks[i, j].SetBlockType("unbreakable");
                             break;
                     }
-                        
+
                 }
             }
         }
@@ -103,25 +101,25 @@ namespace Client.Map
 
         public void CreateMap()
         {
-            for(int i = 0; i < x; i++)
+            for (int i = 0; i < x; i++)
             {
-                for(int j = 0; j < y; j++)
+                for (int j = 0; j < y; j++)
                 {
                     Random rnd = new Random();
                     int a = rnd.Next(100);
-                    if(i == 5)
+                    if (i == 5)
                     {
                         blocks[i, j] = factory.GetUnbreakable();
                         continue;
                     }
-                    if(a < 50)
+                    if (a < 50)
                     {
                         blocks[i, j] = factory.GetStatic();
                         // Sitoj vietoj galima paclonint ta bloka tsg, kad parodyt veikima
                         // ir idet i random koordinates kazkokias ar kazka
                         // blocks[i,j].Clone
                     }
-                    else if(a >=50 && a < 80)
+                    else if (a >= 50 && a < 80)
                     {
                         blocks[i, j] = factory.GetFalling();
                         // Sitoj vietoj galima paclonint ta bloka tsg, kad parodyt veikima
@@ -136,16 +134,16 @@ namespace Client.Map
                         // blocks[i,j].Clone
                     }
                     var unbreakableCount = 0;
-                    for(int ii = 0; ii < x; ii++)
+                    for (int ii = 0; ii < x; ii++)
                     {
-                        if(blocks[ii, j] != null && blocks[ii, j].GetBlockType() == "unbreakable")
+                        if (blocks[ii, j] != null && blocks[ii, j].GetBlockType() == "unbreakable")
                         {
                             unbreakableCount++;
                         }
                     }
                     if (unbreakableCount > 3)
                     {
-                        if(a < 50)
+                        if (a < 50)
                             blocks[i, j] = factory.GetStatic();
                         else
                             blocks[i, j] = factory.GetFalling();

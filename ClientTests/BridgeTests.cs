@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Client.Bridge;
 using NUnit.Framework;
+using System;
 using System.IO;
-using Client.Bridge;
 
 namespace ClientTests
 {
+    //;
     public class BridgeTests
     {
         string currentDir;

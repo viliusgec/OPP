@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Client.Command;
+﻿using Client.Command;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows.Forms;
 
 namespace ClientTests
@@ -13,7 +13,7 @@ namespace ClientTests
         public void TestSendMessageToTextBox()
         {
             var a = "Me: Test\r\n";
-            SendMessage sendMessage = new (textBox);
+            SendMessage sendMessage = new(textBox);
             sendMessage.Send("Test", roomName);
             Assert.AreEqual(a, textBox.Text);
         }

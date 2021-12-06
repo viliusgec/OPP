@@ -1,9 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Client.Effect;
 using Client.Map;
-using System.Windows.Forms;
-using Client.Effect;
-using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
 
 namespace ClientTests
 {
@@ -105,11 +104,11 @@ namespace ClientTests
             Block[,] blocks = mapBase.getBlocks();
 
             mapBase.SerializeBlocks();
-            for(int i = 0; i < mapBase.x; i++)
+            for (int i = 0; i < mapBase.x; i++)
             {
-                for(int j = 0; j < mapBase.y; j++)
+                for (int j = 0; j < mapBase.y; j++)
                 {
-                    if(blocks[i, j].GetEffect() != null)
+                    if (blocks[i, j].GetEffect() != null)
                         Assert.AreEqual(mapBase.blockEffectTypes[i, j], blocks[i, j].GetEffect().EffectType);
                     Assert.AreEqual(mapBase.blockHealths[i, j], blocks[i, j].GetHealth());
                     Assert.AreEqual(mapBase.blockImages[i, j], blocks[i, j].GetImage());

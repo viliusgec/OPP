@@ -1,5 +1,5 @@
-﻿using Client.Map;
-using Client.Effect;
+﻿using Client.Effect;
+using Client.Map;
 
 namespace Client.Builder
 {

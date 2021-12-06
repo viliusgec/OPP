@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client.Flyweight
@@ -23,6 +19,7 @@ namespace Client.Flyweight
             temp.Image = Image.FromFile(currentDir + @"\Resources\PlayerDiamond.png");
             return temp;
         }
+
         public override string ReturnEnemySkin()
         {
             return "skin";

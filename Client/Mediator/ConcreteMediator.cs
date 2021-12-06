@@ -1,13 +1,6 @@
 ﻿using Client.Composite;
 using Client.Observer;
 using Client.PictureBoxBuilder;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Client.Mediator
 {
@@ -41,7 +34,7 @@ namespace Client.Mediator
                     MapBuilder.AddPictureBoxes(editor.playerPictureBox, editor.enemyPictureBox, editor.control, editor.size); // antras component
                     break;
                 case "C":
-                    MapBuilder.CreateMap(editor.imageList1, map); 
+                    MapBuilder.CreateMap(editor.imageList1, map);
                     break;
                 case "D":
                     _ = ServerObserver.SendMap(map, room.GetName()); //trečias component

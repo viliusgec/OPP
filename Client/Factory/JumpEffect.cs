@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Effect
+﻿namespace Client.Effect
 {
-    public class SpeedEffect : IEffect
+    public class JumpEffect : IEffect
     {
+#pragma warning disable CS0169 // The field 'JumpEffect._effectType' is never used
         private string _effectType;
+#pragma warning restore CS0169 // The field 'JumpEffect._effectType' is never used
         public string EffectType  // read-write instance property
         {
-            get => "Speed";
+            get => "Jump";
         }
 
         private int _duration;

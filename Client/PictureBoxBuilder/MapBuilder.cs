@@ -29,9 +29,9 @@ namespace Client.PictureBoxBuilder
             if (GetPictureBox(loc) != null && GetPictureBox(loc).Enabled == true)
             {
                 var block = GetBlock(loc, map);
-                if (block.GetBlockType() == "falling") 
+                if (block.GetBlockType() == "falling")
                 {
-                    while(GetPictureBox(loc).Enabled != false && block != null && block.GetBlockType() == "falling")
+                    while (GetPictureBox(loc).Enabled != false && block != null && block.GetBlockType() == "falling")
                     {
                         var oldBlock = GetBlock(loc, map);
                         var newBlock = GetBlock(new Point(x, y), map);
@@ -63,11 +63,11 @@ namespace Client.PictureBoxBuilder
                             block = GetBlock(loc, map);
                             if (block == null)
                                 break;
-                            
+
                         }
                         else
                             break;
-                        
+
                     }
                 }
             }
@@ -77,9 +77,9 @@ namespace Client.PictureBoxBuilder
         {
             for (int i = 0; i < mapx; i++)
             {
-                for (int j = 0; j < mapy+1; j++)
+                for (int j = 0; j < mapy + 1; j++)
                 {
-                    if(boxes[i,j].Location == loc)
+                    if (boxes[i, j].Location == loc)
                     {
                         return boxes[i, j];
                     }
@@ -134,7 +134,7 @@ namespace Client.PictureBoxBuilder
 
         public void AddPictureBoxes(PictureBox pictureBox1, PictureBox pictureBox2, Control.ControlCollection controls, Size size)
         {
-            boxes = new PictureBox[mapx, mapy+1];
+            boxes = new PictureBox[mapx, mapy + 1];
             var formSize = size;
             int width = formSize.Width;
             int height = formSize.Height;
@@ -155,26 +155,26 @@ namespace Client.PictureBoxBuilder
             //boxes[mapx, 0].SizeMode = PictureBoxSizeMode.StretchImage;
             for (int i = 0; i < mapx; i++)
             {
-                for (int j = 0; j < mapy+1; j++)
+                for (int j = 0; j < mapy + 1; j++)
                 {
                     boxes[i, j] = new PictureBox();
                     boxes[i, j].BackColor = System.Drawing.Color.Transparent;
                     boxes[i, j].Size = new Size(boxWidth, boxHeight);
                     boxes[i, j].Location = new Point(startX + boxWidth * (i), startY + boxHeight * (j));
                     boxes[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
-                    
-                    if(j == mapy && i < 2)
+
+                    if (j == mapy && i < 2)
                     {
                         boxes[i, j] = new PictureBox();
                         boxes[i, j].Size = new Size(boxWidth, boxHeight);
-                        boxes[i, j].Location = new Point(startX + ((mapx / 2) * boxWidth), startY - boxHeight * (i+1));
+                        boxes[i, j].Location = new Point(startX + ((mapx / 2) * boxWidth), startY - boxHeight * (i + 1));
                         boxes[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
                     }
-                    else if(j == mapy && i >= 2)
+                    else if (j == mapy && i >= 2)
                     {
                         boxes[i, j] = new PictureBox();
                         boxes[i, j].Size = new Size(0, 0);
-                        boxes[i, j].Location = new Point(0,0);
+                        boxes[i, j].Location = new Point(0, 0);
                         boxes[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
                     }
                     controls.Add(boxes[i, j]);

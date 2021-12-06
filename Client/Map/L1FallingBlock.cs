@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Map
 {
     [Serializable]
+#pragma warning disable CS0659 // 'L1FallingBlock' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     public class L1FallingBlock : FallingBlock
+#pragma warning restore CS0659 // 'L1FallingBlock' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
 
         public L1FallingBlock(string name, string image, Effect.IEffect effect, string health) : base(name, image, effect, health)

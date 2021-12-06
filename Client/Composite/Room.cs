@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Composite
 {
+#pragma warning disable CS0659 // 'Room' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     public abstract class Room
+#pragma warning restore CS0659 // 'Room' overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
         string name;
         string password;
@@ -39,7 +36,7 @@ namespace Client.Composite
         {
             this.players = playerCount;
         }
-      
+
 
         public abstract bool IsComposite();
 

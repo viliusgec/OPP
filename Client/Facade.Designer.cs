@@ -272,7 +272,9 @@ namespace Client
         private System.Windows.Forms.ImageList imageList1;
         public System.Windows.Forms.Label ScoreLabel;
         private System.Windows.Forms.Button button4;
+#pragma warning disable CS0169 // The field 'Facade.label1' is never used
         private System.Windows.Forms.Label label1;
+#pragma warning restore CS0169 // The field 'Facade.label1' is never used
         private System.Windows.Forms.Label gameStateLabel;
         private System.Windows.Forms.ListBox buyMenu;
         private System.Windows.Forms.Button buyMenuButton;

@@ -1,18 +1,16 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Client.Builder;
+using System;
+using System.IO;
 
 namespace Client.Map
 {
     [Serializable]
     public class L1Factory : AbstractFactory
     {
+#pragma warning disable CS0169 // The field 'L1Factory.effect' is never used
         Effect.IEffect effect;
+#pragma warning restore CS0169 // The field 'L1Factory.effect' is never used
         public override Block GetStatic()
         {
             string workingDirectory = Environment.CurrentDirectory;
@@ -23,7 +21,7 @@ namespace Client.Map
             string health = "125";
             var block = new L1StaticBlock();
             BlockBuilder builder = new StaticBuilder();
-            
+
             return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("static").addEffect(effect).getBuildable();
         }
         public override Block GetFalling()

@@ -2,9 +2,7 @@
 using Client.Observer;
 using Client.PictureBoxBuilder;
 using Microsoft.AspNetCore.SignalR.Client;
-using System;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -46,12 +44,12 @@ namespace Client.Adapter
                         box.Enabled = false;
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.addScore();
+                        editor.addPlayerScore();
                         editor.addMoney(block.GetPoints());
 
                         return loc == defaultLoc;
                     }
-                
+
 
                     return false;
                 case 1:
@@ -105,7 +103,7 @@ namespace Client.Adapter
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.addScore();
+                        editor.addPlayerScore();
                         editor.addMoney(block.GetPoints());
 
                         return loc == defaultLocLeft;
@@ -139,7 +137,7 @@ namespace Client.Adapter
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.addScore();
+                        editor.addPlayerScore();
                         editor.addMoney(block.GetPoints());
 
                         return loc == defaultLocRight;
@@ -162,7 +160,9 @@ namespace Client.Adapter
                     x.ToString(), y.ToString(), path, room);
         }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         public bool CheckBox(PictureBox? box)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         {
             if (box == null)
                 return true;
