@@ -8,6 +8,7 @@ using Client.Map;
 using Client.Strategy;
 using Client.Composite;
 using Client.Observer;
+using Client.Proxy;
 
 namespace Client
 {
@@ -18,11 +19,14 @@ namespace Client
         private HubConnection connection;
         private RoomHub roomHub;
         private Room selectedRoom;
+        private AuthenticatorProxy authenticatorProxy;
+
         public Form1()
         {
             InitializeComponent();
             roomHub = new RoomHub("RoomHub");
-            
+            authenticatorProxy = new AuthenticatorProxy();
+
             //cia sitie jei chato kambarius darysim
             //roomHub.AddRoom(new RoomHub("Chat Rooms"));
             //roomHub.AddRoom(new RoomHub("Game Rooms"));
@@ -36,10 +40,6 @@ namespace Client
             roomNameLabel.Hide();
             roomPasswordLabel.Hide();
             isChatCheckBox.Hide();
-          
-         
-            
-            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -79,7 +79,7 @@ namespace Client
                 {
                     foreach(var room in roomHub.GetRooms())
                     {
-                        connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword());
+                        connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword(), room.GetPlayers());
                     }
                 }
             });
@@ -98,11 +98,14 @@ namespace Client
                 }
                     
             });
-            connection.On<string, string>("ReceiveRoom", (name, password) => {
+            connection.On<string, string, int>("ReceiveRoom", (name, password, players) => {
                 if(roomHub.GetRoom(name) == null)
                 {
                     var room = new GameRoom(name, password);
+                    room.SetPlayers(players);
+
                     roomHub.AddRoom(room);
+
                     roomListBox.Items.Clear();
                     roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
                 }
@@ -147,7 +150,7 @@ namespace Client
                 }
                 room = new GameRoom(roomNameBox.Text, roomPassBox.Text);
                 roomHub.AddRoom(room);
-                connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword());
+                connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword(), room.GetPlayers());
                 /*
                 room.JoinRoom(connection);
                 gameForm = new Facade(room);
@@ -183,28 +186,7 @@ namespace Client
 
         private void joinRoomButton_Click(object sender, EventArgs e)
         {
-            if(selectedRoom != null && selectedRoom.players < 2)
-            {
-                connection.InvokeAsync("AddPlayer", selectedRoom.GetName());
-                selectedRoom.JoinRoom(connection);
-                gameForm = new Facade(selectedRoom);
-
-
-                this.Hide();
-                gameForm.ShowDialog();
-                selectedRoom.LeaveRoom(connection);
-                roomHub.GetRoom(selectedRoom.GetName()).players--;
-                if (selectedRoom.players <= 0)
-                {
-                    roomHub.RemoveRoom(selectedRoom);
-                    connection.InvokeAsync("SendRemoveRoom", selectedRoom.GetName());
-                    roomListBox.Items.Clear();
-                    roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
-                }
-                connection.InvokeAsync("RemovePlayer", selectedRoom.GetName());
-                this.Show();
-            }
-            
+            authenticatorProxy.AuthenticatePlayerCount(selectedRoom, this, roomHub, roomListBox, connection);
         }
     }
 }

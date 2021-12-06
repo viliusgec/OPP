@@ -30,6 +30,17 @@ namespace Client.Composite
             return password;
         }
 
+        public int GetPlayers()
+        {
+            return players;
+        }
+
+        public void SetPlayers(int playerCount)
+        {
+            this.players = playerCount;
+        }
+      
+
         public abstract bool IsComposite();
 
         public abstract void JoinRoom(HubConnection connection);
