@@ -151,7 +151,7 @@ namespace Client
             MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu";
             this.Size = new Size(800, 800);
 
-            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, buyMenu, buyMenuButton, imageList1, player, Controls, this.Size);
+            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, buyMenu, buyMenuButton, moveMenu, moveMenuButton, imageList1, player, Controls, this.Size);
             editor = tempEdit;
         }
 
@@ -159,6 +159,12 @@ namespace Client
         {
             if (stateContext.GetState().GetType().Name != "StartState")
                 return;
+
+            if (moveMenu.Enabled && e.KeyCode != Keys.Escape)
+            {
+                return;
+            }
+
             int[] temp;
             Point prevLoc = playerPictureBox.Location;
             temp = movement.SendBoxCoordinates(sender, e, editor, map, player, MapBuilder);
@@ -331,6 +337,11 @@ namespace Client
             gameStateLabel.Text = stateContext.ShowText();
             button5.Text = "Resume";
             stateContext.SendState(room.GetName());
+        }
+
+        private void textBox3_TextChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

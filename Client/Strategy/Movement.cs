@@ -137,6 +137,10 @@ namespace Client.Strategy
                     return temp;
                 case (Keys.Escape):
                     editor.closeBuyMmenu();
+                    editor.closeMoveMenu();
+                    return temp;
+                case (Keys.M):
+                    editor.moveMenu(player);
                     return temp;
                 default:
                     break;

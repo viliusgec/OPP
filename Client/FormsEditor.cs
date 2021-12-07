@@ -21,6 +21,8 @@ namespace Client
         FlyweightFactory factory = new FlyweightFactory();
         ListBox _buyMenu;
         Button buyMenuButton;
+        TextBox _moveMenu;
+        Button moveMenuButton;
         Character player;
         public ImageList imageList1;
         public Control.ControlCollection control;
@@ -29,17 +31,31 @@ namespace Client
         int money = 0;
         bool effectIsGranted = false;
 
-        public FormsEditor(PictureBox pictureBox1, PictureBox pictureBox2, Label scoreLabel, ListBox buyMenu, Button buyMenuButton, ImageList imageList1, Character player, Control.ControlCollection control, Size size)
-        {
+        public FormsEditor(
+            PictureBox pictureBox1,
+            PictureBox pictureBox2,
+            Label scoreLabel,
+            ListBox buyMenu,
+            Button buyMenuButton,
+            TextBox moveMenu,
+            Button moveMenuButton,
+            ImageList imageList1,
+            Character player,
+            Control.ControlCollection control,
+            Size size
+            ) {
             this.playerPictureBox = pictureBox1;
             this.enemyPictureBox = pictureBox2;
             this.scoreLabel = scoreLabel;
             this._buyMenu = buyMenu;
             this.buyMenuButton = buyMenuButton;
+            this._moveMenu = moveMenu;
+            this.moveMenuButton = moveMenuButton;
             this.imageList1 = imageList1;
             this.player = player;
             this.control = control;
             this.buyMenuButton.Click += new System.EventHandler(this.buyMenuButton_Click);
+            this.moveMenuButton.Click += new System.EventHandler(this.moveMenuButton_Click);
             this.size = size;
             initSkins();
         }
@@ -95,6 +111,13 @@ namespace Client
             buyMenuButton.Enabled = false;
             buyMenuButton.Hide();
         }
+        public void closeMoveMenu()
+        {
+            _moveMenu.Enabled = false;
+            _moveMenu.Hide();
+            moveMenuButton.Enabled = false;
+            moveMenuButton.Hide();
+        }
 
         private void buyMenuButton_Click(object sender, EventArgs e)
         {
@@ -109,6 +132,13 @@ namespace Client
             score -= temp;
             scoreLabel.Text = "Score: " + score;
         }
+
+        private void moveMenuButton_Click(object sender, EventArgs e)
+        {
+            string item = _moveMenu.Text;
+            //Tada cia sitoj vietos turi callint ta shit is facade
+        }
+
         /*
         *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
         */
@@ -157,6 +187,16 @@ namespace Client
             buyMenuButton.Enabled = true;
             buyMenuButton.Show();
         }
+
+        public void moveMenu(Character player)
+        {
+            _moveMenu.Enabled = true;
+            _moveMenu.Show();
+            moveMenuButton.Text = "Move";
+            moveMenuButton.Enabled = true;
+            moveMenuButton.Show();
+        }
+
         public int checkBuyMenuValue(string buff)
         {
             switch (buff)

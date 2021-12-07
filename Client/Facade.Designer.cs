@@ -51,6 +51,8 @@ namespace Client
             this.buyMenu = new System.Windows.Forms.ListBox();
             this.buyMenuButton = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.moveMenu = new System.Windows.Forms.TextBox();
+            this.moveMenuButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.enemyPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -232,12 +234,34 @@ namespace Client
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // moveMenu
+            // 
+            this.moveMenu.Location = new System.Drawing.Point(12, 105);
+            this.moveMenu.Enabled = false;
+            this.moveMenu.Hide();
+            this.moveMenu.Name = "moveMenu";
+            this.moveMenu.Size = new System.Drawing.Size(196, 27);
+            this.moveMenu.TabIndex = 32;
+            this.moveMenu.TextChanged += new System.EventHandler(this.textBox3_TextChanged_1);
+            // 
+            // moveMenuButton
+            // 
+            this.moveMenuButton.Location = new System.Drawing.Point(79, 138);
+            this.moveMenuButton.Hide();
+            this.moveMenuButton.Name = "moveMenuButton";
+            this.moveMenuButton.Size = new System.Drawing.Size(129, 31);
+            this.moveMenuButton.TabIndex = 33;
+            this.moveMenuButton.Text = "button6";
+            this.moveMenuButton.UseVisualStyleBackColor = true;
+            // 
             // Facade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(800, 451);
+            this.Controls.Add(this.moveMenuButton);
+            this.Controls.Add(this.moveMenu);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.buyMenuButton);
             this.Controls.Add(this.buyMenu);
@@ -283,5 +307,7 @@ namespace Client
         private System.Windows.Forms.ListBox buyMenu;
         private System.Windows.Forms.Button buyMenuButton;
         private Button button5;
+        private TextBox moveMenu;
+        private Button moveMenuButton;
     }
 }
