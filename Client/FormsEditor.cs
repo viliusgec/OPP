@@ -7,6 +7,7 @@ using System.Threading;
 using Client.Decorator;
 using System.Collections.Generic;
 using Client.Flyweight;
+using Client.Visitor;
 
 namespace Client
 {
@@ -15,12 +16,14 @@ namespace Client
         public PictureBox playerPictureBox;
         public PictureBox enemyPictureBox;
         public Label scoreLabel;
+        public Label moneyLabel;
         PictureBox white;
         PictureBox black;
         PictureBox diamond;
         FlyweightFactory factory = new FlyweightFactory();
         ListBox _buyMenu;
         Button buyMenuButton;
+        Button buyMenuButtonMoney;
         Character player;
         public ImageList imageList1;
         public Control.ControlCollection control;
@@ -28,20 +31,27 @@ namespace Client
         int score = 0;
         int money = 0;
         bool effectIsGranted = false;
+        ConcreteVisitor visitor;
+        ConcreteComponentA compscore;
+        ConcreteComponentB compmoney;
 
-        public FormsEditor(PictureBox pictureBox1, PictureBox pictureBox2, Label scoreLabel, ListBox buyMenu, Button buyMenuButton, ImageList imageList1, Character player, Control.ControlCollection control, Size size)
+        public FormsEditor(PictureBox pictureBox1, PictureBox pictureBox2, Label scoreLabel, Label moneyLabel, ListBox buyMenu, Button buyMenuButton, Button buyMenuButtonMoney, ImageList imageList1, Character player, Control.ControlCollection control, Size size)
         {
             this.playerPictureBox = pictureBox1;
             this.enemyPictureBox = pictureBox2;
             this.scoreLabel = scoreLabel;
+            this.moneyLabel = moneyLabel;
             this._buyMenu = buyMenu;
             this.buyMenuButton = buyMenuButton;
+            this.buyMenuButtonMoney = buyMenuButtonMoney;
             this.imageList1 = imageList1;
             this.player = player;
             this.control = control;
-            this.buyMenuButton.Click += new System.EventHandler(this.buyMenuButton_Click);
+            this.buyMenuButton.Click += new System.EventHandler(this.buyMenuButtonScore_Click);
+            this.buyMenuButtonMoney.Click += new System.EventHandler(this.buyMenuButtonMoney_Click);
             this.size = size;
             initSkins();
+            initVisitor();
         }
         public void initSkins()
         {
@@ -54,6 +64,14 @@ namespace Client
 
             skin = factory.PlayerSkin(3);
             diamond = skin.ReturnPlayerSkin();
+        }
+
+        public void initVisitor()
+        {
+            compscore = new ConcreteComponentA();
+            compmoney = new ConcreteComponentB();
+
+            visitor = new ConcreteVisitor();
         }
 
         public void addScore()
@@ -70,7 +88,7 @@ namespace Client
         public void addMoney(int _money)
         {
             money += _money;
-            //scoreLabel.Text = "Score: " + money;
+            moneyLabel.Text = "Money: " + money;
         }
 
         public int getMoney()
@@ -94,9 +112,12 @@ namespace Client
             _buyMenu.Hide();
             buyMenuButton.Enabled = false;
             buyMenuButton.Hide();
+
+            buyMenuButtonMoney.Enabled = false;
+            buyMenuButtonMoney.Hide();
         }
 
-        private void buyMenuButton_Click(object sender, EventArgs e)
+        private void buyMenuButtonScore_Click(object sender, EventArgs e)
         {
             int str = 0;
             string item = _buyMenu.SelectedItem.ToString();
@@ -106,8 +127,20 @@ namespace Client
                 return ;
             setSkin(str);
             player.addStr(str);
-            score -= temp;
-            scoreLabel.Text = "Score: " + score;
+            compscore.Accept(visitor, scoreLabel, score, temp);
+        }
+
+        private void buyMenuButtonMoney_Click(object sender, EventArgs e)
+        {
+            int str = 0;
+            string item = _buyMenu.SelectedItem.ToString();
+            int temp = checkBuyMenuValueMoney(item);
+            str = calcStrengthMoney(temp); // skinus pagal str skaičių užmest
+            if (str == -1)
+                return;
+            setSkin(str);
+            player.addStr(str);
+            compmoney.Accept(visitor, moneyLabel, money, temp);
         }
         /*
         *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
@@ -149,13 +182,35 @@ namespace Client
             }
         }
 
+        /*
+ *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
+ */
+        public int calcStrengthMoney(int str)
+        {
+            if (money < str)
+                return -1;
+            switch (str)
+            {
+                case 10:
+                    return 7;
+                case 20:
+                    return 10;
+                case 30:
+                    return 13;
+                default:
+                    return 5;
+            }
+        }
+
         public void buyMenu(Character player)
         {
             _buyMenu.Enabled = true;
             _buyMenu.Show();
-            buyMenuButton.Text = "Buy";
             buyMenuButton.Enabled = true;
             buyMenuButton.Show();
+
+            buyMenuButtonMoney.Enabled = true;
+            buyMenuButtonMoney.Show();
         }
         public int checkBuyMenuValue(string buff)
         {
@@ -167,6 +222,20 @@ namespace Client
                     return 5;
             case "Diamond pickaxe - 10 score":
                     return 10;
+                default: return 5;
+            }
+        }
+
+        public int checkBuyMenuValueMoney(string buff)
+        {
+            switch (buff)
+            {
+                case "White pickaxe - 2 score":
+                    return 10;
+                case "Black pickaxe - 5 score":
+                    return 20;
+                case "Diamond pickaxe - 10 score":
+                    return 30;
                 default: return 5;
             }
         }
