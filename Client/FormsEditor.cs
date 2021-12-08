@@ -120,6 +120,10 @@ namespace Client
         private void buyMenuButtonScore_Click(object sender, EventArgs e)
         {
             int str = 0;
+            if (_buyMenu.SelectedIndex == -1)
+            {
+                return;
+            }
             string item = _buyMenu.SelectedItem.ToString();
             int temp = checkBuyMenuValue(item);
             str = calcStrength(temp); // skinus pagal str skaičių užmest
@@ -133,6 +137,10 @@ namespace Client
         private void buyMenuButtonMoney_Click(object sender, EventArgs e)
         {
             int str = 0;
+            if (_buyMenu.SelectedIndex == -1)
+            {
+                return;
+            }
             string item = _buyMenu.SelectedItem.ToString();
             int temp = checkBuyMenuValueMoney(item);
             str = calcStrengthMoney(temp); // skinus pagal str skaičių užmest
@@ -216,11 +224,11 @@ namespace Client
         {
             switch (buff)
             {
-            case "White pickaxe - 2 score":
+            case "White pickaxe - 2 score || 10 money":
                     return 2;
-            case "Black pickaxe - 5 score":
+            case "Black pickaxe - 5 score || 20 money":
                     return 5;
-            case "Diamond pickaxe - 10 score":
+            case "Diamond pickaxe - 10 score || 30 money":
                     return 10;
                 default: return 5;
             }

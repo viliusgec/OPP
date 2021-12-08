@@ -208,12 +208,12 @@ namespace Client
             this.buyMenu.FormattingEnabled = true;
             this.buyMenu.ItemHeight = 15;
             this.buyMenu.Items.AddRange(new object[] {
-            "White pickaxe - 2 score",
-            "Black pickaxe - 5 score",
-            "Diamond pickaxe - 10 score"});
-            this.buyMenu.Location = new System.Drawing.Point(170, 130);
+            "White pickaxe - 2 score || 10 money",
+            "Black pickaxe - 5 score || 20 money",
+            "Diamond pickaxe - 10 score || 30 money"});
+            this.buyMenu.Location = new System.Drawing.Point(300, 250);
             this.buyMenu.Name = "buyMenu";
-            this.buyMenu.Size = new System.Drawing.Size(183, 139);
+            this.buyMenu.Size = new System.Drawing.Size(220, 139);
             this.buyMenu.TabIndex = 29;
             this.buyMenu.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -221,7 +221,7 @@ namespace Client
             // 
             this.buyMenuButton.Enabled = false;
             this.buyMenuButton.Hide();
-            this.buyMenuButton.Location = new System.Drawing.Point(278, 268);
+            this.buyMenuButton.Location = new System.Drawing.Point(440, 390);
             this.buyMenuButton.Name = "buyMenuButton";
             this.buyMenuButton.Size = new System.Drawing.Size(82, 33);
             this.buyMenuButton.TabIndex = 30;
@@ -232,7 +232,7 @@ namespace Client
             // 
             this.buyMenuButtonMoney.Enabled = false;
             this.buyMenuButtonMoney.Hide();
-            this.buyMenuButtonMoney.Location = new System.Drawing.Point(190, 268);
+            this.buyMenuButtonMoney.Location = new System.Drawing.Point(350, 390);
             this.buyMenuButtonMoney.Name = "buyMenuButtonMoney";
             this.buyMenuButtonMoney.Size = new System.Drawing.Size(82, 33);
             this.buyMenuButtonMoney.TabIndex = 33;
