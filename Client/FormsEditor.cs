@@ -22,6 +22,9 @@ namespace Client
         PictureBox white;
         PictureBox black;
         PictureBox diamond;
+        PictureBox enemyWhite;
+        PictureBox enemyBlack;
+        PictureBox enemyDiamond;
         FlyweightFactory factory = new FlyweightFactory();
         ListBox _buyMenu;
         Button buyMenuButton;
@@ -69,6 +72,15 @@ namespace Client
 
             skin = factory.PlayerSkin(3);
             diamond = skin.ReturnPlayerSkin();
+
+            skin = factory.PlayerSkin(4);
+            enemyWhite = skin.ReturnPlayerSkin();
+
+            skin = factory.PlayerSkin(5);
+            enemyBlack = skin.ReturnPlayerSkin();
+
+            skin = factory.PlayerSkin(6);
+            enemyDiamond = skin.ReturnPlayerSkin();
         }
 
         public void initVisitor()
@@ -189,16 +201,16 @@ namespace Client
                 switch (skin)
                 {
                     case "a":
-                        this.enemyPictureBox.Image = white.Image;
+                        this.enemyPictureBox.Image = enemyWhite.Image;
                         break;
                     case "b":
-                        this.enemyPictureBox.Image = black.Image;
+                        this.enemyPictureBox.Image = enemyBlack.Image;
                         break;
                     case "c":
-                        this.enemyPictureBox.Image = diamond.Image;
+                        this.enemyPictureBox.Image = enemyDiamond.Image;
                         break;
                     default:
-                        this.enemyPictureBox.Image = white.Image;
+                        this.enemyPictureBox.Image = enemyWhite.Image;
                         break;
                 }
             });
@@ -210,16 +222,16 @@ namespace Client
                 switch(skin)
                 {
                     case "a":
-                        this.enemyPictureBox.Image = white.Image;
+                        this.enemyPictureBox.Image = enemyWhite.Image;
                         break;
                     case "b":
-                        this.enemyPictureBox.Image = black.Image;
+                        this.enemyPictureBox.Image = enemyBlack.Image;
                         break;
                     case "c":
-                        this.enemyPictureBox.Image = diamond.Image;
+                        this.enemyPictureBox.Image = enemyDiamond.Image;
                         break;
                     default:
-                        this.enemyPictureBox.Image = white.Image;
+                        this.enemyPictureBox.Image = enemyWhite.Image;
                         break;
                 }
             });

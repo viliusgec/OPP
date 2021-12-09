@@ -31,6 +31,15 @@ namespace Client.Flyweight
                     case 3:
                         player = new PlayerDiamond();
                         break;
+                    case 4:
+                        player = new EnemyWhite();
+                        break;
+                    case 5:
+                        player = new EnemyBlack();
+                        break;
+                    case 6:
+                        player = new EnemyDiamond();
+                        break;
                     default:
                         break;
                 }
