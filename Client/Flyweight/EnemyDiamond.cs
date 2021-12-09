@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Client.Flyweight
 {
-    class PlayerBlack : PlayerSkin
+    class EnemyDiamond : PlayerSkin
     {
         public override PictureBox ReturnPlayerSkin()
         {
@@ -20,8 +20,7 @@ namespace Client.Flyweight
             temp.Hide();
             temp.BackColor = System.Drawing.Color.Transparent;
             temp.SizeMode = PictureBoxSizeMode.StretchImage;
-/*            temp.Size = new Size(boxWidth, boxHeight);*/
-            temp.Image = Image.FromFile(currentDir + @"\Resources\PlayerBlack.png");
+            temp.Image = Image.FromFile(currentDir + @"\Resources\PlayerDiamond.png");
             return temp;
         }
     }
