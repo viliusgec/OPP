@@ -71,76 +71,96 @@ namespace Client.Strategy
             pictureBox.Refresh();
         }
 
-        public int[] SendBoxCoordinates(object sender, KeyEventArgs e, FormsEditor editor, Map.MapBase map, Character player, MapBuilder mapBuilder)
+        public int[] SendBoxCoordinates(object sender, FormsEditor editor, Map.MapBase map, Character player, MapBuilder mapBuilder, KeyEventArgs? e = null, string? convertedExpression = null)
         {
             int x = editor.playerPictureBox.Location.X;
             int y = editor.playerPictureBox.Location.Y;
             int[] temp = { 0, 0 };
 
-            var key = e.KeyCode.ToString();
+            var key = "";
+
+            if (e != null)
+            {
+                key = e.KeyCode.ToString();
+            }
+            else
+            {
+                key = convertedExpression;
+            }
+            
             Console.WriteLine(key);
             var strategy = handler.Handle(key, x, y, editor, map, player, mapBuilder, connection, room);
-            
-            switch (e.KeyCode)
-            {/*
-                case (Keys.Q):
-                    if (check_if_block_exists(4, x, y, editor, map, player, mapBuilder))
-                        strategy = new MoveUpLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                    else
+
+            if (e != null)
+            {
+                switch (e.KeyCode)
+                {
+                    /*
+                                    case (Keys.Q):
+                                        if (check_if_block_exists(4, x, y, editor, map, player, mapBuilder))
+                                            strategy = new MoveUpLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+                                        else
+                                            return temp;
+                                        break;
+                                    case (Keys.E):
+                                        if (check_if_block_exists(5, x, y, editor, map, player, mapBuilder))
+                                            strategy = new MoveUpRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+                                        else
+                                            return temp;
+                                        break;
+                                    case (Keys.A):
+                                        if (check_if_block_exists(2, x, y, editor, map, player, mapBuilder))
+                                            strategy = new MoveLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+                                        else
+                                            return temp;
+                                        break;
+                                    case (Keys.D):
+                                        if (check_if_block_exists(3, x, y, editor, map, player, mapBuilder))
+                                            strategy = new MoveRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+                                        else
+                                            return temp;
+                                        break;
+                                    case (Keys.Space):
+                                    case (Keys.W):
+                                        if (check_if_block_exists(1, x, y, editor, map, player, mapBuilder))
+                                            strategy = new Jump(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+                                        else
+                                            return temp;
+                                        break;
+                                    case (Keys.ShiftKey):
+                                        if (check_if_block_exists(0, x, y, editor, map, player, mapBuilder))
+                                            strategy = new Mine(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+                                        else
+                                            return temp;
+                                        break;
+                                    case (Keys.J):
+                                        if (check_if_block_exists(7, x, y, editor, map, player, mapBuilder))
+                                            strategy = new MineLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+                                        else
+                                            return temp;
+                                        break;
+                                    case (Keys.K):
+                                        if (check_if_block_exists(8, x, y, editor, map, player, mapBuilder))
+                                            strategy = new MineRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+                                        else
+                                            return temp;
+                                        break;*/
+                    case (Keys.B):
+                        editor.buyMenu(
+                            player); /// <<< šitaip accessinsim buy menu. Returninsim reikšmes ir editinsim žaidėjo stats.
                         return temp;
-                    break;
-                case (Keys.E):
-                    if (check_if_block_exists(5, x, y, editor, map, player, mapBuilder))
-                        strategy = new MoveUpRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                    else
+                    case (Keys.Escape):
+                        editor.closeBuyMmenu();
+                        editor.closeMoveMenu();
                         return temp;
-                    break;
-                case (Keys.A):
-                    if (check_if_block_exists(2, x, y, editor, map, player, mapBuilder))
-                        strategy = new MoveLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                    else
+                    case (Keys.M):
+                        editor.moveMenu(player);
                         return temp;
-                    break;
-                case (Keys.D):
-                    if (check_if_block_exists(3, x, y, editor, map, player, mapBuilder))
-                        strategy = new MoveRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                    else
-                        return temp;
-                    break;
-                case (Keys.Space):
-                case (Keys.W):
-                    if (check_if_block_exists(1, x, y, editor, map, player, mapBuilder))
-                        strategy = new Jump(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                    else
-                        return temp;
-                    break;
-                case (Keys.ShiftKey):
-                    if (check_if_block_exists(0, x, y, editor, map, player, mapBuilder))
-                        strategy = new Mine(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                    else
-                        return temp;
-                    break;
-                case (Keys.J):
-                    if (check_if_block_exists(7, x, y, editor, map, player, mapBuilder))
-                        strategy = new MineLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                    else
-                        return temp;
-                    break;
-                case (Keys.K):
-                    if (check_if_block_exists(8, x, y, editor, map, player, mapBuilder))
-                        strategy = new MineRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                    else
-                        return temp;
-                    break;*/
-                case (Keys.B):
-                    editor.buyMenu(player); /// <<< šitaip accessinsim buy menu. Returninsim reikšmes ir editinsim žaidėjo stats.
-                    return temp;
-                case (Keys.Escape):
-                    editor.closeBuyMmenu();
-                    return temp;
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
+
             if(strategy != null)
                 temp = strategy.Behave(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
             return temp;

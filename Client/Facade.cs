@@ -12,6 +12,7 @@ using Client.Decorator;
 using System.Collections.Generic;
 using Client.Composite;
 using Client.Flyweight;
+using Client.Interpreter;
 using Client.Mediator;
 using Client.State;
 
@@ -106,6 +107,13 @@ namespace Client
                 MapBuilder.EditMinedBoxSkin(Int32.Parse(x), Int32.Parse(y), path);
             });
 
+            connection.On<string, string>("ReceiveCoordinates", (x, y) =>
+            {
+                var prevLoc = enemyPictureBox.Location;
+                enemyPictureBox.Location = new Point(int.Parse(x), int.Parse(y));
+                movement.FlipImage(enemyPictureBox, prevLoc, true);
+            });
+
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
                 MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
@@ -149,10 +157,11 @@ namespace Client
             InitializeComponent();
             gameStateLabel.Location = new Point((this.Width / 2) - 80, (this.Height / 2));
             player = new Player();
-            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu";
+            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu\n Move Menu";
             this.Size = new Size(800, 800);
 
-            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, moneyLabel, buyMenu, buyMenuButton, buyMenuButtonMoney, imageList1, player, Controls, this.Size, room.GetName(), connection);
+            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, moneyLabel, buyMenu, buyMenuButton, buyMenuButtonMoney, moveMenu, moveMenuButton, imageList1, player, Controls, this.Size, MovementLabel2, room.GetName(), connection);
+
             editor = tempEdit;
         }
 
@@ -160,9 +169,15 @@ namespace Client
         {
             if (stateContext.GetState().GetType().Name != "StartState")
                 return;
+
+            if (moveMenu.Enabled && e.KeyCode != Keys.Escape)
+            {
+                return;
+            }
+
             int[] temp;
             Point prevLoc = playerPictureBox.Location;
-            temp = movement.SendBoxCoordinates(sender, e, editor, map, player, MapBuilder);
+            temp = movement.SendBoxCoordinates(sender, editor, map, player, MapBuilder, e);
             if (temp[0] == 0 && temp[1] == 0)
                 return;
 
@@ -332,6 +347,27 @@ namespace Client
             gameStateLabel.Text = stateContext.ShowText();
             button5.Text = "Resume";
             stateContext.SendState(room.GetName());
+        }
+
+        private void moveMenuButton_Click(object sender, EventArgs e)
+        {
+            string enteredExpression = moveMenu.Text;
+            if (enteredExpression != null)
+            {
+                ExpressionExecutor executive = new ExpressionExecutor(enteredExpression, stateContext, moveMenu, playerPictureBox, movement, sender, editor, map, player, MapBuilder, connection, room, gameStateLabel, button5);
+                moveMenu.ResetText();
+            }
+            //Tada cia sitoj vietos turi callint ta shit is facade
+        }
+
+        private void textBox3_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
