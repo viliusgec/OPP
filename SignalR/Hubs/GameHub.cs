@@ -32,6 +32,11 @@ namespace SignalRChat.Hubs
         {
             await Clients.OthersInGroup(room).SendAsync("ReceiveCoordinates", x, y).ConfigureAwait(true);
         }
+        public async Task SendSkin(string skin, string room)
+        {
+            await Clients.OthersInGroup(room).SendAsync("ReceiveSkin", skin).ConfigureAwait(true);
+        }
+
         public async Task SendMap(string x,string room)
         {
             await Clients.OthersInGroup(room).SendAsync("ReceiveMap", x).ConfigureAwait(true);

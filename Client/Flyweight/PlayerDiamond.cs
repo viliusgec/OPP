@@ -23,9 +23,5 @@ namespace Client.Flyweight
             temp.Image = Image.FromFile(currentDir + @"\Resources\PlayerDiamond.png");
             return temp;
         }
-        public override string ReturnEnemySkin()
-        {
-            return "skin";
-        }
     }
 }

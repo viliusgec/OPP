@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Client.Flyweight
+namespace Client.Visitor
 {
-    public abstract class PlayerSkin
+    public interface IComponent
     {
-        public abstract PictureBox ReturnPlayerSkin();
+        void Accept(IVisitor visitor, Label label, int currency, int item_currency);
     }
 }
