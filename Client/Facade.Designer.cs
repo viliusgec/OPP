@@ -53,6 +53,7 @@ namespace Client
             this.button5 = new System.Windows.Forms.Button();
             this.moveMenu = new System.Windows.Forms.TextBox();
             this.moveMenuButton = new System.Windows.Forms.Button();
+            this.MovementLabel2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.enemyPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -236,9 +237,9 @@ namespace Client
             // 
             // moveMenu
             // 
-            this.moveMenu.Location = new System.Drawing.Point(12, 105);
             this.moveMenu.Enabled = false;
             this.moveMenu.Hide();
+            this.moveMenu.Location = new System.Drawing.Point(582, 10);
             this.moveMenu.Name = "moveMenu";
             this.moveMenu.Size = new System.Drawing.Size(196, 27);
             this.moveMenu.TabIndex = 32;
@@ -246,13 +247,26 @@ namespace Client
             // 
             // moveMenuButton
             // 
-            this.moveMenuButton.Location = new System.Drawing.Point(79, 138);
+            this.moveMenuButton.Location = new System.Drawing.Point(649, 43);
             this.moveMenuButton.Hide();
             this.moveMenuButton.Name = "moveMenuButton";
             this.moveMenuButton.Size = new System.Drawing.Size(129, 31);
             this.moveMenuButton.TabIndex = 33;
             this.moveMenuButton.Text = "button6";
             this.moveMenuButton.UseVisualStyleBackColor = true;
+            this.moveMenuButton.Click += new System.EventHandler(this.moveMenuButton_Click);
+            // 
+            // MovementLabel2
+            // 
+            this.MovementLabel2.AutoSize = true;
+            this.MovementLabel2.Hide();
+            this.MovementLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.MovementLabel2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.MovementLabel2.Location = new System.Drawing.Point(611, 173);
+            this.MovementLabel2.Name = "MovementLabel2";
+            this.MovementLabel2.Size = new System.Drawing.Size(0, 20);
+            this.MovementLabel2.TabIndex = 34;
+            this.MovementLabel2.Click += new System.EventHandler(this.label3_Click);
             // 
             // Facade
             // 
@@ -260,6 +274,7 @@ namespace Client
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(800, 451);
+            this.Controls.Add(this.MovementLabel2);
             this.Controls.Add(this.moveMenuButton);
             this.Controls.Add(this.moveMenu);
             this.Controls.Add(this.button5);
@@ -309,5 +324,6 @@ namespace Client
         private Button button5;
         private TextBox moveMenu;
         private Button moveMenuButton;
+        private Label MovementLabel2;
     }
 }

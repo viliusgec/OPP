@@ -23,6 +23,7 @@ namespace Client
         Button buyMenuButton;
         TextBox _moveMenu;
         Button moveMenuButton;
+        Label movementLabel2;
         Character player;
         public ImageList imageList1;
         public Control.ControlCollection control;
@@ -42,7 +43,8 @@ namespace Client
             ImageList imageList1,
             Character player,
             Control.ControlCollection control,
-            Size size
+            Size size,
+            Label movementLabel2
             ) {
             this.playerPictureBox = pictureBox1;
             this.enemyPictureBox = pictureBox2;
@@ -55,8 +57,9 @@ namespace Client
             this.player = player;
             this.control = control;
             this.buyMenuButton.Click += new System.EventHandler(this.buyMenuButton_Click);
-            this.moveMenuButton.Click += new System.EventHandler(this.moveMenuButton_Click);
+           // this.moveMenuButton.Click += new System.EventHandler(this.moveMenuButton_Click);
             this.size = size;
+            this.movementLabel2 = movementLabel2;
             initSkins();
         }
         public void initSkins()
@@ -115,6 +118,8 @@ namespace Client
         {
             _moveMenu.Enabled = false;
             _moveMenu.Hide();
+            movementLabel2.Enabled = false;
+            movementLabel2.Hide();
             moveMenuButton.Enabled = false;
             moveMenuButton.Hide();
         }
@@ -133,11 +138,11 @@ namespace Client
             scoreLabel.Text = "Score: " + score;
         }
 
-        private void moveMenuButton_Click(object sender, EventArgs e)
-        {
-            string item = _moveMenu.Text;
+       // private void moveMenuButton_Click(object sender, EventArgs e)
+       // {
+          //  string item = _moveMenu.Text;
             //Tada cia sitoj vietos turi callint ta shit is facade
-        }
+       // }
 
         /*
         *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
@@ -192,6 +197,9 @@ namespace Client
         {
             _moveMenu.Enabled = true;
             _moveMenu.Show();
+            movementLabel2.Text = "Commands:\n moveLeft\n moveRight\n jump\n jumpUpLeft\n jumpUpRight\n digDown\n digLeft\n digRight\n After each command\n enter ';'";
+            movementLabel2.Enabled = true;
+            movementLabel2.Show(); 
             moveMenuButton.Text = "Move";
             moveMenuButton.Enabled = true;
             moveMenuButton.Show();
