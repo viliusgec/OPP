@@ -25,6 +25,8 @@ namespace Client.Interpreter
         private MapBuilder mapBuilder;
         private HubConnection connection;
         private Room room;
+        private Label gameStateLabel;
+        private Button button5;
 
         public ExpressionExecutor(
             string expression, StateContext stateContext,
@@ -32,7 +34,7 @@ namespace Client.Interpreter
             Movement movement, object sender, FormsEditor editor,
             Map.MapBase map, Character player,
             MapBuilder mapBuilder, HubConnection connection,
-            Room room
+            Room room, Label gameStateLabel, Button button5
         )
         {
             this.expression = expression;
@@ -46,6 +48,8 @@ namespace Client.Interpreter
             this.player = player;
             this.mapBuilder = mapBuilder;
             this.room = room;
+            this.gameStateLabel = gameStateLabel;
+            this.button5 = button5;
             ExecuteExpressions();
         }
 
@@ -78,7 +82,7 @@ namespace Client.Interpreter
                     s.ToLower().Contains("digdown") || s.ToLower().Contains("digleft") || s.ToLower().Contains("digright"))
                 {
 
-                    MoveExpression temp = new MoveExpression(s, stateContext, moveMenu, playerPictureBox, movement, sender, editor, map, player, mapBuilder, connection, room);
+                    MoveExpression temp = new MoveExpression(s, stateContext, moveMenu, playerPictureBox, movement, sender, editor, map, player, mapBuilder, connection, room, gameStateLabel, button5);
                     expressionsList.Add(temp);
                 }
             }

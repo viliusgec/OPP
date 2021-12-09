@@ -354,7 +354,7 @@ namespace Client
             string enteredExpression = moveMenu.Text;
             if (enteredExpression != null)
             {
-                ExpressionExecutor executive = new ExpressionExecutor(enteredExpression, stateContext, moveMenu, playerPictureBox, movement, sender, editor, map, player, MapBuilder, connection, room);
+                ExpressionExecutor executive = new ExpressionExecutor(enteredExpression, stateContext, moveMenu, playerPictureBox, movement, sender, editor, map, player, MapBuilder, connection, room, gameStateLabel, button5);
                 moveMenu.ResetText();
             }
             //Tada cia sitoj vietos turi callint ta shit is facade

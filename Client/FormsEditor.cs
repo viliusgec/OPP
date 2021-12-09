@@ -47,6 +47,7 @@ namespace Client
             PictureBox pictureBox1,
             PictureBox pictureBox2,
             Label scoreLabel,
+            Label moneyLabel,
             ListBox buyMenu,
             Button buyMenuButton,
             Button buyMenuButtonMoney,

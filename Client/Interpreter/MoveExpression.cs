@@ -23,7 +23,7 @@ namespace Client.Interpreter
             Movement movement, object sender, FormsEditor editor,
             Map.MapBase map, Character player,
             MapBuilder mapBuilder, HubConnection connection,
-            Room room
+            Room room, Label gameStateLabel, Button button5
         )
         {
             this.expression = expression;
@@ -38,6 +38,8 @@ namespace Client.Interpreter
             this.mapBuilder = mapBuilder;
             this.connection = connection;
             this.room = room;
+            this.gameStateLabel = gameStateLabel;
+            this.button5 = button5;
         }
 
         public override void Execute()
@@ -68,7 +70,7 @@ namespace Client.Interpreter
                 Thread.Sleep(25);
 
             movement.fall_down(temp, editor, map, player);
-        //    check_if_win();
+            check_if_win();
         }
 
         public static string ConvertExpressionToKey(string expression)
@@ -96,19 +98,19 @@ namespace Client.Interpreter
                 x.ToString(), y.ToString(), room.GetName());
         }
 
-    //    public void check_if_win()
-     //   {
-          //  if (playerPictureBox.Location.Y >= playerPictureBox.Height * 15)
-         //   {
-                //State
-          //      stateContext.TransitionTo(new EndState());
-        //        gameStateLabel.Text = stateContext.ShowText();
-            //    gameStateLabel.Text += "\r\nYou won!";
-             //   button5.Enabled = false;
-           ////     button5.Hide();
-           //     stateContext.SendState(room.GetName());
-         //   }
-     //   }
+        public void check_if_win()
+        { 
+            if (playerPictureBox.Location.Y >= playerPictureBox.Height * 15)
+            {
+               // State
+                stateContext.TransitionTo(new EndState());
+                gameStateLabel.Text = stateContext.ShowText();
+                gameStateLabel.Text += "\r\nYou won!";
+                button5.Enabled = false;
+                button5.Hide();
+                stateContext.SendState(room.GetName());
+            }
+        }
     }
 }
 

@@ -28,7 +28,8 @@ namespace Client.Interpreter
         protected MapBuilder mapBuilder;
         protected HubConnection connection;
         protected Room room;
-
+        protected Label gameStateLabel;
+        protected Button button5;
         public abstract void Execute();
     }
 }
