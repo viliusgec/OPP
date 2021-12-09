@@ -157,7 +157,7 @@ namespace Client
             InitializeComponent();
             gameStateLabel.Location = new Point((this.Width / 2) - 80, (this.Height / 2));
             player = new Player();
-            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu";
+            MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu\n Move Menu";
             this.Size = new Size(800, 800);
 
             FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, moneyLabel, buyMenu, buyMenuButton, buyMenuButtonMoney, moveMenu, moveMenuButton, imageList1, player, Controls, this.Size, MovementLabel2, room.GetName(), connection);
