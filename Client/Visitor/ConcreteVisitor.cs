@@ -8,12 +8,12 @@ namespace Client.Visitor
 {
     class ConcreteVisitor : IVisitor
     {
-        public void VisitConcreteComponentA(ConcreteComponentA element)
+        public void VisitConcreteComponentA(ScoreComponent element)
         {
             element.BuyWithScore();
         }
 
-        public void VisitConcreteComponentB(ConcreteComponentB element)
+        public void VisitConcreteComponentB(MoneyComponent element)
         {
             element.BuyWithMoney();
         }
