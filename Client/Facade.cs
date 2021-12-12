@@ -15,6 +15,7 @@ using Client.Flyweight;
 using Client.Interpreter;
 using Client.Mediator;
 using Client.State;
+using Client.Memento;
 
 namespace Client
 {
@@ -33,11 +34,14 @@ namespace Client
         private List<ICommand> ChatCommands = new();
         Room room;
         bool generator = false;
-        StateContext stateContext = new StateContext(new StartState());
+        StateContext stateContext = new(new StartState());
+        Originator originator = new(new StartState());
+        MementoController mementoController;
 
 
         public Facade(Room gameRoom)
         {
+            mementoController = new(originator);
             this.room = gameRoom;
 
             connection = SingletonConnection.GetInstance().GetConnection();
@@ -97,6 +101,7 @@ namespace Client
 
                     //State
                     stateContext.TransitionTo(new StartState());
+                    mementoController.Backup();
                     button5.Show();
                     button5.Enabled = true;
                 }
@@ -125,6 +130,8 @@ namespace Client
                 if (state == "StartState")
                 {
                     stateContext.TransitionTo(new StartState());
+                    originator.SetState(new StartState());
+                    mementoController.Backup();
                     gameStateLabel.Text = string.Empty;
                     button5.Enabled = true;
                     button5.Show();
@@ -132,18 +139,24 @@ namespace Client
                 else if (state == "PauseState")
                 {
                     stateContext.TransitionTo(new PauseState());
+                    originator.SetState(new PauseState());
+                    mementoController.Backup();
                     gameStateLabel.Text = stateContext.ShowText();
                     button5.Text = "Resume";
                 }
                 else if (state == "ResumeState")
                 {
                     stateContext.TransitionTo(new ResumeState());
+                    originator.SetState(new ResumeState());
+                    mementoController.Backup();
                     gameStateLabel.Text = stateContext.ShowText();
                     button5.Text = "Pause";
                 }
                 else if (state == "EndState")
                 {
                     stateContext.TransitionTo(new EndState());
+                    originator.SetState(new EndState());
+                    mementoController.Backup();
                     gameStateLabel.Text = stateContext.ShowText();
                     gameStateLabel.Text += "\r\nYou lost!";
                     button5.Enabled = false;
@@ -201,6 +214,8 @@ namespace Client
             {
                 //State
                 stateContext.TransitionTo(new EndState());
+                originator.SetState(new EndState());
+                mementoController.Backup();
                 gameStateLabel.Text = stateContext.ShowText();
                 gameStateLabel.Text += "\r\nYou won!";
                 button5.Enabled = false;
@@ -249,6 +264,8 @@ namespace Client
             button5.Enabled = true;
             button5.Show();
             stateContext.TransitionTo(new StartState());
+            originator.SetState(new StartState());
+            mementoController.Backup(); 
             stateContext.SendState(room.GetName());
             stateContext.ShowText();
         }
@@ -338,12 +355,17 @@ namespace Client
                 gameStateLabel.Text = stateContext.ShowText();
                 Thread.Sleep(3000);
                 gameStateLabel.Text = string.Empty;
-                stateContext.ChangeToNextState();
+                //stateContext.ChangeToNextState();
+                mementoController.Undo();
+                mementoController.Undo();
+                stateContext.TransitionTo(mementoController._originator._state);
                 stateContext.SendState(room.GetName());
                 return;
             }
 
             stateContext.TransitionTo(new PauseState());
+            originator.SetState(new PauseState());
+            mementoController.Backup();
             gameStateLabel.Text = stateContext.ShowText();
             button5.Text = "Resume";
             stateContext.SendState(room.GetName());
