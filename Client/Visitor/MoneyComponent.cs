@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Client.Visitor
 {
-    public class ConcreteComponentA : IComponent
+    public class MoneyComponent : IComponent
     {
         Label label;
         int currency;
@@ -17,9 +17,9 @@ namespace Client.Visitor
             this.label = label;
             this.currency = currency;
             this.item_currency = item_currency;
-            visitor.VisitConcreteComponentA(this);
+            visitor.VisitConcreteComponentB(this);
         }
-        public void BuyWithScore()
+        public void BuyWithMoney()
         {
             currency -= item_currency;
             label.Text = "Score: " + currency;
