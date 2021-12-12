@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Client.Visitor
 {
-    public class ConcreteComponentA : IComponent
+    public class ScoreComponent : IComponent
     {
         Label label;
         int currency;
