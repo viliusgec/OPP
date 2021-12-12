@@ -8,7 +8,7 @@ namespace Client.Visitor
 {
     public interface IVisitor
     {
-        public void VisitConcreteComponentA(ConcreteComponentA element);
-        public void VisitConcreteComponentB(ConcreteComponentB element);
+        public void VisitConcreteComponentA(ScoreComponent element);
+        public void VisitConcreteComponentB(MoneyComponent element);
     }
 }

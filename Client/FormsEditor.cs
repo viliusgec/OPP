@@ -40,8 +40,8 @@ namespace Client
         int money = 0;
         bool effectIsGranted = false;
         ConcreteVisitor visitor;
-        ConcreteComponentA compscore;
-        ConcreteComponentB compmoney;
+        ScoreComponent compscore;
+        MoneyComponent compmoney;
 
         public FormsEditor(
             PictureBox pictureBox1,
@@ -108,8 +108,8 @@ namespace Client
 
         public void initVisitor()
         {
-            compscore = new ConcreteComponentA();
-            compmoney = new ConcreteComponentB();
+            compscore = new ScoreComponent();
+            compmoney = new MoneyComponent();
 
             visitor = new ConcreteVisitor();
         }
