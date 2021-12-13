@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Effect
+﻿namespace Client.Effect
 {
     public class JumpEffect : IEffect
     {
-        private string _effectType;
+        private readonly string _effectType;
         public string EffectType  // read-write instance property
-        {
-            get => "Jump";
-        }
+=> "Jump";
 
         private int _duration;
         public int Duration  // read-only instance property

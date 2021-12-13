@@ -1,18 +1,14 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Client.Builder;
+using System;
+using System.IO;
 
 namespace Client.Map
 {
     [Serializable]
     public class L1Factory : AbstractFactory
     {
-        Effect.IEffect effect;
+        private readonly Effect.IEffect effect;
         public override Block GetStatic()
         {
             string workingDirectory = Environment.CurrentDirectory;
@@ -21,10 +17,10 @@ namespace Client.Map
             string image = currentDir + @"\Resources\dirt1.png";
             Effect.IEffect effect = GetEffect();
             string health = "125";
-            var block = new L1StaticBlock();
+            L1StaticBlock block = new();
             BlockBuilder builder = new StaticBuilder();
-            
-            return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("static").addEffect(effect).getBuildable();
+
+            return builder.StartBuild(block).AddHealth(health).AddName(name).AddImage(image).AddBlockType("static").AddEffect(effect).GetBuildable();
         }
         public override Block GetFalling()
         {
@@ -34,10 +30,10 @@ namespace Client.Map
             string image = currentDir + @"\Resources\sand1.png";
             Effect.IEffect effect = GetEffect();
             string health = "125";
-            var block = new L1FallingBlock();
+            L1FallingBlock block = new();
             BlockBuilder builder = new StaticBuilder();
 
-            return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("falling").addEffect(effect).addHealth(health).getBuildable();
+            return builder.StartBuild(block).AddHealth(health).AddName(name).AddImage(image).AddBlockType("falling").AddEffect(effect).AddHealth(health).GetBuildable();
         }
         public override Block GetUnbreakable()
         {
@@ -47,22 +43,31 @@ namespace Client.Map
             string image = currentDir + @"\Resources\rock1.png";
             Effect.IEffect effect = GetEffect();
             string health = "125";
-            var block = new L1UnbreakableBlock();
+            L1UnbreakableBlock block = new();
             BlockBuilder builder = new StaticBuilder();
 
-            return builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("unbreakable").addEffect(effect).addHealth(health).getBuildable();
+            return builder.StartBuild(block).AddHealth(health).AddName(name).AddImage(image).AddBlockType("unbreakable").AddEffect(effect).AddHealth(health).GetBuildable();
         }
 
         public Effect.IEffect GetEffect()
         {
-            Random rnd = new Random();
+            Random rnd = new();
             int ef = rnd.Next(5);
             if (ef == 1)
+            {
                 return Effect.EffectFactory.Create("Jump");
+            }
+
             if (ef == 2)
+            {
                 return Effect.EffectFactory.Create("Blind");
+            }
+
             if (ef == 3)
+            {
                 return Effect.EffectFactory.Create("Speed");
+            }
+
             return null;
         }
     }

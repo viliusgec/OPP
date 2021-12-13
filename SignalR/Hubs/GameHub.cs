@@ -37,7 +37,7 @@ namespace SignalRChat.Hubs
             await Clients.OthersInGroup(room).SendAsync("ReceiveSkin", skin).ConfigureAwait(true);
         }
 
-        public async Task SendMap(string x,string room)
+        public async Task SendMap(string x, string room)
         {
             await Clients.OthersInGroup(room).SendAsync("ReceiveMap", x).ConfigureAwait(true);
         }
@@ -52,11 +52,11 @@ namespace SignalRChat.Hubs
             await Clients.OthersInGroup(room).SendAsync("ReceiveMinedBoxSkin", x, y, path).ConfigureAwait(true);
         }
 
-        public async Task SendMessage(string x,string room)
+        public async Task SendMessage(string x, string room)
         {
             await Clients.OthersInGroup(room).SendAsync("ReceiveMessage", x).ConfigureAwait(true);
         }
-        public async Task UndoMessage(string x,string room)
+        public async Task UndoMessage(string x, string room)
         {
             await Clients.OthersInGroup(room).SendAsync("ReceiveUndoMessage", x).ConfigureAwait(true);
 

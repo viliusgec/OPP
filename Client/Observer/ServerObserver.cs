@@ -3,9 +3,7 @@ using Client.PictureBoxBuilder;
 using Client.Strategy;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
-using System;
 using System.Drawing;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,7 +12,7 @@ namespace Client.Observer
     public class ServerObserver : BaseComponent, IServerObserver
     {
         private readonly HubConnection connection;
-        readonly MapBuilder MapBuilder;
+        private readonly MapBuilder MapBuilder;
         private Map.MapBase tempMap;
 
         public ServerObserver()
@@ -27,7 +25,7 @@ namespace Client.Observer
         {
             connection.On<string, string>("ReceiveCoordinates", (x, y) =>
             {
-                var prevLoc = enemy.Location;
+                Point prevLoc = enemy.Location;
                 enemy.Location = new Point(int.Parse(x), int.Parse(y));
                 movement.FlipImage(enemy, prevLoc, true);
             });
@@ -36,8 +34,8 @@ namespace Client.Observer
         {
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
-                MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
-                
+                MapBuilder.EditMinedBox(int.Parse(x), int.Parse(y));
+
             });
         }
 
@@ -45,7 +43,7 @@ namespace Client.Observer
         {
             connection.On<string, string, string>("ReceiveMinedBoxSkin", (x, y, path) =>
             {
-                MapBuilder.EditMinedBoxSkin(Int32.Parse(x), Int32.Parse(y), path);
+                MapBuilder.EditMinedBoxSkin(int.Parse(x), int.Parse(y), path);
             });
         }
 
@@ -75,10 +73,12 @@ namespace Client.Observer
         {
             connection.On<string>("ReceiveUndoMessage", (x) =>
             {
-                var index = textBox.Text.LastIndexOf("Enemy: ");
-                var endIndex = textBox.Text.IndexOf("\r\n", index);
+                int index = textBox.Text.LastIndexOf("Enemy: ");
+                int endIndex = textBox.Text.IndexOf("\r\n", index);
                 if (index >= 0)
+                {
                     textBox.Text = textBox.Text.Remove(index, endIndex - index + 1);
+                }
             });
         }
         public Map.MapBase GetMap() { return tempMap; }
@@ -91,9 +91,9 @@ namespace Client.Observer
             await connection.InvokeAsync("SendMap", jsonString, room);
         }
 
-        public void SendMessage(string message,string room)
+        public void SendMessage(string message, string room)
         {
-            connection.InvokeAsync("SendMessage", message,room);
+            connection.InvokeAsync("SendMessage", message, room);
         }
 
         public void UndoMessage(string room)

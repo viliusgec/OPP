@@ -1,26 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Windows.Forms;
-using Client.Strategy;
-using System.Drawing;
-using Microsoft.AspNetCore.SignalR.Client;
-using Client.Composite;
-using Client.Decorator;
-using Client;
-using Client.PictureBoxBuilder;
+﻿using Client.Strategy;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ClientTests
 {
     [TestClass]
     public class StrategyTests
     {
-        Algorithm strategy;
+        private IAlgorithm strategy;
         [TestMethod]
         public void TestJump()
         {
             int[] temp = { 0, 0 };
-            int[] answer = { 10 , 5 };
-            strategy = new Jump(10,10,5,5);
-            temp = strategy.Behave(10,10,5,5);
+            int[] answer = { 10, 5 };
+            strategy = new Jump(10, 10, 5, 5);
+            temp = strategy.Behave(10, 10, 5, 5);
             CollectionAssert.AreEqual(answer, temp);
         }
         [TestMethod]
@@ -86,24 +79,5 @@ namespace ClientTests
             temp = strategy.Behave(10, 10, 5, 5);
             CollectionAssert.AreEqual(answer, temp);
         }
-/*        [TestMethod]
-        public void TestSendCoordinates()
-        {
-            PictureBox picture1 = new();
-            PictureBox picture2 = new();
-            Label scorelabel = new();
-            HubConnection connection = new();
-            Room room = new("labas", "labase"); 
-            MapBuilder MapBuilder = new();
-            FormsEditor editor = new(picture1, picture2, scorelabel);
-            object sender = new();
-            KeyEventArgs e;
-            Character player = new();
-            Client.Map.MapBase map = new();
-            Movement movement;
-            movement = new Movement(connection, room.GetName());
-            movement.SendBoxCoordinates(e, editor, map, player, MapBuilder);
-            Assert.AreEqual(1, 1);
-        }*/
     }
 }

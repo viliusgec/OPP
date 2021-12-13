@@ -1,45 +1,40 @@
-﻿using System;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
-using System.Text.Json;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
-using Client.Strategy;
-using System.Threading;
+﻿using Client.Adapter;
+using Client.ChainOfResponsibility;
+using Client.Decorator;
 using Client.Observer;
 using Client.PictureBoxBuilder;
-using Client.Adapter;
-using Client.Decorator;
-using Client.ChainOfResponsibility;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.SignalR.Client;
+using System;
+using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Client.Strategy
 {
     public class Movement
     {
-        ServerObserver ServerObserver = new();
-        Algorithm strategy;
-        HubConnection connection;
-        bool playerLookingRight = true;
-        bool enemyLookingRight = true;
-        string room;
-        JumpHandler handler;
+        private readonly ServerObserver ServerObserver = new();
+        private readonly IAlgorithm strategy;
+        private readonly HubConnection connection;
+        private bool playerLookingRight = true;
+        private bool enemyLookingRight = true;
+        private readonly string room;
+        private readonly JumpHandler handler;
 
         public Movement(HubConnection connection, string room)
         {
-            
+
             this.connection = connection;
             this.room = room;
             handler = new JumpHandler();
-            var handler2 = new MineHandler();
-            var handler3 = new MineLeftHandler();
-            var handler4 = new MineRightHandler();
-            var handler5 = new MoveLeftHandler();
-            var handler6 = new MoveRightHandler();
-            var handler7 = new MoveUpLeftHandler();
-            var handler8 = new MoveUpRightHandler();
+            MineHandler handler2 = new();
+            MineLeftHandler handler3 = new();
+            MineRightHandler handler4 = new();
+            MoveLeftHandler handler5 = new();
+            MoveRightHandler handler6 = new();
+            MoveUpLeftHandler handler7 = new();
+            MoveUpRightHandler handler8 = new();
             handler.SetNext(handler2).SetNext(handler3).SetNext(handler4).SetNext(handler5).SetNext(handler6).SetNext(handler7).SetNext(handler8);
         }
 
@@ -77,7 +72,7 @@ namespace Client.Strategy
             int y = editor.playerPictureBox.Location.Y;
             int[] temp = { 0, 0 };
 
-            var key = "";
+            string key = "";
 
             if (e != null)
             {
@@ -87,109 +82,63 @@ namespace Client.Strategy
             {
                 key = convertedExpression;
             }
-            
+
             Console.WriteLine(key);
-            var strategy = handler.Handle(key, x, y, editor, map, player, mapBuilder, connection, room);
+            IAlgorithm strategy = handler.Handle(key, x, y, editor, map, player, mapBuilder, connection, room);
 
             if (e != null)
             {
                 switch (e.KeyCode)
                 {
-                    /*
-                                    case (Keys.Q):
-                                        if (check_if_block_exists(4, x, y, editor, map, player, mapBuilder))
-                                            strategy = new MoveUpLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                                        else
-                                            return temp;
-                                        break;
-                                    case (Keys.E):
-                                        if (check_if_block_exists(5, x, y, editor, map, player, mapBuilder))
-                                            strategy = new MoveUpRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                                        else
-                                            return temp;
-                                        break;
-                                    case (Keys.A):
-                                        if (check_if_block_exists(2, x, y, editor, map, player, mapBuilder))
-                                            strategy = new MoveLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                                        else
-                                            return temp;
-                                        break;
-                                    case (Keys.D):
-                                        if (check_if_block_exists(3, x, y, editor, map, player, mapBuilder))
-                                            strategy = new MoveRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                                        else
-                                            return temp;
-                                        break;
-                                    case (Keys.Space):
-                                    case (Keys.W):
-                                        if (check_if_block_exists(1, x, y, editor, map, player, mapBuilder))
-                                            strategy = new Jump(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                                        else
-                                            return temp;
-                                        break;
-                                    case (Keys.ShiftKey):
-                                        if (check_if_block_exists(0, x, y, editor, map, player, mapBuilder))
-                                            strategy = new Mine(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                                        else
-                                            return temp;
-                                        break;
-                                    case (Keys.J):
-                                        if (check_if_block_exists(7, x, y, editor, map, player, mapBuilder))
-                                            strategy = new MineLeft(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                                        else
-                                            return temp;
-                                        break;
-                                    case (Keys.K):
-                                        if (check_if_block_exists(8, x, y, editor, map, player, mapBuilder))
-                                            strategy = new MineRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
-                                        else
-                                            return temp;
-                                        break;*/
                     case (Keys.B):
-                        editor.buyMenu(
-                            player); /// <<< šitaip accessinsim buy menu. Returninsim reikšmes ir editinsim žaidėjo stats.
+                        editor.BuyMenu(); /// <<< šitaip accessinsim buy menu. Returninsim reikšmes ir editinsim žaidėjo stats.
                         return temp;
                     case (Keys.Escape):
-                        editor.closeBuyMmenu();
-                        editor.closeMoveMenu();
+                        editor.CloseBuyMmenu();
+                        editor.CloseMoveMenu();
                         return temp;
                     case (Keys.M):
-                        editor.moveMenu(player);
+                        editor.MoveMenu(player);
                         return temp;
                     default:
                         break;
                 }
             }
 
-            if(strategy != null)
+            if (strategy != null)
+            {
                 temp = strategy.Behave(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
+            }
+
             return temp;
         }
         /**
          * side meanings: 0 - down, 1 - up, 2 - left, 3 - right, 4 - up left, 5 - up right,
          * 6 - just to check if block exists, no action taken, 7 - Mine Left, 8 - Mine Right
          */
-        private bool check_if_block_exists(int side, int x, int y, FormsEditor editor, Map.MapBase map, Character player, MapBuilder mapBuilder)
+        private bool Check_if_block_exists(int side, int x, int y, FormsEditor editor, Map.MapBase map, Character player, MapBuilder mapBuilder)
         {
-            var loc = new Point(x, y);
-            var box = MapBuilder.GetPictureBox(loc);
+            Point loc = new(x, y);
+            PictureBox box = MapBuilder.GetPictureBox(loc);
 
             BlockChecker blockchecker = new BlockCheckerAdapter(side, x, y, editor, map, connection, player, mapBuilder, room);
 
-            return blockchecker.check_if_block_exists();
+            return blockchecker.Check_if_block_exists();
         }
 
 
-        public void fall_down(int[] coords, FormsEditor editor, Map.MapBase map, Character player)
+        public void Fall_down(int[] coords, FormsEditor editor, Map.MapBase map, Character player)
         {
-            while (check_if_block_exists(6, coords[0], coords[1], editor, map, player,new MapBuilder()) == false)
+            while (Check_if_block_exists(6, coords[0], coords[1], editor, map, player, new MapBuilder()) == false)
             {
                 editor.playerPictureBox.Location = new Point(coords[0], coords[1] + editor.playerPictureBox.Height);
                 _ = SendGetCoordinatesAsync(coords[0], coords[1] + editor.playerPictureBox.Height);
                 coords[1] += editor.playerPictureBox.Height;
                 Thread.Sleep(10);
                 if (coords[1] > (editor.playerPictureBox.Height) * 15)
+                {
                     break;
+                }
             }
         }
 
@@ -199,6 +148,6 @@ namespace Client.Strategy
                     x.ToString(), y.ToString(), room);
         }
 
-      
+
     }
 }

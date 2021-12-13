@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Composite
 {
     public class ChatRoom : Room
     {
-        static int roomLimit = 5;
-        public ChatRoom(string name, string password) : base (name, password)
+        private static readonly int roomLimit = 5;
+        public ChatRoom(string name, string password) : base(name, password)
         {
 
         }
@@ -23,24 +18,33 @@ namespace Client.Composite
         public override async void JoinRoom(HubConnection connection)
         {
             if (players >= roomLimit)
+            {
                 await connection.InvokeAsync("JoinRoom",
-                        this.GetName());
+                        GetName());
+            }
+
             players++;
         }
 
         public override async void LeaveRoom(HubConnection connection)
         {
             await connection.InvokeAsync("LeaveRoom",
-                    this.GetName());
+                    GetName());
             players--;
         }
         public override bool Equals(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
+
             if (!(obj is ChatRoom))
+            {
                 return false;
-            return ((this.GetName() == ((ChatRoom)obj).GetName()) && (this.GetPassword() == ((GameRoom)obj).GetPassword()));
+            }
+
+            return ((GetName() == ((ChatRoom)obj).GetName()) && (GetPassword() == ((GameRoom)obj).GetPassword()));
         }
     }
 }

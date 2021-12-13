@@ -1,27 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Effect
+﻿namespace Client.Effect
 {
     public class EffectFactory
     {
         public static IEffect Create(string effectType)
         {
-            switch (effectType)
+            return effectType switch
             {
-                case "Jump":
-                    return new JumpEffect();
-                case "Blind":
-                    return new BlindEffect();
-                case "Speed":
-                    return new SpeedEffect();
-                default:
-                    return null; // basically no effect
-
-            }
+                "Jump" => new JumpEffect(),
+                "Blind" => new BlindEffect(),
+                "Speed" => new SpeedEffect(),
+                _ => null,// basically no effect
+            };
         }
     }
 }

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 
 namespace Client.Flyweight
 {
     public class FlyweightFactory
     {
-        private Dictionary<int, PlayerSkin> players = new Dictionary<int, PlayerSkin>();
-        
+        private readonly Dictionary<int, PlayerSkin> players = new();
+
         public PlayerSkin PlayerSkin(int key)
         {
             PlayerSkin player = null;

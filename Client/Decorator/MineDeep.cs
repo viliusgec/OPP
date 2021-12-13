@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Decorator
+﻿namespace Client.Decorator
 {
-    class MineDeep : MineDecorator
+    internal class MineDeep : MineDecorator
     {
         public MineDeep(Character wrapee) : base(wrapee)
         {

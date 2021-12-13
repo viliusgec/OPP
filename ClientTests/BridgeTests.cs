@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Client.Bridge;
 using NUnit.Framework;
+using System;
 using System.IO;
-using Client.Bridge;
 
 namespace ClientTests
 {
     public class BridgeTests
     {
-        string currentDir;
+        private string currentDir;
 
         [SetUp]
         public void Setup()
@@ -23,9 +23,7 @@ namespace ClientTests
         [TestCase("101")]
         public void TestRockSetSkin(string health)
         {
-            /*string workingDirectory = Environment.CurrentDirectory;
-            string currentDir = Directory.GetParent(workingDirectory).Parent.Parent.FullName;*/
-            var ans = RockBlockSkin.SetSkin(health);
+            string ans = RockBlockSkin.SetSkin(health);
             switch (health)
             {
                 case "100":
@@ -53,7 +51,7 @@ namespace ClientTests
         [TestCase("101")]
         public void TestDirtSetSkin(string health)
         {
-            var ans = DirtBlockSkin.SetSkin(health);
+            string ans = DirtBlockSkin.SetSkin(health);
             switch (health)
             {
                 case "100":
@@ -81,7 +79,7 @@ namespace ClientTests
         [TestCase("101")]
         public void TestSandSetSkin(string health)
         {
-            var ans = SandBlockSkin.SetSkin(health);
+            string ans = SandBlockSkin.SetSkin(health);
             switch (health)
             {
                 case "100":

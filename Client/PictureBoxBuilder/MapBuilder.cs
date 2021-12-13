@@ -9,9 +9,9 @@ namespace Client.PictureBoxBuilder
     {
         public int boxWidth;
         public int boxHeight;
-        readonly static int mapx = 11;
-        readonly static int mapy = 12;
-        static PictureBox[,] boxes;
+        private static readonly int mapx = 11;
+        private static readonly int mapy = 12;
+        private static PictureBox[,] boxes;
         public bool boxesAdded = false;
         public int startX;
         public int startY;
@@ -25,17 +25,17 @@ namespace Client.PictureBoxBuilder
 
         public void BlocksFall(Map.MapBase map, FormsEditor editor, int x, int y)
         {
-            var loc = new Point(x, y - boxHeight);
+            Point loc = new(x, y - boxHeight);
             if (GetPictureBox(loc) != null && GetPictureBox(loc).Enabled == true)
             {
-                var block = GetBlock(loc, map);
-                if (block.GetBlockType() == "falling") 
+                Block block = GetBlock(loc, map);
+                if (block.GetBlockType() == "falling")
                 {
-                    while(GetPictureBox(loc).Enabled != false && block != null && block.GetBlockType() == "falling")
+                    while (GetPictureBox(loc).Enabled != false && block != null && block.GetBlockType() == "falling")
                     {
-                        var oldBlock = GetBlock(loc, map);
-                        var newBlock = GetBlock(new Point(x, y), map);
-                        var tempBlock = (Map.Block)newBlock.Clone();
+                        Block oldBlock = GetBlock(loc, map);
+                        Block newBlock = GetBlock(new Point(x, y), map);
+                        Block tempBlock = (Map.Block)newBlock.Clone();
 
                         if (oldBlock != null && oldBlock.GetBlockType() == "falling")
                         {
@@ -62,12 +62,14 @@ namespace Client.PictureBoxBuilder
                             loc = new Point(x, y - boxHeight);
                             block = GetBlock(loc, map);
                             if (block == null)
+                            {
                                 break;
-                            
+                            }
                         }
                         else
+                        {
                             break;
-                        
+                        }
                     }
                 }
             }
@@ -77,9 +79,9 @@ namespace Client.PictureBoxBuilder
         {
             for (int i = 0; i < mapx; i++)
             {
-                for (int j = 0; j < mapy+1; j++)
+                for (int j = 0; j < mapy + 1; j++)
                 {
-                    if(boxes[i,j].Location == loc)
+                    if (boxes[i, j].Location == loc)
                     {
                         return boxes[i, j];
                     }
@@ -96,7 +98,7 @@ namespace Client.PictureBoxBuilder
                 {
                     if (boxes[i, j].Location == loc)
                     {
-                        return map.getBlocks()[i, j];
+                        return map.GetBlocks()[i, j];
                     }
                 }
             }
@@ -124,9 +126,9 @@ namespace Client.PictureBoxBuilder
                 {
                     if (boxes[i, j].Location == loc)
                     {
-                        var blox = map.getBlocks();
+                        Block[,] blox = map.GetBlocks();
                         blox[i, j] = block;
-                        map.setBlocks(blox);
+                        map.SetBlocks(blox);
                     }
                 }
             }
@@ -134,8 +136,8 @@ namespace Client.PictureBoxBuilder
 
         public void AddPictureBoxes(PictureBox pictureBox1, PictureBox pictureBox2, Control.ControlCollection controls, Size size)
         {
-            boxes = new PictureBox[mapx, mapy+1];
-            var formSize = size;
+            boxes = new PictureBox[mapx, mapy + 1];
+            Size formSize = size;
             int width = formSize.Width;
             int height = formSize.Height;
             startX = width / 5;
@@ -149,39 +151,41 @@ namespace Client.PictureBoxBuilder
             pictureBox2.Size = new Size(boxWidth, boxHeight);
             pictureBox1.Location = new Point(startX + ((mapx / 2 - 1) * boxWidth), startY - boxHeight);
             pictureBox2.Location = new Point(startX + ((mapx / 2 + 1) * boxWidth), startY - boxHeight);
-            //boxes[mapx, 0] = new PictureBox();
-            //boxes[mapx, 0].Size = new Size(boxWidth, boxHeight);
-            //boxes[mapx, 0].Location = new Point(startX + boxWidth * (i), startY + boxHeight * (j));
-            //boxes[mapx, 0].SizeMode = PictureBoxSizeMode.StretchImage;
             for (int i = 0; i < mapx; i++)
             {
-                for (int j = 0; j < mapy+1; j++)
+                for (int j = 0; j < mapy + 1; j++)
                 {
-                    boxes[i, j] = new PictureBox();
-                    boxes[i, j].BackColor = System.Drawing.Color.Transparent;
-                    boxes[i, j].Size = new Size(boxWidth, boxHeight);
-                    boxes[i, j].Location = new Point(startX + boxWidth * (i), startY + boxHeight * (j));
-                    boxes[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
-                    
-                    if(j == mapy && i < 2)
+                    boxes[i, j] = new PictureBox
                     {
-                        boxes[i, j] = new PictureBox();
-                        boxes[i, j].Size = new Size(boxWidth, boxHeight);
-                        boxes[i, j].Location = new Point(startX + ((mapx / 2) * boxWidth), startY - boxHeight * (i+1));
-                        boxes[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
+                        BackColor = System.Drawing.Color.Transparent,
+                        Size = new Size(boxWidth, boxHeight),
+                        Location = new Point(startX + boxWidth * (i), startY + boxHeight * (j)),
+                        SizeMode = PictureBoxSizeMode.StretchImage
+                    };
+
+                    if (j == mapy && i < 2)
+                    {
+                        boxes[i, j] = new PictureBox
+                        {
+                            Size = new Size(boxWidth, boxHeight),
+                            Location = new Point(startX + ((mapx / 2) * boxWidth), startY - boxHeight * (i + 1)),
+                            SizeMode = PictureBoxSizeMode.StretchImage
+                        };
                     }
-                    else if(j == mapy && i >= 2)
+                    else if (j == mapy && i >= 2)
                     {
-                        boxes[i, j] = new PictureBox();
-                        boxes[i, j].Size = new Size(0, 0);
-                        boxes[i, j].Location = new Point(0,0);
-                        boxes[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
+                        boxes[i, j] = new PictureBox
+                        {
+                            Size = new Size(0, 0),
+                            Location = new Point(0, 0),
+                            SizeMode = PictureBoxSizeMode.StretchImage
+                        };
                     }
                     controls.Add(boxes[i, j]);
                 }
             }
 
-            mediator.notify("C"); // antra mediator šaka
+            mediator.Notify("C"); // antra mediator šaka
         }
         public void EditMinedBox(int x, int y)
         {
@@ -214,8 +218,8 @@ namespace Client.PictureBoxBuilder
 
         public void CreateMap(ImageList imageList1, Map.MapBase map)
         {
-            Map.Block[,] blocks = map.getBlocks();
-            var l = blocks.Length;
+            Map.Block[,] blocks = map.GetBlocks();
+            int l = blocks.Length;
             imageList1.ImageSize = new Size(40, 40);
             for (int i = 0; i < mapx; i++)
             {
@@ -233,7 +237,7 @@ namespace Client.PictureBoxBuilder
             imageList1.Images.Add(boxes[0, mapy].Image);
             imageList1.Images.Add(boxes[1, mapy].Image);
 
-            mediator.notify("D");
+            mediator.Notify("D");
         }
     }
 }

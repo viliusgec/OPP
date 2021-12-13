@@ -2,7 +2,7 @@
 
 namespace Client.Memento
 {
-    class Originator
+    internal class Originator
     {
         public State.State _state = null;
 

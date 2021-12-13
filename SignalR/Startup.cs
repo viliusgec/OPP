@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SignalRChat.Hubs;
-using Microsoft.AspNetCore.Cors;
 
 namespace SignalR
 {

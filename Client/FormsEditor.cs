@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Client.Decorator;
+using Client.Flyweight;
+using Client.Visitor;
+using Microsoft.AspNetCore.SignalR.Client;
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
-using System.Threading;
-using Client.Decorator;
-using System.Collections.Generic;
-using Client.Flyweight;
-using Client.Visitor;
 
 namespace Client
 {
@@ -17,31 +15,31 @@ namespace Client
         public PictureBox enemyPictureBox;
         public Label scoreLabel;
         public Label moneyLabel;
-        private HubConnection connection;
-        string room;
-        PictureBox white;
-        PictureBox black;
-        PictureBox diamond;
-        PictureBox enemyWhite;
-        PictureBox enemyBlack;
-        PictureBox enemyDiamond;
-        FlyweightFactory factory = new FlyweightFactory();
-        ListBox _buyMenu;
-        Button buyMenuButton;
-        Button buyMenuButtonMoney;
-        TextBox _moveMenu;
-        Button moveMenuButton;
-        Label movementLabel2;
-        Character player;
+        private readonly HubConnection connection;
+        private readonly string room;
+        private PictureBox white;
+        private PictureBox black;
+        private PictureBox diamond;
+        private PictureBox enemyWhite;
+        private PictureBox enemyBlack;
+        private PictureBox enemyDiamond;
+        private readonly FlyweightFactory factory = new();
+        private readonly ListBox _buyMenu;
+        private readonly Button buyMenuButton;
+        private readonly Button buyMenuButtonMoney;
+        private readonly TextBox _moveMenu;
+        private readonly Button moveMenuButton;
+        private readonly Label movementLabel2;
+        private readonly Character player;
         public ImageList imageList1;
         public Control.ControlCollection control;
         public Size size;
-        int score = 0;
-        int money = 0;
-        bool effectIsGranted = false;
-        ConcreteVisitor visitor;
-        ScoreComponent compscore;
-        MoneyComponent compmoney;
+        private int score = 0;
+        private int money = 0;
+        private bool effectIsGranted = false;
+        private ConcreteVisitor visitor;
+        private ScoreComponent compscore;
+        private MoneyComponent compmoney;
 
         public FormsEditor(
             PictureBox pictureBox1,
@@ -60,31 +58,32 @@ namespace Client
             Label movementLabel2,
             string room,
             HubConnection connection
-            ) {
-            this.playerPictureBox = pictureBox1;
-            this.enemyPictureBox = pictureBox2;
+            )
+        {
+            playerPictureBox = pictureBox1;
+            enemyPictureBox = pictureBox2;
             this.scoreLabel = scoreLabel;
             this.moneyLabel = moneyLabel;
-            this._buyMenu = buyMenu;
+            _buyMenu = buyMenu;
             this.buyMenuButton = buyMenuButton;
             this.buyMenuButtonMoney = buyMenuButtonMoney;
-            this._moveMenu = moveMenu;
+            _moveMenu = moveMenu;
             this.moveMenuButton = moveMenuButton;
             this.imageList1 = imageList1;
             this.player = player;
             this.control = control;
             this.size = size;
             this.movementLabel2 = movementLabel2;
-            this.buyMenuButton.Click += new System.EventHandler(this.buyMenuButtonScore_Click);
-            this.buyMenuButtonMoney.Click += new System.EventHandler(this.buyMenuButtonMoney_Click);
+            this.buyMenuButton.Click += new System.EventHandler(buyMenuButtonScore_Click);
+            this.buyMenuButtonMoney.Click += new System.EventHandler(buyMenuButtonMoney_Click);
             this.room = room;
             this.connection = connection;
 
-            initSkins();
-            initVisitor();
+            InitSkins();
+            InitVisitor();
             ReceiveSkin();
         }
-        public void initSkins()
+        public void InitSkins()
         {
             PlayerSkin skin;
             skin = factory.PlayerSkin(1);
@@ -106,7 +105,7 @@ namespace Client
             enemyDiamond = skin.ReturnPlayerSkin();
         }
 
-        public void initVisitor()
+        public void InitVisitor()
         {
             compscore = new ScoreComponent();
             compmoney = new MoneyComponent();
@@ -114,39 +113,19 @@ namespace Client
             visitor = new ConcreteVisitor();
         }
 
-        public void addScore()
+        public void AddScore()
         {
             score += 1;
             scoreLabel.Text = "Score: " + score;
         }
 
-        public int getScore()
-        {
-            return score;
-        }
-
-        public void addMoney(int _money)
+        public void AddMoney(int _money)
         {
             money += _money;
             moneyLabel.Text = "Money: " + money;
         }
 
-        public int getMoney()
-        {
-            return money;
-        }
-
-        public bool getEffectIsGranted()
-        {
-            return effectIsGranted;
-        }
-
-        public void setEffectIsGranted(bool effectState)
-        {
-            effectIsGranted = effectState;
-        }
-
-        public void closeBuyMmenu()
+        public void CloseBuyMmenu()
         {
             _buyMenu.Enabled = false;
             _buyMenu.Hide();
@@ -156,7 +135,7 @@ namespace Client
             buyMenuButtonMoney.Enabled = false;
             buyMenuButtonMoney.Hide();
         }
-        public void closeMoveMenu()
+        public void CloseMoveMenu()
         {
             _moveMenu.Enabled = false;
             _moveMenu.Hide();
@@ -174,12 +153,15 @@ namespace Client
                 return;
             }
             string item = _buyMenu.SelectedItem.ToString();
-            int temp = checkBuyMenuValue(item);
-            str = calcStrength(temp); // skinus pagal str skaičių užmest
+            int temp = CheckBuyMenuValue(item);
+            str = CalcStrength(temp); // skinus pagal str skaičių užmest
             if (str == -1)
-                return ;
-            setSkin(str);
-            player.addStr(str);
+            {
+                return;
+            }
+
+            SetSkin(str);
+            player.AddStr(str);
             compscore.Accept(visitor, scoreLabel, score, temp);
         }
 
@@ -191,39 +173,37 @@ namespace Client
                 return;
             }
             string item = _buyMenu.SelectedItem.ToString();
-            int temp = checkBuyMenuValueMoney(item);
-            str = calcStrengthMoney(temp); // skinus pagal str skaičių užmest
+            int temp = CheckBuyMenuValueMoney(item);
+            str = CalcStrengthMoney(temp); // skinus pagal str skaičių užmest
             if (str == -1)
+            {
                 return;
-            setSkin(str);
-            player.addStr(str);
+            }
+
+            SetSkin(str);
+            player.AddStr(str);
             compmoney.Accept(visitor, moneyLabel, money, temp);
         }
 
-       // private void moveMenuButton_Click(object sender, EventArgs e)
-       // {
-          //  string item = _moveMenu.Text;
-            //Tada cia sitoj vietos turi callint ta shit is facade
-       // }
 
         /*
         *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
         */
-        private void setSkin(int skin)
+        private void SetSkin(int skin)
         {
-            switch(skin)
+            switch (skin)
             {
                 case 7:
-                    this.playerPictureBox.Image = white.Image;
+                    playerPictureBox.Image = white.Image;
                     _ = SendSkin("a");
                     break;
                 case 10:
-                    this.playerPictureBox.Image = black.Image;
-                    _= SendSkin("b");
+                    playerPictureBox.Image = black.Image;
+                    _ = SendSkin("b");
                     break;
                 case 13:
-                    this.playerPictureBox.Image = diamond.Image;
-                    _= SendSkin("c");
+                    playerPictureBox.Image = diamond.Image;
+                    _ = SendSkin("c");
                     break;
                 default:
                     break;
@@ -237,85 +217,67 @@ namespace Client
 
             connection.On<string>("ReceiveSkin", (skin) =>
             {
-                switch (skin)
+                enemyPictureBox.Image = skin switch
                 {
-                    case "a":
-                        this.enemyPictureBox.Image = enemyWhite.Image;
-                        break;
-                    case "b":
-                        this.enemyPictureBox.Image = enemyBlack.Image;
-                        break;
-                    case "c":
-                        this.enemyPictureBox.Image = enemyDiamond.Image;
-                        break;
-                    default:
-                        this.enemyPictureBox.Image = enemyWhite.Image;
-                        break;
-                }
+                    "a" => enemyWhite.Image,
+                    "b" => enemyBlack.Image,
+                    "c" => enemyDiamond.Image,
+                    _ => enemyWhite.Image,
+                };
             });
         }
         public void ReceiveSkin()
         {
-            this.connection.On<string>("ReceiveSkin", (skin) =>
+            connection.On<string>("ReceiveSkin", (skin) =>
             {
-                switch(skin)
+                enemyPictureBox.Image = skin switch
                 {
-                    case "a":
-                        this.enemyPictureBox.Image = enemyWhite.Image;
-                        break;
-                    case "b":
-                        this.enemyPictureBox.Image = enemyBlack.Image;
-                        break;
-                    case "c":
-                        this.enemyPictureBox.Image = enemyDiamond.Image;
-                        break;
-                    default:
-                        this.enemyPictureBox.Image = enemyWhite.Image;
-                        break;
-                }
+                    "a" => enemyWhite.Image,
+                    "b" => enemyBlack.Image,
+                    "c" => enemyDiamond.Image,
+                    _ => enemyWhite.Image,
+                };
             });
         }
         /*
          *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
          */
-        public int calcStrength(int str) 
+        public int CalcStrength(int str)
         {
             if (score < str)
-                return -1;
-            switch (str)
             {
-                case 2:
-                    return 7;
-                case 5:
-                    return 10;
-                case 10:
-                    return 13;
-                default: 
-                    return 5;
+                return -1;
             }
+
+            return str switch
+            {
+                2 => 7,
+                5 => 10,
+                10 => 13,
+                _ => 5,
+            };
         }
 
         /*
  *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
  */
-        public int calcStrengthMoney(int str)
+        public int CalcStrengthMoney(int str)
         {
             if (money < str)
-                return -1;
-            switch (str)
             {
-                case 10:
-                    return 7;
-                case 20:
-                    return 10;
-                case 30:
-                    return 13;
-                default:
-                    return 5;
+                return -1;
             }
+
+            return str switch
+            {
+                10 => 7,
+                20 => 10,
+                30 => 13,
+                _ => 5,
+            };
         }
 
-        public void buyMenu(Character player)
+        public void BuyMenu()
         {
             _buyMenu.Enabled = true;
             _buyMenu.Show();
@@ -326,46 +288,40 @@ namespace Client
             buyMenuButtonMoney.Show();
         }
 
-        public void moveMenu(Character player)
+        public void MoveMenu(Character player)
         {
             _moveMenu.Enabled = true;
             _moveMenu.Show();
             movementLabel2.Text = "Commands:\n moveLeft\n moveRight\n jump\n jumpUpLeft\n jumpUpRight\n digDown\n digLeft\n digRight\n After each command\n enter ';'";
             movementLabel2.Enabled = true;
-            movementLabel2.Show(); 
+            movementLabel2.Show();
             moveMenuButton.Text = "Move";
             moveMenuButton.Enabled = true;
             moveMenuButton.Show();
         }
 
-        public int checkBuyMenuValue(string buff)
+        public int CheckBuyMenuValue(string buff)
         {
-            switch (buff)
+            return buff switch
             {
-            case "White pickaxe - 2 score || 10 money":
-                    return 2;
-            case "Black pickaxe - 5 score || 20 money":
-                    return 5;
-            case "Diamond pickaxe - 10 score || 30 money":
-                    return 10;
-                default: return 5;
-            }
+                "White pickaxe - 2 score || 10 money" => 2,
+                "Black pickaxe - 5 score || 20 money" => 5,
+                "Diamond pickaxe - 10 score || 30 money" => 10,
+                _ => 5,
+            };
         }
 
-        public int checkBuyMenuValueMoney(string buff)
+        public int CheckBuyMenuValueMoney(string buff)
         {
-            switch (buff)
+            return buff switch
             {
-                case "White pickaxe - 2 score || 10 money":
-                    return 10;
-                case "Black pickaxe - 5 score || 20 money":
-                    return 20;
-                case "Diamond pickaxe - 10 score || 30 money":
-                    return 30;
-                default: return 5;
-            }
+                "White pickaxe - 2 score || 10 money" => 10,
+                "Black pickaxe - 5 score || 20 money" => 20,
+                "Diamond pickaxe - 10 score || 30 money" => 30,
+                _ => 5,
+            };
         }
-        public void scoreZero()
+        public void ScoreZero()
         {
             scoreLabel.Text = "Score: 0";
             moneyLabel.Text = "Money: 0";

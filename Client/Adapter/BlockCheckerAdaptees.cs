@@ -2,9 +2,7 @@
 using Client.Observer;
 using Client.PictureBoxBuilder;
 using Microsoft.AspNetCore.SignalR.Client;
-using System;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -12,28 +10,37 @@ namespace Client.Adapter
 {
     public class BlockCheckerAdaptees
     {
-        ServerObserver ServerObserver = new();
+        private readonly ServerObserver ServerObserver = new();
 
-        public bool check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, MapBuilder mapBuilder, string room)
+        public bool Check_if_block_exists_specific(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, MapBuilder mapBuilder, string room)
         {
-            var loc = new Point(x, y);
+            Point loc;
             PictureBox box;
             Client.Map.Block block;
 
             switch (side)
             {
                 case 0:
-                    var defaultLoc = new Point(x, y + editor.playerPictureBox.Height);
+                    Point defaultLoc = new(x, y + editor.playerPictureBox.Height);
                     loc = new Point(x, y + editor.playerPictureBox.Height);
                     box = MapBuilder.GetPictureBox(loc);
-                    if (box == null) return false;
+                    if (box == null)
+                    {
+                        return false;
+                    }
+
                     block = MapBuilder.GetBlock(loc, map);
-                    if (block == null) return false;
+                    if (block == null)
+                    {
+                        return false;
+                    }
 
                     if (block.GetBlockType() == "unbreakable")
+                    {
                         return false;
+                    }
 
-                    block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString()); ;
+                    block.SetHealth((int.Parse(block.GetHealth()) - (player.GetStr())).ToString()); ;
                     block.SetImage("");
 
                     box.ImageLocation = block.GetImage();
@@ -46,12 +53,12 @@ namespace Client.Adapter
                         box.Enabled = false;
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.addScore();
-                        editor.addMoney(block.GetPoints());
+                        editor.AddScore();
+                        editor.AddMoney(block.GetPoints());
 
                         return loc == defaultLoc;
                     }
-                
+
 
                     return false;
                 case 1:
@@ -79,19 +86,28 @@ namespace Client.Adapter
                     box = MapBuilder.GetPictureBox(loc);
                     return !CheckBox(box);
                 case 7:
-                    var defaultLocLeft = new Point(x - editor.playerPictureBox.Width, y);
+                    Point defaultLocLeft = new(x - editor.playerPictureBox.Width, y);
 
 
                     loc = new Point(x - editor.playerPictureBox.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
-                    if (box == null) return false;
+                    if (box == null)
+                    {
+                        return false;
+                    }
+
                     block = MapBuilder.GetBlock(loc, map);
-                    if (block == null) return false;
+                    if (block == null)
+                    {
+                        return false;
+                    }
 
                     if (block.GetBlockType() == "unbreakable")
+                    {
                         return false;
+                    }
 
-                    block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString());
+                    block.SetHealth((int.Parse(block.GetHealth()) - (player.GetStr())).ToString());
 
                     block.SetImage("");
                     box.ImageLocation = block.GetImage();
@@ -105,8 +121,8 @@ namespace Client.Adapter
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.addScore();
-                        editor.addMoney(block.GetPoints());
+                        editor.AddScore();
+                        editor.AddMoney(block.GetPoints());
 
                         return loc == defaultLocLeft;
                     }
@@ -114,18 +130,28 @@ namespace Client.Adapter
                     return false;
                 case 8:
 
-                    var defaultLocRight = new Point(x + editor.playerPictureBox.Width, y);
+                    Point defaultLocRight = new(x + editor.playerPictureBox.Width, y);
 
                     loc = new Point(x + editor.playerPictureBox.Width, y);
                     box = MapBuilder.GetPictureBox(loc);
-                    if (box == null) return false;
+                    if (box == null)
+                    {
+                        return false;
+                    }
+
                     block = MapBuilder.GetBlock(loc, map);
 
-                    if (block == null) return false;
-                    if (block.GetBlockType() == "unbreakable")
+                    if (block == null)
+                    {
                         return false;
+                    }
 
-                    block.SetHealth((int.Parse(block.GetHealth()) - (player.getStr())).ToString());
+                    if (block.GetBlockType() == "unbreakable")
+                    {
+                        return false;
+                    }
+
+                    block.SetHealth((int.Parse(block.GetHealth()) - (player.GetStr())).ToString());
 
                     block.SetImage("");
                     box.ImageLocation = block.GetImage();
@@ -139,8 +165,8 @@ namespace Client.Adapter
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.addScore();
-                        editor.addMoney(block.GetPoints());
+                        editor.AddScore();
+                        editor.AddMoney(block.GetPoints());
 
                         return loc == defaultLocRight;
                     }
@@ -165,15 +191,21 @@ namespace Client.Adapter
         public bool CheckBox(PictureBox? box)
         {
             if (box == null)
+            {
                 return true;
+            }
+
             if (box.Enabled)
+            {
                 return false;
+            }
+
             return true;
         }
 
         public void PowerUpCount(ref int mineWide, ref int mineStronger, Character player, string firstAbility)
         {
-            var playerPowerUps = player.Mine("").Split(';');
+            string[] playerPowerUps = player.Mine("").Split(';');
 
             foreach (string playerPowerUp in playerPowerUps)
             {

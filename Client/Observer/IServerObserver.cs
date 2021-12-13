@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Client.Observer
 {
-    interface IServerObserver
+    internal interface IServerObserver
     {
         public void ReceiveCoordinates(PictureBox enemy, Movement movement);
         public void ReceiveMinedBoxCoordinates(MapBuilder tempMapBuilder, Map.MapBase map, FormsEditor editor);

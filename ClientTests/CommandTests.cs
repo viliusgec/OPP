@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Client.Command;
+﻿using Client.Command;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows.Forms;
 
 namespace ClientTests
@@ -7,13 +7,13 @@ namespace ClientTests
     [TestClass]
     public class CommandTests
     {
-        TextBox textBox = new();
-        string roomName = "Room";
+        private readonly TextBox textBox = new();
+        private readonly string roomName = "Room";
         [TestMethod]
         public void TestSendMessageToTextBox()
         {
-            var a = "Me: Test\r\n";
-            SendMessage sendMessage = new (textBox);
+            string a = "Me: Test\r\n";
+            SendMessage sendMessage = new(textBox);
             sendMessage.Send("Test", roomName);
             Assert.AreEqual(a, textBox.Text);
         }
@@ -21,7 +21,7 @@ namespace ClientTests
         [TestMethod]
         public void TestUndoMessageWhenIndexMoreThanZero()
         {
-            var a = "Me: Test\r\n\n";
+            string a = "Me: Test\r\n\n";
             SendMessage sendMessage = new(textBox);
             sendMessage.Send("Test", roomName);
             sendMessage.Send("Test2", roomName);
@@ -32,7 +32,7 @@ namespace ClientTests
         [TestMethod]
         public void TestUndoMessageWhenIndexLessThanZero()
         {
-            var a = "";
+            string a = "";
             SendMessage sendMessage = new(textBox);
             sendMessage.Undo(roomName);
             Assert.AreEqual(a, textBox.Text);
@@ -41,7 +41,7 @@ namespace ClientTests
         [TestMethod]
         public void TestSendEmoteToTextBox()
         {
-            var a = "Me: ༼ つ ◕_◕ ༽つ \r\n";
+            string a = "Me: ༼ つ ◕_◕ ༽つ \r\n";
             SendEmote sendMessage = new(textBox);
             sendMessage.Send("", roomName);
             Assert.AreEqual(a, textBox.Text);
@@ -50,7 +50,7 @@ namespace ClientTests
         [TestMethod]
         public void TestUndoEmoteWhenIndexMoreThanZero()
         {
-            var a = "Me: ༼ つ ◕_◕ ༽つ \r\n\n";
+            string a = "Me: ༼ つ ◕_◕ ༽つ \r\n\n";
             SendEmote sendMessage = new(textBox);
             sendMessage.Send("", roomName);
             sendMessage.Send("", roomName);
@@ -61,7 +61,7 @@ namespace ClientTests
         [TestMethod]
         public void TestUndoEmoteWhenIndexLessThanZero()
         {
-            var a = "";
+            string a = "";
             SendEmote sendMessage = new(textBox);
             sendMessage.Undo(roomName);
             Assert.AreEqual(a, textBox.Text);

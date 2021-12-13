@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Composite
 {
     public abstract class Room
     {
-        string name;
-        string password;
+        private readonly string name;
+        private readonly string password;
         public int players;
 
         public Room(string _name, string _password)
@@ -37,9 +32,9 @@ namespace Client.Composite
 
         public void SetPlayers(int playerCount)
         {
-            this.players = playerCount;
+            players = playerCount;
         }
-      
+
 
         public abstract bool IsComposite();
 
@@ -49,10 +44,16 @@ namespace Client.Composite
         public override bool Equals(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
+
             if (!(obj is Room))
+            {
                 return false;
-            return (this.name == ((Room)obj).GetName());
+            }
+
+            return (name == ((Room)obj).GetName());
         }
     }
 }

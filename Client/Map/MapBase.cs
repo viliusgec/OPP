@@ -1,159 +1,168 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Mediator;
+﻿using Client.Mediator;
+using System;
 
 namespace Client.Map
 {
     [Serializable]
     public class MapBase : BaseComponent
     {
-        private AbstractFactory factory { get; set; }
-        private Block[,] blocks { get; set; }
-        public string[,] blockNames { get; set; }
-        public string[,] blockImages { get; set; }
-        public string[,] blockTypes { get; set; }
-        public string[,] blockEffectTypes { get; set; }
-        public string[,] blockHealths { get; set; }
-        public int x { get; set; }
-        public int y { get; set; }
+        private AbstractFactory Factory { get; set; }
+        private Block[,] Blocks { get; set; }
+        public string[,] BlockNames { get; set; }
+        public string[,] BlockImages { get; set; }
+        public string[,] BlockTypes { get; set; }
+        public string[,] BlockEffectTypes { get; set; }
+        public string[,] BlockHealths { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
         public MapBase(int mapX, int mapY)
         {
-            x = mapX;
-            y = mapY;
-            blocks = new Block[mapX,mapY];
+            X = mapX;
+            Y = mapY;
+            Blocks = new Block[mapX, mapY];
         }
 
-        public void setBlocks(Block[,] newBlocks)
+        public void SetBlocks(Block[,] newBlocks)
         {
-            blocks = newBlocks;
+            Blocks = newBlocks;
         }
-        public Block[,] getBlocks()
+        public Block[,] GetBlocks()
         {
-            return blocks;
+            return Blocks;
         }
 
         public void SerializeBlocks()
         {
-            blockNames = new string[x, y];
-            blockImages = new string[x, y];
-            blockTypes = new string[x, y];
-            blockEffectTypes = new string[x, y];
-            blockHealths = new string[x, y];
-            for (int i = 0; i < x; i++)
+            BlockNames = new string[X, Y];
+            BlockImages = new string[X, Y];
+            BlockTypes = new string[X, Y];
+            BlockEffectTypes = new string[X, Y];
+            BlockHealths = new string[X, Y];
+            for (int i = 0; i < X; i++)
             {
-                
-                for (int j = 0; j < y; j++)
+
+                for (int j = 0; j < Y; j++)
                 {
-                    blockNames[i, j] = blocks[i, j].GetName();
-                    blockImages[i, j] = blocks[i, j].GetImage();
-                    blockTypes[i, j] = blocks[i, j].GetBlockType();
-                    blockHealths[i, j] = blocks[i, j].GetHealth();
-                    if (blocks[i, j].GetEffect() != null)
-                        blockEffectTypes[i, j] = blocks[i, j].GetEffect().EffectType;
+                    BlockNames[i, j] = Blocks[i, j].GetName();
+                    BlockImages[i, j] = Blocks[i, j].GetImage();
+                    BlockTypes[i, j] = Blocks[i, j].GetBlockType();
+                    BlockHealths[i, j] = Blocks[i, j].GetHealth();
+                    if (Blocks[i, j].GetEffect() != null)
+                    {
+                        BlockEffectTypes[i, j] = Blocks[i, j].GetEffect().EffectType;
+                    }
                     else
-                        blockEffectTypes[i, j] = "";
+                    {
+                        BlockEffectTypes[i, j] = "";
+                    }
                 }
             }
         }
 
         public void DeserializeBlocks()
         {
-            blocks = new Block[x, y];
-            for (int i = 0; i < x; i++)
+            Blocks = new Block[X, Y];
+            for (int i = 0; i < X; i++)
             {
-                for (int j = 0; j < y; j++)
+                for (int j = 0; j < Y; j++)
                 {
-                    Effect.IEffect effect = Effect.EffectFactory.Create(blockEffectTypes[i, j]);
-                    Map.Block block;
-                  
-                    switch (blockTypes[i, j])
+                    Effect.IEffect effect = Effect.EffectFactory.Create(BlockEffectTypes[i, j]);
+
+                    switch (BlockTypes[i, j])
                     {
                         case "static":
-                            blocks[i, j] = new L1StaticBlock(blockNames[i, j], blockImages[i, j], effect, blockHealths[i, j]);
-                            blocks[i, j].SetBlockType("static");
+                            Blocks[i, j] = new L1StaticBlock(BlockNames[i, j], BlockImages[i, j], effect, BlockHealths[i, j]);
+                            Blocks[i, j].SetBlockType("static");
                             break;
                         case "falling":
-                            blocks[i, j] = new L1FallingBlock(blockNames[i, j], blockImages[i, j], effect, blockHealths[i, j]);
-                            blocks[i, j].SetBlockType("falling");
+                            Blocks[i, j] = new L1FallingBlock(BlockNames[i, j], BlockImages[i, j], effect, BlockHealths[i, j]);
+                            Blocks[i, j].SetBlockType("falling");
                             break;
                         case "unbreakable":
-                            blocks[i, j] = new L1UnbreakableBlock(blockNames[i, j], blockImages[i, j], effect, blockHealths[i, j]);
-                            blocks[i, j].SetBlockType("unbreakable");
+                            Blocks[i, j] = new L1UnbreakableBlock(BlockNames[i, j], BlockImages[i, j], effect, BlockHealths[i, j]);
+                            Blocks[i, j].SetBlockType("unbreakable");
                             break;
                     }
-                        
+
                 }
             }
         }
 
-        public void setFactory(int choice)
+        public void SetFactory(int choice)
         {
             if (choice == 2)
-                factory = new L2Factory();
+            {
+                Factory = new L2Factory();
+            }
             else if (choice == 3)
-                factory = new L3Factory();
+            {
+                Factory = new L3Factory();
+            }
             else
-                factory = new L1Factory();
+            {
+                Factory = new L1Factory();
+            }
 
-            mediator.notify("A");
+            mediator.Notify("A");
         }
 
         public void CreateMap()
         {
-            for(int i = 0; i < x; i++)
+            for (int i = 0; i < X; i++)
             {
-                for(int j = 0; j < y; j++)
+                for (int j = 0; j < Y; j++)
                 {
-                    Random rnd = new Random();
+                    Random rnd = new();
                     int a = rnd.Next(100);
-                    if(i == 5)
+                    if (i == 5)
                     {
-                        blocks[i, j] = factory.GetUnbreakable();
+                        Blocks[i, j] = Factory.GetUnbreakable();
                         continue;
                     }
-                    if(a < 50)
+                    if (a < 50)
                     {
-                        blocks[i, j] = factory.GetStatic();
+                        Blocks[i, j] = Factory.GetStatic();
                         // Sitoj vietoj galima paclonint ta bloka tsg, kad parodyt veikima
                         // ir idet i random koordinates kazkokias ar kazka
                         // blocks[i,j].Clone
                     }
-                    else if(a >=50 && a < 80)
+                    else if (a >= 50 && a < 80)
                     {
-                        blocks[i, j] = factory.GetFalling();
+                        Blocks[i, j] = Factory.GetFalling();
                         // Sitoj vietoj galima paclonint ta bloka tsg, kad parodyt veikima
                         // ir idet i random koordinates kazkokias ar kazka
                         // blocks[i,j].Clone
                     }
                     else
                     {
-                        blocks[i, j] = factory.GetUnbreakable();
+                        Blocks[i, j] = Factory.GetUnbreakable();
                         // Sitoj vietoj galima paclonint ta bloka tsg, kad parodyt veikima
                         // ir idet i random koordinates kazkokias ar kazka
                         // blocks[i,j].Clone
                     }
-                    var unbreakableCount = 0;
-                    for(int ii = 0; ii < x; ii++)
+                    int unbreakableCount = 0;
+                    for (int ii = 0; ii < X; ii++)
                     {
-                        if(blocks[ii, j] != null && blocks[ii, j].GetBlockType() == "unbreakable")
+                        if (Blocks[ii, j] != null && Blocks[ii, j].GetBlockType() == "unbreakable")
                         {
                             unbreakableCount++;
                         }
                     }
                     if (unbreakableCount > 3)
                     {
-                        if(a < 50)
-                            blocks[i, j] = factory.GetStatic();
+                        if (a < 50)
+                        {
+                            Blocks[i, j] = Factory.GetStatic();
+                        }
                         else
-                            blocks[i, j] = factory.GetFalling();
+                        {
+                            Blocks[i, j] = Factory.GetFalling();
+                        }
                     }
                 }
             }
 
-            mediator.notify("B");
+            mediator.Notify("B");
         }
 
         public AbstractFactory GetL1Factory()

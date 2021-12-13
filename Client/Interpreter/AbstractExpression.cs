@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Client.Composite;
+﻿using Client.Composite;
 using Client.Decorator;
-using Client.Map;
 using Client.PictureBoxBuilder;
 using Client.State;
 using Client.Strategy;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Windows.Forms;
 
 namespace Client.Interpreter
 {
-    abstract class AbstractExpression
+    internal abstract class AbstractExpression
     {
         protected string expression;
         protected StateContext stateContext;
