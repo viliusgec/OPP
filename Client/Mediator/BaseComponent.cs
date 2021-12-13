@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Mediator
+﻿namespace Client.Mediator
 {
     public class BaseComponent
     {
-        protected Mediator mediator;
+        protected IMediator mediator;
 
-        public BaseComponent(Mediator mediator = null)
+        public BaseComponent(IMediator mediator = null)
         {
             this.mediator = mediator;
         }
-        public void SetMediator(Mediator mediator)
+        public void SetMediator(IMediator mediator)
         {
             this.mediator = mediator;
         }

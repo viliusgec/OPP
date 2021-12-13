@@ -5,16 +5,16 @@ namespace Client.Adapter
 {
     public class BlockCheckerAdapter : BlockChecker
     {
-        int side;
-        int x;
-        int y;
-        FormsEditor editor;
-        Map.MapBase map;
-        HubConnection connection;
-        Character player;
-        private BlockCheckerAdaptees check;
-        PictureBoxBuilder.MapBuilder mapBuilder;
-        string room;
+        private readonly int side;
+        private readonly int x;
+        private readonly int y;
+        private readonly FormsEditor editor;
+        private readonly Map.MapBase map;
+        private readonly HubConnection connection;
+        private readonly Character player;
+        private readonly BlockCheckerAdaptees check;
+        private readonly PictureBoxBuilder.MapBuilder mapBuilder;
+        private readonly string room;
 
         public BlockCheckerAdapter(int side, int x, int y, FormsEditor editor, Map.MapBase map, HubConnection connection, Character player, PictureBoxBuilder.MapBuilder mapBuilder, string room)
         {
@@ -29,9 +29,9 @@ namespace Client.Adapter
             this.room = room;
             check = new BlockCheckerAdaptees();
         }
-        public override bool check_if_block_exists()
+        public override bool Check_if_block_exists()
         {
-            return check.check_if_block_exists_specific(side, x, y, editor, map, connection, player, mapBuilder, room);
+            return check.Check_if_block_exists_specific(side, x, y, editor, map, connection, player, mapBuilder, room);
         }
     }
 }

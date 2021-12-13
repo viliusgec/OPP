@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Map
 {
@@ -15,7 +11,7 @@ namespace Client.Map
             string image = "";
             Effect.IEffect effect = null;
             string health = "125";
-            return new L2StaticBlock(name,image,effect,health);
+            return new L2StaticBlock(name, image, effect, health);
         }
         public override Block GetFalling()
         {

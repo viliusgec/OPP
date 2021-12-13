@@ -2,7 +2,7 @@
 
 namespace Client.Memento
 {
-    interface IMemento
+    internal interface IMemento
     {
         string GetName();
 

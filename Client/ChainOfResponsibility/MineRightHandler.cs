@@ -3,24 +3,19 @@ using Client.Map;
 using Client.PictureBoxBuilder;
 using Client.Strategy;
 using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
 
 
 namespace Client.ChainOfResponsibility
 {
-    class MineRightHandler : AbstractHandler
+    internal class MineRightHandler : AbstractHandler
     {
-        public override Algorithm Handle(string key, int x, int y, FormsEditor editor, MapBase map, Character player, MapBuilder mapBuilder, HubConnection connection, string room)
+        public override IAlgorithm Handle(string key, int x, int y, FormsEditor editor, MapBase map, Character player, MapBuilder mapBuilder, HubConnection connection, string room)
         {
             if (key == "K")
             {
                 Debug.WriteLine("The key was " + key + ": Handled by MineRight Handler");
-                if (this.check_if_block_exists(8, x, y, editor, map, player, mapBuilder, connection, room))
+                if (Check_if_block_exists(8, x, y, editor, map, player, mapBuilder, connection, room))
                 {
                     return new MineRight(x, y, editor.playerPictureBox.Height, editor.playerPictureBox.Width);
                 }

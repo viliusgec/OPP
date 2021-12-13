@@ -1,48 +1,47 @@
-using System;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
-using Client.Strategy;
-using System.Threading;
-using Client.Observer;
 using Client.Command;
-using Client.PictureBoxBuilder;
-using Client.Decorator;
-using System.Collections.Generic;
 using Client.Composite;
-using Client.Flyweight;
+using Client.Decorator;
 using Client.Interpreter;
 using Client.Mediator;
-using Client.State;
 using Client.Memento;
+using Client.Observer;
+using Client.PictureBoxBuilder;
+using Client.State;
+using Client.Strategy;
+using Microsoft.AspNetCore.SignalR.Client;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Client
 {
     public partial class Facade : Form
     {
         private static HubConnection connection;
-        ServerObserver ServerObserver = new();
-        MapBuilder MapBuilder = new();
-        Movement movement;
-        ConcreteMediator mediator;
+        private readonly ServerObserver ServerObserver = new();
+        private MapBuilder MapBuilder = new();
+        private readonly Movement movement;
+        private ConcreteMediator mediator;
         private Map.MapBase map;
-        Command.SendMessage message;
-        Command.SendEmote emote;
-        FormsEditor editor;
-        Character player;
-        private List<ICommand> ChatCommands = new();
-        Room room;
-        bool generator = false;
-        StateContext stateContext = new(new StartState());
-        Originator originator = new(new StartState());
-        MementoController mementoController;
+        private Command.SendMessage message;
+        private Command.SendEmote emote;
+        private FormsEditor editor;
+        private Character player;
+        private readonly List<ICommand> ChatCommands = new();
+        private readonly Room room;
+        private bool generator = false;
+        private readonly StateContext stateContext = new(new StartState());
+        private readonly Originator originator = new(new StartState());
+        private readonly MementoController mementoController;
 
 
         public Facade(Room gameRoom)
         {
             mementoController = new(originator);
-            this.room = gameRoom;
+            room = gameRoom;
 
             connection = SingletonConnection.GetInstance().GetConnection();
             ElementsSet();
@@ -75,7 +74,7 @@ namespace Client
             {
                 if (!generator)
                 {
-                    editor.scoreZero();
+                    editor.ScoreZero();
                     playerPictureBox.Show();
                     enemyPictureBox.Show();
                     map = ServerObserver.GetMap();
@@ -109,19 +108,19 @@ namespace Client
 
             connection.On<string, string, string>("ReceiveMinedBoxSkin", (x, y, path) =>
             {
-                MapBuilder.EditMinedBoxSkin(Int32.Parse(x), Int32.Parse(y), path);
+                MapBuilder.EditMinedBoxSkin(int.Parse(x), int.Parse(y), path);
             });
 
             connection.On<string, string>("ReceiveCoordinates", (x, y) =>
             {
-                var prevLoc = enemyPictureBox.Location;
+                Point prevLoc = enemyPictureBox.Location;
                 enemyPictureBox.Location = new Point(int.Parse(x), int.Parse(y));
                 movement.FlipImage(enemyPictureBox, prevLoc, true);
             });
 
             connection.On<string, string>("ReceiveMinedBoxCoordinates", (x, y) =>
             {
-                MapBuilder.EditMinedBox(Int32.Parse(x), Int32.Parse(y));
+                MapBuilder.EditMinedBox(int.Parse(x), int.Parse(y));
                 MapBuilder.BlocksFall(map, editor, int.Parse(x), int.Parse(y));
             });
 
@@ -168,12 +167,12 @@ namespace Client
         private void ElementsSet()
         {
             InitializeComponent();
-            gameStateLabel.Location = new Point((this.Width / 2) - 80, (this.Height / 2));
+            gameStateLabel.Location = new Point((Width / 2) - 80, (Height / 2));
             player = new Player();
             MovementLabel.Text = "Controls:\nW/Space - jump\n A D - Left, Right\n Q - Jump Up Left \n E - Jump Up Right\n SHIFT - Dig Down\n J - Dig Left\n K - Dig Right\n B - Buy Menu\n Move Menu";
-            this.Size = new Size(800, 800);
+            Size = new Size(800, 800);
 
-            FormsEditor tempEdit = new FormsEditor(playerPictureBox, enemyPictureBox, ScoreLabel, moneyLabel, buyMenu, buyMenuButton, buyMenuButtonMoney, moveMenu, moveMenuButton, imageList1, player, Controls, this.Size, MovementLabel2, room.GetName(), connection);
+            FormsEditor tempEdit = new(playerPictureBox, enemyPictureBox, ScoreLabel, moneyLabel, buyMenu, buyMenuButton, buyMenuButtonMoney, moveMenu, moveMenuButton, imageList1, player, Controls, Size, MovementLabel2, room.GetName(), connection);
 
             editor = tempEdit;
         }
@@ -181,7 +180,9 @@ namespace Client
         private void SendBoxCoordinates(object sender, KeyEventArgs e)
         {
             if (stateContext.GetState().GetType().Name != "StartState")
+            {
                 return;
+            }
 
             if (moveMenu.Enabled && e.KeyCode != Keys.Escape)
             {
@@ -192,7 +193,9 @@ namespace Client
             Point prevLoc = playerPictureBox.Location;
             temp = movement.SendBoxCoordinates(sender, editor, map, player, MapBuilder, e);
             if (temp[0] == 0 && temp[1] == 0)
+            {
                 return;
+            }
 
             //Strategy
             playerPictureBox.Location = new Point(temp[0], temp[1]);
@@ -202,13 +205,15 @@ namespace Client
             _ = SendGetCoordinatesAsync(temp[0], temp[1]);
 
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Space || e.KeyCode == Keys.Q || e.KeyCode == Keys.E)
+            {
                 Thread.Sleep(25);
+            }
 
-            movement.fall_down(temp, editor, map, player);
-            check_if_win();
+            movement.Fall_down(temp, editor, map, player);
+            Check_if_win();
         }
 
-        public void check_if_win()
+        public void Check_if_win()
         {
             if (playerPictureBox.Location.Y >= playerPictureBox.Height * 15)
             {
@@ -239,13 +244,13 @@ namespace Client
 
             //AbstractFactory, Factory, Bridge
             map = new Map.MapBase(mapx, mapy);
-            ConcreteMediator temp_mediator = new ConcreteMediator(map, editor, MapBuilder, ServerObserver, room);
+            ConcreteMediator temp_mediator = new(map, editor, MapBuilder, ServerObserver, room);
             mediator = temp_mediator;
-            map.setFactory(1); // pirmas mediator component 
+            map.SetFactory(1); // pirmas mediator component 
 
             playerPictureBox.Show();
             enemyPictureBox.Show();
-            editor.scoreZero();
+            editor.ScoreZero();
             button1.Hide();
             button2.Hide();
             button3.Hide();
@@ -265,7 +270,7 @@ namespace Client
             button5.Show();
             stateContext.TransitionTo(new StartState());
             originator.SetState(new StartState());
-            mementoController.Backup(); 
+            mementoController.Backup();
             stateContext.SendState(room.GetName());
             stateContext.ShowText();
         }
@@ -355,7 +360,6 @@ namespace Client
                 gameStateLabel.Text = stateContext.ShowText();
                 Thread.Sleep(3000);
                 gameStateLabel.Text = string.Empty;
-                //stateContext.ChangeToNextState();
                 mementoController.Undo();
                 mementoController.Undo();
                 stateContext.TransitionTo(mementoController._originator._state);
@@ -376,7 +380,7 @@ namespace Client
             string enteredExpression = moveMenu.Text;
             if (enteredExpression != null)
             {
-                ExpressionExecutor executive = new ExpressionExecutor(enteredExpression, stateContext, moveMenu, playerPictureBox, movement, sender, editor, map, player, MapBuilder, connection, room, gameStateLabel, button5);
+                ExpressionExecutor executive = new(enteredExpression, stateContext, moveMenu, playerPictureBox, movement, sender, editor, map, player, MapBuilder, connection, room, gameStateLabel, button5);
                 moveMenu.ResetText();
             }
             //Tada cia sitoj vietos turi callint ta shit is facade

@@ -1,17 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Client.Effect;
 using Client.Map;
-using System.Windows.Forms;
-using Client.Effect;
-using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
 
 namespace ClientTests
 {
     [TestClass]
     public class AbstractFactoryTests
     {
-        AbstractFactory factory;
-        MapBase mapBase;
+        private AbstractFactory factory;
+        private MapBase mapBase;
         [TestMethod]
         public void TestL1FactoryGetStatic()
         {
@@ -22,13 +21,13 @@ namespace ClientTests
             string image = currentDir + @"\Resources\dirt1.png";
             IEffect effect = new JumpEffect();
             string health = "125";
-            var block = new L1StaticBlock();
+            L1StaticBlock block = new();
             block.SetName(name);
             block.SetImage(image);
             block.SetHealth(health);
             block.SetEffect(effect);
             block.SetBlockType("static");
-            var block2 = factory.GetStatic();
+            Block block2 = factory.GetStatic();
             block2.SetEffect(effect);
             Assert.IsTrue(block2.Equals(block));
         }
@@ -43,13 +42,13 @@ namespace ClientTests
             string image = currentDir + @"\Resources\sand1.png";
             IEffect effect = new JumpEffect();
             string health = "125";
-            var block = new L1FallingBlock();
+            L1FallingBlock block = new();
             block.SetName(name);
             block.SetImage(image);
             block.SetHealth(health);
             block.SetEffect(effect);
             block.SetBlockType("falling");
-            var block2 = factory.GetFalling();
+            Block block2 = factory.GetFalling();
             block2.SetEffect(effect);
             Assert.IsTrue(block2.Equals(block));
         }
@@ -64,13 +63,13 @@ namespace ClientTests
             string image = currentDir + @"\Resources\rock1.png";
             IEffect effect = new JumpEffect();
             string health = "125";
-            var block = new L1UnbreakableBlock();
+            L1UnbreakableBlock block = new();
             block.SetName(name);
             block.SetImage(image);
             block.SetHealth(health);
             block.SetEffect(effect);
             block.SetBlockType("unbreakable");
-            var block2 = factory.GetUnbreakable();
+            Block block2 = factory.GetUnbreakable();
             block2.SetEffect(effect);
             Assert.IsTrue(block2.Equals(block));
         }
@@ -82,13 +81,15 @@ namespace ClientTests
             int sizeY = 50;
 
             mapBase = new MapBase(sizeX, sizeY);
-            mapBase.setFactory(1);
+            mapBase.SetFactory(1);
 
             mapBase.CreateMap();
-            Block[,] blocks = mapBase.getBlocks();
+            Block[,] blocks = mapBase.GetBlocks();
             Assert.AreEqual(sizeX, blocks.GetLength(0));
             for (int i = 0; i < blocks.Length; i++)
+            {
                 Assert.AreEqual(blocks.GetLength(1), sizeY);
+            }
         }
 
         [TestMethod]
@@ -98,23 +99,26 @@ namespace ClientTests
             int sizeY = 50;
 
             mapBase = new MapBase(sizeX, sizeY);
-            mapBase.setFactory(1);
+            mapBase.SetFactory(1);
 
             mapBase.CreateMap();
 
-            Block[,] blocks = mapBase.getBlocks();
+            Block[,] blocks = mapBase.GetBlocks();
 
             mapBase.SerializeBlocks();
-            for(int i = 0; i < mapBase.x; i++)
+            for (int i = 0; i < mapBase.X; i++)
             {
-                for(int j = 0; j < mapBase.y; j++)
+                for (int j = 0; j < mapBase.Y; j++)
                 {
-                    if(blocks[i, j].GetEffect() != null)
-                        Assert.AreEqual(mapBase.blockEffectTypes[i, j], blocks[i, j].GetEffect().EffectType);
-                    Assert.AreEqual(mapBase.blockHealths[i, j], blocks[i, j].GetHealth());
-                    Assert.AreEqual(mapBase.blockImages[i, j], blocks[i, j].GetImage());
-                    Assert.AreEqual(mapBase.blockNames[i, j], blocks[i, j].GetName());
-                    Assert.AreEqual(mapBase.blockTypes[i, j], blocks[i, j].GetBlockType());
+                    if (blocks[i, j].GetEffect() != null)
+                    {
+                        Assert.AreEqual(mapBase.BlockEffectTypes[i, j], blocks[i, j].GetEffect().EffectType);
+                    }
+
+                    Assert.AreEqual(mapBase.BlockHealths[i, j], blocks[i, j].GetHealth());
+                    Assert.AreEqual(mapBase.BlockImages[i, j], blocks[i, j].GetImage());
+                    Assert.AreEqual(mapBase.BlockNames[i, j], blocks[i, j].GetName());
+                    Assert.AreEqual(mapBase.BlockTypes[i, j], blocks[i, j].GetBlockType());
                 }
             }
         }
@@ -126,26 +130,29 @@ namespace ClientTests
             int sizeY = 50;
 
             mapBase = new MapBase(sizeX, sizeY);
-            mapBase.setFactory(1);
+            mapBase.SetFactory(1);
 
             mapBase.CreateMap();
 
-            Block[,] blocks = mapBase.getBlocks();
+            Block[,] blocks = mapBase.GetBlocks();
 
             mapBase.SerializeBlocks();
-            var blockEffectTypes = mapBase.blockEffectTypes;
-            var blockHealths = mapBase.blockHealths;
-            var blockImages = mapBase.blockImages;
-            var blockNames = mapBase.blockNames;
-            var blockTypes = mapBase.blockTypes;
+            string[,] blockEffectTypes = mapBase.BlockEffectTypes;
+            string[,] blockHealths = mapBase.BlockHealths;
+            string[,] blockImages = mapBase.BlockImages;
+            string[,] blockNames = mapBase.BlockNames;
+            string[,] blockTypes = mapBase.BlockTypes;
             mapBase.DeserializeBlocks();
-            var deserializedBlocks = mapBase.getBlocks();
-            for (int i = 0; i < mapBase.x; i++)
+            Block[,] deserializedBlocks = mapBase.GetBlocks();
+            for (int i = 0; i < mapBase.X; i++)
             {
-                for (int j = 0; j < mapBase.y; j++)
+                for (int j = 0; j < mapBase.Y; j++)
                 {
                     if (blocks[i, j].GetEffect() != null)
+                    {
                         Assert.AreEqual(blockEffectTypes[i, j], blocks[i, j].GetEffect().EffectType);
+                    }
+
                     Assert.AreEqual(blockHealths[i, j], blocks[i, j].GetHealth());
                     Assert.AreEqual(blockImages[i, j], blocks[i, j].GetImage());
                     Assert.AreEqual(blockNames[i, j], blocks[i, j].GetName());

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Map
 {
@@ -20,25 +16,33 @@ namespace Client.Map
         }
         public sealed override void SetHealth(string health)
         {
-            if (this.IsBreakable())
+            if (IsBreakable())
+            {
                 this.health = health;
+            }
             else
+            {
                 this.health = "1000";
+            }
         }
 
         public sealed override int GetPoints()
         {
-            Random r = new Random();
-            int money = r.Next(1, 5); 
-            if (this.IsBreakable())
+            Random r = new();
+            int money = r.Next(1, 5);
+            if (IsBreakable())
+            {
                 return money;
+            }
             else
+            {
                 return 0;
+            }
         }
 
         public override StaticBlock Clone()
         {
-            return (StaticBlock)this.MemberwiseClone();
+            return (StaticBlock)MemberwiseClone();
         }
     }
 }

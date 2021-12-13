@@ -1,56 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Client.Effect;
 using Client.Map;
-using Client.Effect;
 
 namespace Client.Builder
 {
     public class UnbreakableBuilder : BlockBuilder
     {
-        Block block;
+        private Block block;
         public UnbreakableBuilder()
         {
 
         }
-        public override BlockBuilder startBuild(Block _block)
+        public override BlockBuilder StartBuild(Block _block)
         {
             block = _block;
             return this;
         }
-        public override BlockBuilder addName(string name)
+        public override BlockBuilder AddName(string name)
         {
             block.SetName(name);
             return this;
         }
 
-        public override BlockBuilder addImage(string image)
+        public override BlockBuilder AddImage(string image)
         {
             block.SetImage(image);
             return this;
         }
 
-        public override BlockBuilder addBlockType(string type)
+        public override BlockBuilder AddBlockType(string type)
         {
             block.SetBlockType(type);
             return this;
         }
 
-        public override BlockBuilder addEffect(IEffect effect)
+        public override BlockBuilder AddEffect(IEffect effect)
         {
             block.SetEffect(effect);
             return this;
         }
 
-        public override BlockBuilder addHealth(string health)
+        public override BlockBuilder AddHealth(string health)
         {
             block.SetHealth(health);
             return this;
         }
 
-        public override Block getBuildable()
+        public override Block GetBuildable()
         {
             return block;
         }

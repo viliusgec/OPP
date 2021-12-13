@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Map
 {
@@ -23,12 +19,18 @@ namespace Client.Map
         public override bool Equals(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
+
             if (!(obj is L1FallingBlock))
+            {
                 return false;
-            return ((this.GetName() == ((L1FallingBlock)obj).GetName()) && (this.GetImage() == ((L1FallingBlock)obj).GetImage())
-                && (this.GetHealth() == ((L1FallingBlock)obj).GetHealth()) && (this.GetEffect() == ((L1FallingBlock)obj).GetEffect())
-                && (this.GetBlockType() == ((L1FallingBlock)obj).GetBlockType()));
+            }
+
+            return ((GetName() == ((L1FallingBlock)obj).GetName()) && (GetImage() == ((L1FallingBlock)obj).GetImage())
+                && (GetHealth() == ((L1FallingBlock)obj).GetHealth()) && (GetEffect() == ((L1FallingBlock)obj).GetEffect())
+                && (GetBlockType() == ((L1FallingBlock)obj).GetBlockType()));
         }
     }
 }

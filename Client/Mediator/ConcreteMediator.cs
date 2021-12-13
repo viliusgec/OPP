@@ -1,23 +1,16 @@
 ﻿using Client.Composite;
 using Client.Observer;
 using Client.PictureBoxBuilder;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Client.Mediator
 {
-    public class ConcreteMediator : Mediator
+    public class ConcreteMediator : IMediator
     {
-        private Map.MapBase map;
-        MapBuilder MapBuilder;
-        FormsEditor editor;
-        ServerObserver ServerObserver;
-        Room room;
+        private readonly Map.MapBase map;
+        private readonly MapBuilder MapBuilder;
+        private readonly FormsEditor editor;
+        private readonly ServerObserver ServerObserver;
+        private readonly Room room;
 
         public ConcreteMediator(Map.MapBase map, FormsEditor editor, MapBuilder MapBuilder, ServerObserver ServerObserver, Room room)
         {
@@ -30,7 +23,7 @@ namespace Client.Mediator
             this.ServerObserver.SetMediator(this);
             this.room = room;
         }
-        public void notify(string message)
+        public void Notify(string message)
         {
             switch (message)
             {
@@ -41,7 +34,7 @@ namespace Client.Mediator
                     MapBuilder.AddPictureBoxes(editor.playerPictureBox, editor.enemyPictureBox, editor.control, editor.size); // antras component
                     break;
                 case "C":
-                    MapBuilder.CreateMap(editor.imageList1, map); 
+                    MapBuilder.CreateMap(editor.imageList1, map);
                     break;
                 case "D":
                     _ = ServerObserver.SendMap(map, room.GetName()); //trečias component

@@ -1,9 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Client.Composite;
-using System.Windows.Forms;
-using Client.Effect;
-using System.IO;
-using System;
+﻿using Client.Composite;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ClientTests
 {
@@ -13,7 +9,7 @@ namespace ClientTests
         [TestMethod]
         public void TestAddGameRoom()
         {
-            RoomHub roomHub = new RoomHub("roomHub");
+            RoomHub roomHub = new("roomHub");
             Room gameRoom = new GameRoom("gameRoom", "password");
             roomHub.AddRoom(gameRoom);
             Assert.IsTrue(gameRoom.Equals(roomHub.GetRoom("gameRoom")));
@@ -21,11 +17,11 @@ namespace ClientTests
         [TestMethod]
         public void TestRemoveGameRoom()
         {
-            RoomHub roomHub = new RoomHub("roomHub");
+            RoomHub roomHub = new("roomHub");
             Room gameRoom = new GameRoom("gameRoom", "password");
             roomHub.AddRoom(gameRoom);
             roomHub.RemoveRoom(gameRoom);
-            Assert.AreEqual(roomHub.GetRooms().Count,0);
+            Assert.AreEqual(roomHub.GetRooms().Count, 0);
         }
     }
 }

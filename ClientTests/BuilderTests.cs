@@ -1,7 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Client.Builder;
-using Client.Map;
+﻿using Client.Builder;
 using Client.Effect;
+using Client.Map;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ClientTests
 {
@@ -16,11 +16,11 @@ namespace ClientTests
             string image = "image";
             IEffect effect = new JumpEffect();
             string health = "125";
-            var block2 = new L1FallingBlock(name, image, effect, health);
+            L1FallingBlock block2 = new(name, image, effect, health);
             block2.SetBlockType("falling");
             block2.SetImage(image);
             BlockBuilder builder = new FallingBuilder();
-            block = builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("falling").addEffect(effect).getBuildable();
+            block = builder.StartBuild(block).AddHealth(health).AddName(name).AddImage(image).AddBlockType("falling").AddEffect(effect).GetBuildable();
             Assert.IsTrue(block2.Equals(block));
         }
 
@@ -32,11 +32,11 @@ namespace ClientTests
             string image = "image";
             IEffect effect = new JumpEffect();
             string health = "125";
-            var block2 = new L1StaticBlock(name, image, effect, health);
+            L1StaticBlock block2 = new(name, image, effect, health);
             block2.SetBlockType("static");
             block2.SetImage(image);
             BlockBuilder builder = new StaticBuilder();
-            block = builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("static").addEffect(effect).getBuildable();
+            block = builder.StartBuild(block).AddHealth(health).AddName(name).AddImage(image).AddBlockType("static").AddEffect(effect).GetBuildable();
             Assert.IsTrue(block2.Equals(block));
         }
 
@@ -49,11 +49,11 @@ namespace ClientTests
             string image = "image";
             IEffect effect = new JumpEffect();
             string health = "125";
-            var block2 = new L1UnbreakableBlock(name, image, effect, health);
+            L1UnbreakableBlock block2 = new(name, image, effect, health);
             block2.SetBlockType("unbreakable");
             block2.SetImage(image);
             BlockBuilder builder = new UnbreakableBuilder();
-            block = builder.startBuild(block).addHealth(health).addName(name).addImage(image).addBlockType("unbreakable").addEffect(effect).getBuildable();
+            block = builder.StartBuild(block).AddHealth(health).AddName(name).AddImage(image).AddBlockType("unbreakable").AddEffect(effect).GetBuildable();
             Assert.IsTrue(block2.Equals(block));
         }
     }

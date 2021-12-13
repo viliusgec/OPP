@@ -13,22 +13,22 @@ namespace Client.Command
             TextBox = textBox;
         }
 
-        public void Send(string message,string room)
+        public void Send(string message, string room)
         {
             myLastMessage = message;
-            observer.SendMessage(message,room);
+            observer.SendMessage(message, room);
             TextBox.AppendText("Me: " + message + "\r\n");
         }
 
         public void Undo(string room)
         {
             observer.UndoMessage(room);
-            var index = TextBox.Text.LastIndexOf("Me: ");
-            if(index >= 0)
+            int index = TextBox.Text.LastIndexOf("Me: ");
+            if (index >= 0)
             {
-                var endIndex = TextBox.Text.IndexOf("\r\n", index);
+                int endIndex = TextBox.Text.IndexOf("\r\n", index);
                 TextBox.Text = TextBox.Text.Remove(index, endIndex - index + 1);
-            }     
+            }
         }
 
         public string SeeText(string text)
@@ -36,7 +36,7 @@ namespace Client.Command
             TextBox.Text = text;
             return TextBox.Text;
         }
-            
+
         public void RecieveMessage()
         {
             observer.ReceiveMessage(TextBox);

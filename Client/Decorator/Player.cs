@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Decorator
+﻿namespace Client.Decorator
 {
-    class Player : Character
+    internal class Player : Character
     {
-        int strength;
+        private int strength;
         public Player()
         {
-            this.strength = 5;
+            strength = 5;
         }
 
         public override string Mine(string s)
         {
             return s + "mine";
         }
-        public override void addStr(int number)
+        public override void AddStr(int number)
         {
             strength = number;
         }
-        public override int getStr()
+        public override int GetStr()
         {
             return strength;
         }

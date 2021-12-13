@@ -2,11 +2,11 @@
 
 namespace Client.Memento
 {
-    class ConcreteMemento : IMemento
+    internal class ConcreteMemento : IMemento
     {
-        private State.State _state;
+        private readonly State.State _state;
 
-        private DateTime _date;
+        private readonly DateTime _date;
 
         public ConcreteMemento(State.State state)
         {

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Client.Bridge;
-using System.Threading.Tasks;
+﻿using Client.Bridge;
+using System;
 
 namespace Client.Map
 {
@@ -11,16 +7,16 @@ namespace Client.Map
     [System.Xml.Serialization.XmlInclude(typeof(L1Factory))]
     [System.Xml.Serialization.XmlInclude(typeof(L2Factory))]
     [System.Xml.Serialization.XmlInclude(typeof(L3Factory))]
-    abstract public class Block : ICloneable
+    public abstract class Block : ICloneable
     {
-        private string name { get; set; }
+        private string Name { get; set; }
         private string image;
         private string blockType;
         private Effect.IEffect effect;
         public string health;
         public Block(string _name, string _image, Effect.IEffect _effect, string _health)
         {
-            name = _name;
+            Name = _name;
             image = _image;
             effect = _effect;
             health = _health;
@@ -38,7 +34,7 @@ namespace Client.Map
 
         public string GetName()
         {
-            return name;
+            return Name;
         }
         public Effect.IEffect GetEffect()
         {
@@ -57,22 +53,22 @@ namespace Client.Map
 
         public void SetImage(string image)
         {
-            this.image = BlockSkin.SetImage(health, name);
+            this.image = BlockSkin.SetImage(health, Name);
         }
 
         public void SetName(string n)
         {
-            this.name = n;
+            Name = n;
         }
 
         public void SetEffect(Effect.IEffect ef)
         {
-            this.effect = ef;
+            effect = ef;
         }
 
         public void SetBlockType(string type)
         {
-            this.blockType = type;
+            blockType = type;
         }
 
         public abstract void SetHealth(string health);

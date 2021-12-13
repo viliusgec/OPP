@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.State
+﻿namespace Client.State
 {
-    class StateContext
+    internal class StateContext
     {
         private State _state = null;
 
@@ -16,7 +10,7 @@ namespace Client.State
         }
 
         public void TransitionTo(State state)
-        {  
+        {
             _state = state;
             _state.SetContext(this);
         }

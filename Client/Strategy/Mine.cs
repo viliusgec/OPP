@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Strategy
+﻿namespace Client.Strategy
 {
-    public class Mine : Algorithm
+    public class Mine : IAlgorithm
     {
         // not working for now
         public int x;
@@ -27,4 +21,3 @@ namespace Client.Strategy
         }
     }
 }
- 

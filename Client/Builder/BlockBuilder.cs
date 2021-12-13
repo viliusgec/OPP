@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Client.Effect;
 using Client.Map;
-using Client.Effect;
 
 namespace Client.Builder
 {
     public abstract class BlockBuilder
     {
-        Block block;
+        private readonly Block block;
         public BlockBuilder()
         {
-            
+
         }
-        public abstract BlockBuilder startBuild(Block _block);
-        public abstract BlockBuilder addName(string name);
-        public abstract BlockBuilder addImage(string image);
-        public abstract BlockBuilder addBlockType(string type);
-        public abstract BlockBuilder addEffect(IEffect effect);
-        public abstract BlockBuilder addHealth(string health);
-        public abstract Block getBuildable();
+        public abstract BlockBuilder StartBuild(Block _block);
+        public abstract BlockBuilder AddName(string name);
+        public abstract BlockBuilder AddImage(string image);
+        public abstract BlockBuilder AddBlockType(string type);
+        public abstract BlockBuilder AddEffect(IEffect effect);
+        public abstract BlockBuilder AddHealth(string health);
+        public abstract Block GetBuildable();
     }
 }

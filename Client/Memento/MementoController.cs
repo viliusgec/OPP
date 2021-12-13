@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Client.Memento
 {
-    class MementoController
+    internal class MementoController
     {
-        private List<IMemento> _mementos = new List<IMemento>();
+        private readonly List<IMemento> _mementos = new();
 
         public Originator _originator = null;
 
@@ -27,7 +27,7 @@ namespace Client.Memento
                 return;
             }
 
-            var memento = _mementos.Last();
+            IMemento memento = _mementos.Last();
             _mementos.Remove(memento);
 
 
@@ -43,7 +43,7 @@ namespace Client.Memento
 
         public void ShowHistory()
         {
-            foreach (var memento in _mementos)
+            foreach (IMemento memento in _mementos)
             {
                 Console.WriteLine(memento.GetName());
             }

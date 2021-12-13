@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Client.Composite;
+﻿using Client.Composite;
 using Client.Decorator;
 using Client.PictureBoxBuilder;
 using Client.State;
 using Client.Strategy;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Client.Interpreter
 {
-    class MoveExpression : AbstractExpression
+    internal class MoveExpression : AbstractExpression
     {
         public MoveExpression(
             string expression, StateContext stateContext,
@@ -45,18 +41,22 @@ namespace Client.Interpreter
         public override void Execute()
         {
             if (stateContext.GetState().GetType().Name != "StartState")
+            {
                 return;
+            }
 
             connection = SingletonConnection.GetInstance().GetConnection();
 
             int[] temp;
             Point prevLoc = playerPictureBox.Location;
 
-            var convertedExpression = ConvertExpressionToKey(expression);
+            string convertedExpression = ConvertExpressionToKey(expression);
 
             temp = movement.SendBoxCoordinates(sender, editor, map, player, mapBuilder, null, convertedExpression);
             if (temp[0] == 0 && temp[1] == 0)
+            {
                 return;
+            }
 
             //Strategy
             playerPictureBox.Location = new Point(temp[0], temp[1]);
@@ -67,10 +67,12 @@ namespace Client.Interpreter
 
             //Cia irgi idet ta tikrinima
             if (convertedExpression == "W" || convertedExpression == "Q" || convertedExpression == "E")
+            {
                 Thread.Sleep(25);
+            }
 
-            movement.fall_down(temp, editor, map, player);
-            check_if_win();
+            movement.Fall_down(temp, editor, map, player);
+            Check_if_win();
         }
 
         public static string ConvertExpressionToKey(string expression)
@@ -92,17 +94,17 @@ namespace Client.Interpreter
 
         private async Task SendGetCoordinatesAsync(int x, int y)
         {
-            var testukas = room.GetName();
-            var cqq = connection;
+            string testukas = room.GetName();
+            HubConnection cqq = connection;
             await connection.InvokeAsync("SendCoordinates",
                 x.ToString(), y.ToString(), room.GetName());
         }
 
-        public void check_if_win()
-        { 
+        public void Check_if_win()
+        {
             if (playerPictureBox.Location.Y >= playerPictureBox.Height * 15)
             {
-               // State
+                // State
                 stateContext.TransitionTo(new EndState());
                 gameStateLabel.Text = stateContext.ShowText();
                 gameStateLabel.Text += "\r\nYou won!";

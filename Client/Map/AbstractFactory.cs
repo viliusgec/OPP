@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Map
 {
@@ -10,7 +6,7 @@ namespace Client.Map
     [System.Xml.Serialization.XmlInclude(typeof(FallingBlock))]
     [System.Xml.Serialization.XmlInclude(typeof(StaticBlock))]
     [System.Xml.Serialization.XmlInclude(typeof(UnbreakableBlock))]
-    abstract public class AbstractFactory
+    public abstract class AbstractFactory
     {
         public abstract Block GetStatic();
         public abstract Block GetFalling();

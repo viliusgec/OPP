@@ -1,25 +1,21 @@
-using System;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.AspNetCore.SignalR.Client;
-using Client.Map;
-using Client.Strategy;
 using Client.Composite;
-using Client.Observer;
 using Client.Proxy;
+using Client.Strategy;
+using Microsoft.AspNetCore.SignalR.Client;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Client
 {
     public partial class Form1 : Form
     {
-        Form gameForm;
-        Algorithm strategy;
-        private HubConnection connection;
-        private RoomHub roomHub;
+        private readonly Form gameForm;
+        private readonly IAlgorithm strategy;
+        private readonly HubConnection connection;
+        private readonly RoomHub roomHub;
         private Room selectedRoom;
-        private AuthenticatorProxy authenticatorProxy;
+        private readonly AuthenticatorProxy authenticatorProxy;
 
         public Form1()
         {
@@ -27,9 +23,6 @@ namespace Client
             roomHub = new RoomHub("RoomHub");
             authenticatorProxy = new AuthenticatorProxy();
 
-            //cia sitie jei chato kambarius darysim
-            //roomHub.AddRoom(new RoomHub("Chat Rooms"));
-            //roomHub.AddRoom(new RoomHub("Game Rooms"));
             SingletonConnection temp_connection = SingletonConnection.GetInstance();
             connection = temp_connection.GetConnection();
             roomListBox.Hide();
@@ -59,25 +52,22 @@ namespace Client
             isChatCheckBox.Show();
             try
             {
-                await connection.StartAsync();           
+                await connection.StartAsync();
 
                 label1.Text = "Connection started";
-                //this.Hide();
-                //gameForm.ShowDialog();
-                //this.Show();
             }
             catch
             {
-                label1.Text = "You can't connect second time.";//ex.ToString();
+                label1.Text = "You can't connect second time.";
             }
 
             _ = connection.InvokeAsync("RequestRooms", "");
 
             connection.On<string>("ReceiveRequestRooms", (x) =>
             {
-                if(roomHub.GetRooms().Count > 0)
+                if (roomHub.GetRooms().Count > 0)
                 {
-                    foreach(var room in roomHub.GetRooms())
+                    foreach (Room room in roomHub.GetRooms())
                     {
                         connection.InvokeAsync("SendRoom", room.GetName(), room.GetPassword(), room.GetPlayers());
                     }
@@ -96,12 +86,13 @@ namespace Client
                     roomListBox.Items.Clear();
                     roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
                 }
-                    
+
             });
-            connection.On<string, string, int>("ReceiveRoom", (name, password, players) => {
-                if(roomHub.GetRoom(name) == null)
+            connection.On<string, string, int>("ReceiveRoom", (name, password, players) =>
+            {
+                if (roomHub.GetRoom(name) == null)
                 {
-                    var room = new GameRoom(name, password);
+                    GameRoom room = new(name, password);
                     room.SetPlayers(players);
 
                     roomHub.AddRoom(room);
@@ -110,7 +101,8 @@ namespace Client
                     roomListBox.Items.AddRange(roomHub.GetRooms().Select(x => x.GetName()).ToArray());
                 }
             });
-            connection.On<string>("ReceiveRemoveRoom", (name) => {
+            connection.On<string>("ReceiveRemoveRoom", (name) =>
+            {
                 if (roomHub.GetRoom(name) == null)
                 {
                     roomHub.RemoveRoom(roomHub.GetRoom(name));
@@ -139,14 +131,12 @@ namespace Client
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            if(roomHub.GetRoom(roomNameBox.Text) == null)
+            if (roomHub.GetRoom(roomNameBox.Text) == null)
             {
                 Room room;
                 if (isChatCheckBox.Checked)
                 {
                     room = new ChatRoom(roomNameBox.Text, roomPassBox.Text);
-                    //Ateity implementuot chato atskira kambari, maybe, kaip chebra pasakys.
-                    //gameForm = new ChatForm(room);
                 }
                 room = new GameRoom(roomNameBox.Text, roomPassBox.Text);
                 roomHub.AddRoom(room);
@@ -170,13 +160,13 @@ namespace Client
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(roomListBox.SelectedItem != null)
+            if (roomListBox.SelectedItem != null)
             {
-                var selected = roomListBox.SelectedItem.ToString();
+                string selected = roomListBox.SelectedItem.ToString();
 
                 selectedRoom = roomHub.GetRoom(selected);
             }
-            
+
         }
 
         private void label2_Click(object sender, EventArgs e)
