@@ -53,8 +53,8 @@ namespace Client.Adapter
                         box.Enabled = false;
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.AddScore();
-                        editor.AddMoney(block.GetPoints());
+                        editor.AddPlayerScore();
+                        editor.AddPlayerMoney(block.GetPoints());
 
                         return loc == defaultLoc;
                     }
@@ -121,8 +121,8 @@ namespace Client.Adapter
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.AddScore();
-                        editor.AddMoney(block.GetPoints());
+                        editor.AddPlayerScore();
+                        editor.AddPlayerMoney(block.GetPoints());
 
                         return loc == defaultLocLeft;
                     }
@@ -165,8 +165,8 @@ namespace Client.Adapter
                         _ = SendMinedBoxCoordinatesAsync(box.Location.X, box.Location.Y, connection, room);
                         mapBuilder.BlocksFall(map, editor, box.Location.X, box.Location.Y);
                         ServerObserver.ReceiveMinedBoxCoordinates(mapBuilder, map, editor);
-                        editor.AddScore();
-                        editor.AddMoney(block.GetPoints());
+                        editor.AddPlayerScore();
+                        editor.AddPlayerMoney(block.GetPoints());
 
                         return loc == defaultLocRight;
                     }
