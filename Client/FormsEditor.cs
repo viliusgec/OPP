@@ -79,30 +79,30 @@ namespace Client
             this.room = room;
             this.connection = connection;
 
-            InitSkins();
+            InitPlayerSkins();
             InitVisitor();
             ReceiveSkin();
         }
-        public void InitSkins()
+        public void InitPlayerSkins()
         {
-            PlayerSkin skin;
-            skin = factory.PlayerSkin(1);
-            white = skin.ReturnPlayerSkin();
+            PlayerSkin playerSkin;
+            playerSkin = factory.PlayerSkin(1);
+            white = playerSkin.ReturnPlayerSkin();
 
-            skin = factory.PlayerSkin(2);
-            black = skin.ReturnPlayerSkin();
+            playerSkin = factory.PlayerSkin(2);
+            black = playerSkin.ReturnPlayerSkin();
 
-            skin = factory.PlayerSkin(3);
-            diamond = skin.ReturnPlayerSkin();
+            playerSkin = factory.PlayerSkin(3);
+            diamond = playerSkin.ReturnPlayerSkin();
 
-            skin = factory.PlayerSkin(4);
-            enemyWhite = skin.ReturnPlayerSkin();
+            playerSkin = factory.PlayerSkin(4);
+            enemyWhite = playerSkin.ReturnPlayerSkin();
 
-            skin = factory.PlayerSkin(5);
-            enemyBlack = skin.ReturnPlayerSkin();
+            playerSkin = factory.PlayerSkin(5);
+            enemyBlack = playerSkin.ReturnPlayerSkin();
 
-            skin = factory.PlayerSkin(6);
-            enemyDiamond = skin.ReturnPlayerSkin();
+            playerSkin = factory.PlayerSkin(6);
+            enemyDiamond = playerSkin.ReturnPlayerSkin();
         }
 
         public void InitVisitor()
@@ -113,13 +113,13 @@ namespace Client
             visitor = new ConcreteVisitor();
         }
 
-        public void AddScore()
+        public void AddPlayerScore()
         {
             score += 1;
             scoreLabel.Text = "Score: " + score;
         }
 
-        public void AddMoney(int _money)
+        public void AddPlayerMoney(int _money)
         {
             money += _money;
             moneyLabel.Text = "Money: " + money;
@@ -160,7 +160,7 @@ namespace Client
                 return;
             }
 
-            SetSkin(str);
+            SetPlayerSkin(str);
             player.AddStr(str);
             compscore.Accept(visitor, scoreLabel, score, temp);
         }
@@ -180,7 +180,7 @@ namespace Client
                 return;
             }
 
-            SetSkin(str);
+            SetPlayerSkin(str);
             player.AddStr(str);
             compmoney.Accept(visitor, moneyLabel, money, temp);
         }
@@ -189,9 +189,9 @@ namespace Client
         /*
         *  čia toks truputį nesąmonė, nes neišėjo į listboxą dictionary ar keypair įmest, tai parsinimus darau debiliškus
         */
-        private void SetSkin(int skin)
+        private void SetPlayerSkin(int playerSkin)
         {
-            switch (skin)
+            switch (playerSkin)
             {
                 case 7:
                     playerPictureBox.Image = white.Image;
@@ -210,14 +210,14 @@ namespace Client
             }
         }
 
-        private async Task SendSkin(string skin)
+        private async Task SendSkin(string playerSkin)
         {
             await connection.InvokeAsync("SendSkin",
-                    skin, room);
+                playerSkin, room);
 
-            connection.On<string>("ReceiveSkin", (skin) =>
+            connection.On<string>("ReceiveSkin", (playerSkin) =>
             {
-                enemyPictureBox.Image = skin switch
+                enemyPictureBox.Image = playerSkin switch
                 {
                     "a" => enemyWhite.Image,
                     "b" => enemyBlack.Image,
@@ -228,9 +228,9 @@ namespace Client
         }
         public void ReceiveSkin()
         {
-            connection.On<string>("ReceiveSkin", (skin) =>
+            connection.On<string>("ReceiveSkin", (playerSkin) =>
             {
-                enemyPictureBox.Image = skin switch
+                enemyPictureBox.Image = playerSkin switch
                 {
                     "a" => enemyWhite.Image,
                     "b" => enemyBlack.Image,
