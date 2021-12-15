@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;
+using Client.Composite.Iterator;
 
 namespace Client.Composite
 {
@@ -28,15 +29,25 @@ namespace Client.Composite
 
         public Room GetRoom(string name)
         {
-            foreach (Room room in roomList)
+            RoomHubIterator roomIteLists = CreateIterator();
+
+            while (roomIteLists.hasNext())
             {
+                Room room = roomIteLists.next();
+
                 if (room.GetName().Equals(name))
                 {
                     return room;
                 }
             }
+
             return null;
         }
+        public RoomHubIterator CreateIterator()
+        {
+            return new RoomHubIterator(roomList);
+        }
+
         public override bool IsComposite()
         {
             return true;
