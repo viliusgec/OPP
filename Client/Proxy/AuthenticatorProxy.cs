@@ -6,6 +6,23 @@ namespace Client.Proxy
 {
     public class AuthenticatorProxy : IAuthenticator
     {
+        private Authenticator authenticator = new();
+
+        public bool CheckAccess(Room selectedRoom,
+            Client.Form1 form,
+            RoomHub roomHub,
+            ListBox roomListBox,
+            HubConnection connection
+            )
+        {
+            if (selectedRoom != null && selectedRoom.players < 2)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public void AuthenticatePlayerCount(Room selectedRoom,
              Client.Form1 form,
              RoomHub roomHub,
@@ -13,9 +30,10 @@ namespace Client.Proxy
              HubConnection connection
              )
         {
-            Authenticator authenticator = new();
-
-            authenticator.AuthenticatePlayerCount(selectedRoom, form, roomHub, roomListBox, connection);
+            if (this.CheckAccess(selectedRoom, form, roomHub, roomListBox, connection))
+            {
+                authenticator.AuthenticatePlayerCount(selectedRoom, form, roomHub, roomListBox, connection);
+            }
         }
     }
 }
