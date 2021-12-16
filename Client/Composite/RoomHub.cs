@@ -29,7 +29,7 @@ namespace Client.Composite
 
         public Room GetRoom(string name)
         {
-            RoomHubIterator roomIteLists = CreateIterator();
+            Iterator.Iterator roomIteLists = CreateIterator();
 
             while (roomIteLists.hasNext())
             {
@@ -43,10 +43,6 @@ namespace Client.Composite
 
             return null;
         }
-        public RoomHubIterator CreateIterator()
-        {
-            return new RoomHubIterator(roomList);
-        }
 
         public override bool IsComposite()
         {
@@ -59,6 +55,11 @@ namespace Client.Composite
 
         public override void LeaveRoom(HubConnection connection)
         {
+        }
+
+        public override Iterator.Iterator CreateIterator()
+        {
+            return new RoomHubIterator(roomList);
         }
     }
 }
