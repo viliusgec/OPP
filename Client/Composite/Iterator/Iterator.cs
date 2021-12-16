@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Composite.Iterator
 {
-    interface Iterator
+    public interface Iterator
     {
         Room first();
         Room currentItem();

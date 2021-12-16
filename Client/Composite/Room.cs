@@ -38,6 +38,7 @@ namespace Client.Composite
 
         public abstract bool IsComposite();
 
+        public abstract Iterator.Iterator CreateIterator();
 
         public abstract void JoinRoom(HubConnection connection);
         public abstract void LeaveRoom(HubConnection connection);

@@ -15,6 +15,11 @@ namespace Client.Composite
             return false;
         }
 
+        public override Iterator.Iterator CreateIterator()
+        {
+            return null;
+        }
+
         public override async void JoinRoom(HubConnection connection)
         {
             if (players >= roomLimit)
